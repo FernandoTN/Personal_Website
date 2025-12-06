@@ -1,0 +1,149 @@
+---
+title: "An AI Infrastructure Company's Take: Managing Expectations with Probabilistic Systems"
+summary: 'a founder at an AI infrastructure company on why 30 years of deterministic software conditioning creates expectation mismatches with AI agents, and the scientific approach needed to bridge the gap.'
+publishedAt: '2025-12-15'
+tags:
+  [
+    'AI Agents',
+    'an AI infrastructure company',
+    'Reliability',
+    'Expectations',
+    'Probabilistic Systems',
+  ]
+featured: false
+author: 'Fernando Torres'
+image: '/images/blog/practitioner-interview-2-probabilistic-systems.png'
+---
+
+For three decades, software engineers have lived by a simple rule: if code works once, it works forever. This assumption, deeply embedded in how we build, test, and ship software, is now colliding head-on with the reality of AI agents. The result? A generation of developers and stakeholders who see a successful demo and assume they are ready for production. They are not. And until organizations understand why, AI agent deployments will continue to fail at alarming rates.
+
+## The Discovery
+
+In October 2024, I sat down with a founder at an AI infrastructure company, Founder and CEO of an AI infrastructure company, to discuss what he sees as the fundamental challenge blocking AI agent adoption. the founder has spent years building distributed systems and now leads a company focused on helping teams move from AI prototypes to production. His perspective cuts to the heart of why 90% of AI agent pilots never convert to production deployments.
+
+What emerged from our conversation was not a discussion of model capabilities or prompt engineering techniques. Instead, the founder articulated a paradigm shift that most organizations have yet to recognize: the move from deterministic to probabilistic systems requires fundamentally different approaches to building, testing, and managing expectations. The technology works. The problem is that we do not know how to work with it.
+
+## What We Found
+
+### The 70% Demo Deception
+
+The most insidious problem in AI agent deployment is the demo. It looks magical. It impresses stakeholders. And it sets entirely false expectations.
+
+> "Me demoing, I know that I just got lucky. Maybe 70 out of 100 runs of this demo, I will get lucky so I can run it, right? And when it fails, I will chuckle and go, whatever. So you can get away with it. If it works 70% of the time, you can demo it. Now, the other person on the other end, they are not used to that probabilistic nature. So they assume, oh my God, this works, I'm going to ship it."
+> — a founder at an AI infrastructure company, Founder/CEO, an AI infrastructure company
+
+This 70% threshold creates what the founder calls a "demo-production chasm." The person presenting the demo understands they got lucky. They know that roughly three out of ten runs will fail. But the person watching does not carry this context. They see a working system and project deterministic expectations onto it.
+
+The challenge is not that 70% accuracy is insufficient for production. For many use cases, it might be acceptable with proper guardrails. The problem is the expectation mismatch. When stakeholders expect 99.9% reliability because that is what software has always provided, 70% feels like catastrophic failure rather than an impressive starting point.
+
+### The Thirty-Year Conditioning Problem
+
+Why do these expectation mismatches occur so consistently? According to the founder, it comes down to three decades of conditioning.
+
+> "Most people that have built and deployed technology over the last, say, 30 years aren't used to probabilistic stochastic systems. They're used to deterministic things. So the expectation is if I see it working once, I expect it to work reliably from that point on."
+> — a founder at an AI infrastructure company, Founder/CEO, an AI infrastructure company
+
+Consider how traditional software development works. You write a function. You test it. If the test passes, you can reasonably expect that function to behave the same way every time it runs with the same inputs. This deterministic model has been the foundation of software engineering since its inception.
+
+AI agents break this model entirely. The same input can produce different outputs. A query that worked perfectly yesterday might fail today. The system makes decisions based on probability distributions rather than logical rules. For developers and organizations trained on deterministic systems, this feels broken. It is not broken. It is a different paradigm.
+
+### The Doom Loop
+
+When organizations attempt to productionize their impressive demos, they typically enter what the founder describes as a "doom loop" of futile improvement attempts:
+
+> "That's where the skill problem really starts to kind of hurt is because most people aren't used to how to make that better. They kind of go into this like doom loop almost... They'll go, oh, I see, okay, this scenario didn't work. I'll go change the prompt and the instructions and the data or whatever to make this scenario work. But then they go, oh, but the other one stopped working and they're now in this continuous loop."
+> — a founder at an AI infrastructure company, Founder/CEO, an AI infrastructure company
+
+This pattern is remarkably common. A team identifies a failing scenario, tweaks prompts or instructions to fix it, and inadvertently breaks something that was previously working. Without systematic approaches to improvement, teams oscillate between success and failure indefinitely. They make no forward progress because they lack the tools and methodologies to work with probabilistic systems.
+
+The doom loop is particularly frustrating because each fix feels like progress. The team addresses a real problem and sees it resolved. Only later do they discover they have created new problems elsewhere. Without proper evaluation frameworks, this cycle can continue for months.
+
+### The Science Behind the Solution
+
+the founder argues that escaping the doom loop requires adopting methodologies borrowed from science rather than traditional software engineering:
+
+> "People who are used to science know that you can do it with probabilistic things in the world, right? You need to run a controlled experiment and you need an iteration that builds on a set of controls... I will set up some controls, I'll set up an iterative process. I look at my data, do error analysis, figure out what are the category of errors... make sure that there's a set of tests that are evals is the new term like that makes sure that I don't regress as I try to progress."
+> — a founder at an AI infrastructure company, Founder/CEO, an AI infrastructure company
+
+This scientific approach involves several key practices:
+
+**Controlled experiments**: Rather than making ad-hoc changes, set up experiments where you change one variable at a time and measure the impact systematically.
+
+**Evaluation frameworks (evals)**: Build comprehensive test suites that run across your scenarios, serving as regression tests that catch when improvements in one area cause degradation in another.
+
+**Error categorization**: Instead of treating all failures equally, categorize errors by type, severity, and root cause. This enables targeted improvements rather than blind iteration.
+
+**Iterative improvement with controls**: Each improvement builds on established baselines. You know what works, you protect it, and you systematically expand from there.
+
+The irony, the founder notes, is that even traditional software engineering has poor testing discipline. He estimates that only about 20% of software projects have comprehensive automated testing. Expecting the same developers to adopt rigorous evaluation practices for probabilistic systems is ambitious. Yet without this discipline, production deployment remains out of reach.
+
+## Organizational Openness to Change
+
+Despite these challenges, the founder observes a surprising willingness among organizations to adopt new approaches. The fear of being disrupted is driving faster adoption than anyone anticipated. Organizations from startups to banks are fundamentally reconsidering their workflows and are willing to deploy agent-based systems into production faster than he expected.
+
+He shared an example of a neo-bank deploying an AI agent into production on a live customer call, a process that would historically have taken one to two years of evaluation. The pressure of potential disruption is compressing timelines dramatically.
+
+This openness creates an opportunity. Organizations are willing to change, but they need guidance on what to change to. The scientific method for probabilistic systems is not intuitive. It requires explicit education and tooling support.
+
+## Actor Model Insights for Agent Reliability
+
+the founder's technical approach at an AI infrastructure company offers insights into how architecture can support reliability. Rather than treating agents as simple prompt-response systems, an AI infrastructure company builds on the actor model from distributed systems theory:
+
+> "In our system. In an AI infrastructure company, we've taken an even more powerful abstraction, which is the actor model that comes from like Scala and Erlang and those systems... which allows us to have thousands or tens of thousands of parallel and distributed agents work on some problem. So what I am able to communicate to people is, look, you can like I clicked a button, 5,000 agents appear."
+> — a founder at an AI infrastructure company, Founder/CEO, an AI infrastructure company
+
+The actor model provides several reliability benefits:
+
+**No shared state**: Each agent maintains its own internal state and communicates via messages. This eliminates entire categories of concurrency bugs that plague traditional multi-threaded systems.
+
+**Coordinator patterns**: When agents need to share information (like aggregating results into a final report), explicit coordinator actors manage this shared state rather than having agents access it directly.
+
+**Failure isolation**: When one actor fails, it does not bring down other actors. The system can recover gracefully, retry failed operations, or escalate to human oversight.
+
+**Massive parallelism**: Processing 5,000 PDFs can happen with 5,000 concurrent agents in a single container with in-memory message passing, rather than spinning up 5,000 machines.
+
+This architecture acknowledges that individual agent actions are probabilistic and may fail, but provides a framework for managing those failures at scale. It is a fundamentally different approach than treating agents as deterministic functions that should never fail.
+
+## Why This Matters
+
+The probabilistic systems challenge is not going away. As the founder put it:
+
+> "The pool of things possible with the current capability is gigantic. It is transformative already. It doesn't need to. If it stopped today, it can still solve a whole bunch of problems we couldn't do earlier. And so I think that there's massive opportunity in the current state."
+> — a founder at an AI infrastructure company, Founder/CEO, an AI infrastructure company
+
+Current AI capabilities are sufficient for transformative applications. The bottleneck is not model intelligence or context windows or reasoning ability. The bottleneck is deployment practices and expectation management. Organizations that figure out how to work with probabilistic systems will capture enormous value. Those that continue applying deterministic expectations will remain stuck in the doom loop.
+
+This represents a new paradigm in software engineering:
+
+> "Most people building this super lightweight three tier web apps and now they have to run a system that runs for a long time, has long lived state, can have buffer problems, can have communication channel problems with bi directional communication. There's a whole bunch of new software engineering things, not new deep software engineering things that 90% of people didn't have to care about that suddenly everybody must care about because we've got this new paradigm of software."
+> — a founder at an AI infrastructure company, Founder/CEO, an AI infrastructure company
+
+The shift from millisecond request-response cycles to hour-long agent sessions fundamentally changes what developers need to understand. Stateless design principles do not apply. Session management becomes critical. Error handling must account for partial failures over extended time periods. This is not about being smarter; it is about learning different skills.
+
+## What You Can Do
+
+Based on the founder's insights, here are actionable recommendations for managing stakeholder expectations and succeeding with probabilistic systems:
+
+- **Set explicit probability expectations from the start**: Before any demo, communicate that the system works probabilistically. Share accuracy metrics. Frame success in terms of improvement over time rather than perfection out of the gate. A 70% accurate system that improves to 85% in three months tells a very different story than a "failed" system that "only" works 70% of the time.
+
+- **Build evaluation infrastructure before building features**: Invest in comprehensive evaluation suites early. These become the controls that prevent the doom loop. Every new scenario should come with test cases. Every improvement should be measured against this baseline.
+
+- **Adopt error categorization practices**: When failures occur, categorize them. Is this a retrieval failure? A reasoning failure? A tool execution failure? Different error categories require different solutions. Treating all errors as "it didn't work" prevents systematic improvement.
+
+- **Design for graceful degradation**: Accept that failures will occur and build systems that handle them gracefully. This might mean human-in-the-loop escalation, retry logic, or fallback behaviors. Reliability comes from the system design, not from hoping the AI never fails.
+
+- **Invest in probabilistic systems education**: Your team needs to learn new skills. This might mean hiring from ML backgrounds, training existing engineers, or bringing in external expertise. The mindset shift is real and requires explicit attention.
+
+- **Start with high-tolerance use cases**: Begin deployments in contexts where 70-80% accuracy is genuinely acceptable. Customer support suggestions, document summarization, and research assistance all tolerate imperfection better than financial transactions or medical diagnoses. Success in tolerant domains builds organizational confidence and capability.
+
+## The Bottom Line
+
+The gap between AI agent demos and production is not a technology problem. It is an expectations problem rooted in thirty years of deterministic software conditioning. Organizations that recognize this shift and adopt scientific methodologies for working with probabilistic systems will succeed. Those that keep applying deterministic expectations will remain frustrated.
+
+As a founder at an AI infrastructure company demonstrates, the tools and architectures for reliable AI agents exist today. The question is whether organizations can evolve their thinking fast enough to use them.
+
+---
+
+_This post is part of my research series on AI Agent deployment, based on 36 expert interviews, 5 industry conferences, and 3 functional prototypes. [Read the full research overview](/blog/ai-agents-research)._
+
+_Have thoughts on AI agent deployment? Connect with me on [LinkedIn](https://www.linkedin.com/in/fernandotn/) or [email me](mailto:fertorresnavarrete@gmail.com)._

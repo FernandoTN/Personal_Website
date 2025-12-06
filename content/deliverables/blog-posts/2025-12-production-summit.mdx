@@ -1,0 +1,154 @@
+---
+title: 'Production Agents Summit: The 40% Context Rule and Other Uncomfortable Truths'
+summary: "Snowflake's Production Agents Summit revealed hard-won lessons about deploying AI agents at scale, including the counterintuitive 40% context window rule, observability requirements, and why agents are ultimately just software that demands rigorous engineering."
+publishedAt: '2025-12-26'
+tags:
+  ['AI Agents', 'Snowflake', 'Conference', 'Production', 'Context Management']
+author: 'Fernando Torres'
+featured: false
+image: '/images/blog/production-summit.png'
+---
+
+Every large language model announcement boasts about context window size. One million tokens. Two million. The implication is clear: bigger context means smarter agents. But at Snowflake's Production Agents Summit, practitioners who have actually deployed agents at scale shared a different reality. The uncomfortable truth? If your agent uses more than 40% of its context window, it will start making mistakes. And that is just one of several counterintuitive lessons that separate production-ready agents from impressive demos that never ship.
+
+## The Discovery
+
+The Production Agents Summit brought together two speakers with complementary perspectives on building agents that actually work: Tyler from CopilotKit, focused on infrastructure for building copilots and the AGUI protocol, and Rel from an AI infrastructure company, whose platform powers autonomous products at scale. What made this conference different from typical AI events was the focus on production realities rather than capabilities.
+
+Both speakers had crossed the threshold from prototype to production. They had faced the challenges that only emerge when real users interact with real agents in real workflows. Their insights came from battle scars, not benchmarks. The central question they addressed cuts to the heart of agent development: what does it actually take to move from a working demo to a reliable production system?
+
+The answer, it turns out, involves rethinking fundamental assumptions about how agents should be built and measured.
+
+## What We Found
+
+### The 40% Context Rule: Bigger Is Not Better
+
+The most counterintuitive finding from the summit challenges the industry's obsession with context window size. Larger context windows were supposed to enable more capable agents. The reality is more nuanced.
+
+> "Every LLM announcement, you'll see they go, the context window sizes increase, we're up to like a few million tokens or whatever. This is just a rule of thumb number that I've made up. But essentially, if your agent is using anything more than 40% of the context window, it's probably going to make mistakes."
+> — Rel, CTO of an AI infrastructure company
+
+This 40% threshold is not arbitrary. It emerges from practical observation of agent behavior in production. When context windows fill beyond this point, agents begin to exhibit characteristic failure patterns: selecting wrong actions, losing track of their goals, and producing inconsistent outputs.
+
+> "Too much, too little or irrelevant information in the context can cause an LLM to steer the agent away from its goal by selecting the wrong next action."
+> — Rel, CTO of an AI infrastructure company
+
+The implication is profound. The industry has been racing toward larger context windows assuming this solves the memory problem. But context engineering - carefully curating what goes into the context and what stays out - matters more than context capacity. An agent with a 200,000-token window using 40% will outperform an agent with a 2-million-token window filled to capacity.
+
+This explains why tools like Claude Code popularized the "just-in-time retrieval" pattern: rather than loading everything into context upfront, track file path references and provide a retrieval tool for the LLM to fetch content on-demand. The context stays lean; the capability remains broad.
+
+### Context Engineering Techniques That Work
+
+The summit detailed specific techniques for managing context effectively:
+
+**Notes Summarization**: Instead of keeping full conversation history, agents periodically summarize key points to bullet-form notes and discard the original verbose context. This maintains goal alignment while dramatically reducing token consumption. The agent remembers what matters without carrying the full weight of every exchange.
+
+**Curating Active Context**: Not everything in context is equally relevant. Production agents actively prune their context, dropping old tool call results that are no longer needed. The context window becomes a working memory that stays current rather than a complete transcript.
+
+**Just-in-Time Retrieval**: Rather than loading all potentially relevant documents into context upfront, track references and provide retrieval tools. When the agent needs specific information, it fetches it. This pattern trades a small latency cost for dramatically better context utilization.
+
+**Parallel Sub-Agents with Lightweight Catalogs**: For complex tasks like processing many documents, spin up parallel sub-agents, each with a lightweight catalog of its assigned work rather than the full context. A pharma company processing drug approval documents achieved 95% link identification accuracy (up from 60%) by parallelizing across thousands of agents, each with focused context.
+
+### Agents Are Just Software
+
+One of the summit's most grounding insights was a reminder that agent development is fundamentally engineering work, not AI research.
+
+> "Agents are just software. All the previous engineering principles that we've learned over the past couple of decades still apply to a large degree. We're still just engineering a problem, but the problem is around this weird box of an LLM."
+> — Tyler, CopilotKit
+
+This framing matters because it brings decades of software engineering wisdom to bear on agent development. Agents are finite state machines with LLMs in some boxes. They need proper architecture, testing, observability, and operational practices. The non-determinism of the LLM components requires engineering around their probabilistic behavior, but the surrounding infrastructure follows proven patterns.
+
+The danger is treating agent development as qualitatively different from software engineering. Teams that approach agents as purely an AI problem often underinvest in the engineering fundamentals that determine production success.
+
+### The Observability Stack for Production Agents
+
+Production agents require purpose-built observability that goes beyond traditional application monitoring. The summit outlined the essential components:
+
+**Trace Collection**: Every agent run should produce a complete trace of decisions, tool calls, and context state. When agents fail (and they will), these traces are essential for debugging.
+
+**Metrics with Success Rate Thresholds**: Traditional software tests are binary - pass or fail. Agent tests require probabilistic thinking. A task that succeeds 9 times out of 10 might be acceptable; one that succeeds 6 times out of 10 might not be. Metrics track success rates across multiple runs rather than single binary outcomes.
+
+**CI-Driven Evaluation**: Integrate evaluation into continuous integration pipelines. As the summit emphasized, production success often came from manually getting the first document working, converting that to a CI test, then adding the second document without breaking the first. This incremental test suite growth is how production reliability emerges.
+
+**Controlled Iteration**: The pattern of "controlled, iterative refinement" was repeatedly emphasized as the factor separating successful autonomous products from failed experiments and demoware. Each iteration is measured, validated, and integrated into the growing test suite.
+
+> "Most software teams in kind of traditional software don't write a lot of automated tests...But AI products are different. They're different because they're probabilistic. Their behavior can shift in kind of unexpected ways every time you use them. So the way to deal with that problem is controlled iteration."
+> — Rel, CTO of an AI infrastructure company
+
+### Enterprise Infrastructure Requirements
+
+The summit also cataloged the infrastructure requirements that surprise teams moving from prototype to production:
+
+**Multi-Tenancy**: Production agents serve multiple customers with data isolation. This is table stakes for any enterprise deployment but rarely considered during prototyping.
+
+**Cryptographic Identities**: Agents need proper identity management, not just API keys. In enterprise contexts, agents are effectively virtual employees with their own access credentials and audit trails.
+
+**Private Link Connections**: Sensitive data cannot traverse the public internet. Production agents need secure, private connectivity to enterprise data centers. The summit mentioned patterns like "encrypted portals" that allow agents to operate within customer network boundaries.
+
+**Scalable Parallelism**: Real-world agent tasks often benefit from parallel execution. The summit highlighted deployments processing documents across thousands of concurrent agents. This requires infrastructure that most prototype architectures cannot support.
+
+### The UX Gap in Production Agents
+
+A consistent theme was that agent UX has not kept pace with agent capabilities.
+
+> "Agents change user experience and I think to a large extent we haven't even caught up with all of the implications of that. I think that we're bolting on these long running processes to traditional software principles and design."
+> — Tyler, CopilotKit
+
+The summit identified five critical UX patterns for production agents:
+
+**Respond Early and Often**: Users need feedback throughout long-running tasks, not just at completion. Streaming intermediate results maintains engagement and trust.
+
+**Work Alongside, Interruptible**: Agents should work with users, not disappear into black-box processing. Users need the ability to interrupt, redirect, and course-correct.
+
+**Chat as Interface with Discoverability**: While chat is the natural interface for agents, users need to discover what the agent can do. Pure chat without affordances leaves capability hidden.
+
+**Seamless Cross-Device Experience**: Long-running agent tasks may span user sessions across devices. The experience should persist coherently.
+
+**Easily Steerable**: Users should be able to adjust agent behavior without deep technical knowledge. Steerability builds trust through perceived control.
+
+## Why This Matters
+
+### The Context Engineering Imperative
+
+The 40% rule has immediate implications for how teams should invest their engineering effort. Rather than assuming larger context windows solve memory problems, teams should invest in context engineering: techniques for getting more value from less context.
+
+This shifts competitive advantage. The teams that master context compression, just-in-time retrieval, and parallel sub-agent patterns will outperform teams with access to the same models but naive context usage.
+
+### Production Is an Engineering Problem
+
+The summit's insistence that "agents are just software" reorients agent development toward proven engineering practices. This includes: writing comprehensive tests (adapted for probabilistic behavior), building observability from the start, architecting for multi-tenancy and scale, and investing in the infrastructure that enables controlled iteration.
+
+Teams that treat agent development as primarily an AI problem often discover too late that the blocking issues are engineering issues. The model works; the surrounding system does not.
+
+### The Demo-to-Production Gap
+
+> "Controlled, iterative refinement is what separates successful autonomous products from failed experiments and demoware."
+> — Rel, CTO of an AI infrastructure company
+
+The gap between demo and production is not a model capability gap - it is an engineering maturity gap. Demos can hide context management problems, ignore observability, skip multi-tenancy, and present cherry-picked results. Production cannot. The summit provided a concrete methodology for crossing this gap: controlled iteration with incremental test suite growth.
+
+## What You Can Do
+
+Based on the Production Agents Summit insights and corroborating evidence from our broader research, here are actionable recommendations:
+
+- **Implement the 40% rule**: Audit your agent's context utilization. If approaching the 40% threshold, invest in context compression techniques rather than assuming the full window is available.
+
+- **Build context engineering capabilities**: Implement notes summarization, active context curation, and just-in-time retrieval patterns. These techniques are more impactful than model upgrades for most agent tasks.
+
+- **Establish evaluation infrastructure early**: Do not wait until production to build observability. Implement trace collection, success rate metrics, and CI-driven evaluation from the start.
+
+- **Design for enterprise from day one**: Multi-tenancy, identity management, and private connectivity are architectural decisions that should inform initial design, not features to add later.
+
+- **Apply the five UX principles**: Evaluate your agent experience against early responsiveness, interruptibility, discoverability, cross-device persistence, and steerability. These patterns determine user adoption.
+
+## The Bottom Line
+
+The Production Agents Summit delivered uncomfortable truths that the industry needs to hear. Larger context windows do not automatically mean better agents - the 40% rule suggests context engineering matters more than context capacity. Agents are software, and production readiness demands the same engineering rigor as any enterprise system. The observability stack, multi-tenancy infrastructure, and controlled iteration methodology are what separate demos from deployments.
+
+The teams that internalize these lessons will build agents that work. Those that chase model announcements while neglecting engineering fundamentals will join the majority of agent projects that never reach production. The 40% rule is not just about context windows - it is a reminder that constraints, properly understood, focus effort where it matters most.
+
+---
+
+_This post is part of my research series on AI Agent deployment, based on 36 expert interviews, 5 industry conferences, and 3 functional prototypes. [Read the full research overview](/blog/ai-agents-research)._
+
+_Have thoughts on AI agent deployment? Connect with me on [LinkedIn](https://www.linkedin.com/in/fernandotn/) or [email me](mailto:fertorresnavarrete@gmail.com)._

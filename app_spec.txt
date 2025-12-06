@@ -1,0 +1,1643 @@
+<project_specification>
+  <project_name>Fernando Torres - Personal Website</project_name>
+
+  <overview>
+    A professional portfolio and blog website serving as a personal landing page on the internet.
+    The site showcases professional background, documents projects across pharma and coding,
+    and hosts blog content including a 25-part AI Agentic Capabilities series from Stanford MSx research.
+    Features an interactive animated hero, visual career timeline, project showcase by category,
+    full-featured blog with comments and newsletter, and a custom admin dashboard for content management
+    and analytics. Built with performance, SEO, and responsive design as core priorities.
+  </overview>
+
+  <technology_stack>
+    <frontend>
+      <framework>Next.js 14+ (App Router)</framework>
+      <language>TypeScript</language>
+      <styling>Tailwind CSS</styling>
+      <animations>Framer Motion + GSAP</animations>
+      <content>MDX with custom components</content>
+      <state>React hooks + React Query</state>
+    </frontend>
+    <backend>
+      <database>PostgreSQL with Prisma ORM</database>
+      <auth>NextAuth.js (single admin user)</auth>
+      <api>Next.js API Routes</api>
+      <email>Resend or SendGrid (contact form + newsletter)</email>
+    </backend>
+    <infrastructure>
+      <hosting>Vercel</hosting>
+      <database_hosting>Vercel Postgres or Neon</database_hosting>
+      <scheduling>Vercel Cron</scheduling>
+      <analytics>Vercel Analytics + Google Search Console API</analytics>
+    </infrastructure>
+    <seo>
+      <sitemap>next-sitemap</sitemap>
+      <meta>next-seo</meta>
+      <structured_data>JSON-LD schemas</structured_data>
+    </seo>
+  </technology_stack>
+
+  <author_profile>
+    <name>Fernando Torres</name>
+    <title>MSx '26, Stanford GSB</title>
+    <photo>
+      <source>/content/profile-photo.jpg</source>
+      <public_path>/images/fernando-torres.jpg</public_path>
+      <alt>Fernando Torres - Professional headshot</alt>
+    </photo>
+    <links>
+      <github>https://github.com/FernandoTN</github>
+      <linkedin>https://www.linkedin.com/in/fernandotn/</linkedin>
+      <email>fertorresnavarrete@gmail.com</email>
+      <website>https://fernandotorres.io</website>
+    </links>
+    <resume>
+      <source>/content/Profile.pdf</source>
+      <public_path>/downloads/Fernando_Torres_Resume.pdf</public_path>
+    </resume>
+    <usage>
+      - Profile photo in hero section
+      - About page author card with photo
+      - Blog post author attribution with avatar
+      - Research page author section with photo
+      - Contact page
+      - Display in site footer (GitHub, LinkedIn icons)
+    </usage>
+  </author_profile>
+
+  <placeholder_content>
+    <about_page>
+      <hero_tagline>[PLACEHOLDER] Building at the intersection of technology and healthcare</hero_tagline>
+      <bio>
+        [PLACEHOLDER - LOREM IPSUM]
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+        incididunt ut labore et dolore magna aliqua. With over X years of experience in
+        the pharmaceutical industry, I've led digital transformation initiatives across
+        manufacturing, supply chain, and commercial operations.
+
+        Currently pursuing my MSx at Stanford Graduate School of Business, where I'm
+        exploring the frontier of AI agents and their potential to revolutionize enterprise
+        workflows. My research focuses on understanding what's blocking AI agents from
+        production deployment.
+
+        Prior to Stanford, I held leadership roles at [PLACEHOLDER COMPANY] where I
+        spearheaded initiatives in process optimization, data analytics, and digital
+        innovation. I'm passionate about bridging the gap between cutting-edge technology
+        and real-world business applications.
+      </bio>
+      <skills>
+        <technical>
+          - Python, TypeScript, SQL
+          - Data Analytics &amp; Visualization
+          - Machine Learning / AI
+          - Cloud Platforms (AWS, GCP)
+          - Process Automation
+        </technical>
+        <domain>
+          - Pharmaceutical Manufacturing
+          - Supply Chain Optimization
+          - Regulatory Compliance
+          - Digital Transformation
+          - Strategic Planning
+        </domain>
+        <leadership>
+          - Cross-functional Team Leadership
+          - Stakeholder Management
+          - Change Management
+          - Agile Methodologies
+        </leadership>
+      </skills>
+    </about_page>
+
+    <timeline_events>
+      <!-- Career milestones for visual timeline - REPLACE WITH ACTUAL DATA -->
+      <event order="1">
+        <title>Stanford GSB MSx Program</title>
+        <company>Stanford University</company>
+        <location>Stanford, CA</location>
+        <date>2025-09</date>
+        <end_date>2026-06</end_date>
+        <type>education</type>
+        <description>[PLACEHOLDER] Master of Science in Management for Experienced Leaders. Focus on AI/ML applications in enterprise settings. Independent research on AI Agents.</description>
+      </event>
+      <event order="2">
+        <title>[PLACEHOLDER] Senior Manager, Digital Innovation</title>
+        <company>[PLACEHOLDER Pharma Company]</company>
+        <location>[City, Country]</location>
+        <date>2022-01</date>
+        <end_date>2025-08</end_date>
+        <type>work</type>
+        <description>[PLACEHOLDER] Led digital transformation initiatives across manufacturing and supply chain operations. Implemented data analytics platforms resulting in X% efficiency improvements.</description>
+      </event>
+      <event order="3">
+        <title>[PLACEHOLDER] Manager, Process Excellence</title>
+        <company>[PLACEHOLDER Pharma Company]</company>
+        <location>[City, Country]</location>
+        <date>2019-06</date>
+        <end_date>2021-12</end_date>
+        <type>work</type>
+        <description>[PLACEHOLDER] Drove process optimization projects across multiple manufacturing sites. Achieved $X million in cost savings through lean methodologies.</description>
+      </event>
+      <event order="4">
+        <title>[PLACEHOLDER] Engineer</title>
+        <company>[PLACEHOLDER Company]</company>
+        <location>[City, Country]</location>
+        <date>2016-01</date>
+        <end_date>2019-05</end_date>
+        <type>work</type>
+        <description>[PLACEHOLDER] Lorem ipsum dolor sit amet, consectetur adipiscing elit. Started career in pharmaceutical manufacturing.</description>
+      </event>
+      <event order="5">
+        <title>[PLACEHOLDER] Bachelor's Degree</title>
+        <company>[PLACEHOLDER University]</company>
+        <location>[City, Country]</location>
+        <date>2012-09</date>
+        <end_date>2016-05</end_date>
+        <type>education</type>
+        <description>[PLACEHOLDER] Bachelor of Science in [Engineering/Science]. Graduated with honors.</description>
+      </event>
+    </timeline_events>
+
+    <projects>
+      <!-- Sample projects - REPLACE WITH ACTUAL DATA -->
+      <project category="research" featured="true">
+        <title>AI Agents Research</title>
+        <slug>ai-agents-research</slug>
+        <description>Comprehensive research into what's blocking AI agents from production deployment. 36 interviews, 5 conferences, 3 prototypes.</description>
+        <tech_stack>["Python", "LangChain", "OpenAI API", "Research Methods"]</tech_stack>
+        <live_url>/research</live_url>
+        <repo_url>null</repo_url>
+        <featured_image>/images/projects/ai-agents-research.jpg</featured_image>
+      </project>
+      <project category="coding" featured="true">
+        <title>[PLACEHOLDER] Data Analytics Dashboard</title>
+        <slug>analytics-dashboard</slug>
+        <description>[PLACEHOLDER] Lorem ipsum dolor sit amet. Built a real-time analytics dashboard for manufacturing KPIs using React and Python backend.</description>
+        <tech_stack>["React", "Python", "PostgreSQL", "Docker", "AWS"]</tech_stack>
+        <live_url>null</live_url>
+        <repo_url>https://github.com/FernandoTN/[placeholder]</repo_url>
+        <featured_image>/images/projects/analytics-dashboard.jpg</featured_image>
+      </project>
+      <project category="pharma" featured="true">
+        <title>[PLACEHOLDER] Supply Chain Optimization</title>
+        <slug>supply-chain-optimization</slug>
+        <description>[PLACEHOLDER] Lorem ipsum dolor sit amet. Led implementation of ML-based demand forecasting system reducing inventory costs by X%.</description>
+        <tech_stack>["Python", "Scikit-learn", "SAP Integration", "Tableau"]</tech_stack>
+        <live_url>null</live_url>
+        <repo_url>null</repo_url>
+        <featured_image>/images/projects/supply-chain.jpg</featured_image>
+      </project>
+      <project category="coding" featured="false">
+        <title>[PLACEHOLDER] Process Automation Tool</title>
+        <slug>process-automation</slug>
+        <description>[PLACEHOLDER] Lorem ipsum dolor sit amet. Automated manual data entry processes saving X hours per week.</description>
+        <tech_stack>["Python", "Selenium", "REST APIs"]</tech_stack>
+        <live_url>null</live_url>
+        <repo_url>https://github.com/FernandoTN/[placeholder]</repo_url>
+        <featured_image>/images/projects/automation.jpg</featured_image>
+      </project>
+      <project category="pharma" featured="false">
+        <title>[PLACEHOLDER] Quality Control System</title>
+        <slug>quality-control</slug>
+        <description>[PLACEHOLDER] Lorem ipsum dolor sit amet. Implemented statistical process control system for manufacturing quality.</description>
+        <tech_stack>["Python", "Statistical Analysis", "Database Design"]</tech_stack>
+        <live_url>null</live_url>
+        <repo_url>null</repo_url>
+        <featured_image>/images/projects/quality-control.jpg</featured_image>
+      </project>
+    </projects>
+
+    <project_categories>
+      <category slug="pharma" name="Pharmaceutical" color="#10B981" icon="flask">
+        Projects from pharmaceutical and healthcare industry experience
+      </category>
+      <category slug="coding" name="Software Development" color="#3B82F6" icon="code">
+        Personal and professional software development projects
+      </category>
+      <category slug="research" name="Research" color="#8B5CF6" icon="academic-cap">
+        Academic and independent research projects
+      </category>
+    </project_categories>
+  </placeholder_content>
+
+  <stanford_research_content>
+    <overview>
+      The AI Agents Research project transforms research findings from Stanford GSB GSBGEN 390
+      into 25 standalone blog publications with accompanying LinkedIn promotional posts.
+      All content is pre-written and ready for integration.
+    </overview>
+    <research_scope>
+      - 36 expert interviews
+      - 5 industry conferences
+      - 3 functional prototypes
+      - 6 core themes + 17 emergent themes
+    </research_scope>
+    <content_location>/content/</content_location>
+    <deliverables>
+      <final_report>
+        <title>What's Needed to Unlock the Full Potential of AI Agents?</title>
+        <location>/content/Final_Report.md</location>
+        <format>Markdown (render as MDX)</format>
+        <authors>Fernando Torres & Shekhar Bhende (MSx '26)</authors>
+        <faculty_sponsor>Prof. Scott J. Brady</faculty_sponsor>
+        <purpose>Central research document - the culmination of all findings</purpose>
+        <sections>
+          - Abstract
+          - Background, Hypotheses & Research Methodology
+          - Eight Pillars of Agentic Systems
+          - Section B: Major Learnings & Insights
+          - Key Pattern 1: System Integration (92%)
+          - Key Pattern 2: Framework Abandonment (80-90%)
+          - Key Pattern 3: Probabilistic Systems Management
+          - Key Pattern 4: Context Management (40% rule)
+          - Enterprise Blockers & Opportunities
+          - Conclusion
+        </sections>
+        <display>
+          - Hero centerpiece on /research page
+          - Downloadable as PDF and Markdown
+          - Table of contents with section navigation
+          - Referenced from homepage
+        </display>
+      </final_report>
+      <blog_posts>
+        <count>25</count>
+        <format>MDX with frontmatter</format>
+        <location>/content/deliverables/blog-posts/</location>
+        <naming>2025-12-[topic-slug].mdx</naming>
+        <length>1,500-2,600 words each</length>
+        <relationship>Deep dives expanding on Final Report findings</relationship>
+      </blog_posts>
+      <linkedin_posts>
+        <count>25</count>
+        <format>Markdown</format>
+        <location>/content/deliverables/linkedin-posts/</location>
+        <naming>[number]-[topic].md</naming>
+      </linkedin_posts>
+      <images>
+        <location>/content/deliverables/images/</location>
+        <includes>Cover image specs, diagram specs, generated images</includes>
+      </images>
+    </deliverables>
+    <publication_categories>
+      <anchor>1 post - Flagship research overview (featured: true)</anchor>
+      <theme_deep_dives>
+        6 posts covering:
+        - System Integration (92% of sources)
+        - Context Management (40% utilization rule)
+        - Framework Ecosystem (80-90% abandonment)
+        - Probabilistic Systems
+        - Enterprise Blockers (90% pilot failure)
+        - Model Capabilities (30-40% contribution myth)
+      </theme_deep_dives>
+      <emergent_insights>
+        6 posts covering:
+        - 30-40% Model Myth
+        - Handoff Rate Metric
+        - Dual Memory Architecture
+        - MCP Reality Check (25 tools cliff)
+        - Component-Level Evaluation
+        - Evaluation Gap
+      </emergent_insights>
+      <practitioner_perspectives>
+        5 posts featuring interviews with:
+        - AI agent orchestration companies
+        - AI infrastructure companies
+        - Enterprise identity companies
+        - Multi-agent framework companies
+        - AI sales intelligence companies
+      </practitioner_perspectives>
+      <prototype_learnings>
+        3 posts covering:
+        - Shopping Agent
+        - Repo Patcher
+        - Good Agents
+      </prototype_learnings>
+      <conference_insights>
+        3 posts from:
+        - AI autonomous agent company Fireside
+        - Why 95% Fail event
+        - Production Agents Summit
+      </conference_insights>
+      <methodology>1 post on research methodology</methodology>
+    </publication_categories>
+    <reference_materials>
+      <templates>
+        - /content/BLOG_POST_TEMPLATE.mdx
+        - /content/LINKEDIN_POST_TEMPLATE.md
+      </templates>
+      <data>
+        - /content/key_quotes_database.md
+        - /content/data_points_reference.md
+        - /content/publication_tracker.json
+      </data>
+      <source_materials>
+        - /content/source-materials/Final_Report.md
+        - /content/source-materials/Aggregations/
+        - /content/source-materials/specPublishing.txt
+      </source_materials>
+    </reference_materials>
+    <key_statistics>
+      | Statistic                     | Value                   | Source                             |
+      |-------------------------------|-------------------------|------------------------------------|
+      | System integration challenges | 92% (24/26 sources)     | Theme Frequency Analysis           |
+      | Pilot failure rate            | 90%                     | Enterprise AI deployment expert    |
+      | Framework abandonment         | 80-90%                  | Consulting firm practitioner       |
+      | Integration time              | 40-50% of deployment    | Enterprise AI deployment expert    |
+      | Model contribution            | 30-40%                  | AI autonomous agent company        |
+      | Context utilization rule      | 40% max                 | Production Agents Summit           |
+      | MCP tool accuracy cliff       | 25 tools → 30% accuracy | AI infrastructure company          |
+    </key_statistics>
+    <privacy_requirements>
+      - 19 confidential interviews: NO names/companies disclosed
+      - Use: "Multiple interviewees noted..." or "Practitioners we spoke with..."
+      - Practitioner posts: Require explicit attribution permission
+      - Conference quotes: Public unless marked confidential
+    </privacy_requirements>
+  </stanford_research_content>
+
+  <color_palette>
+    <light_mode>
+      <backgrounds>
+        <white_base>#FFFFFF</white_base>
+        <icy_blue_tint>#F4F9FF</icy_blue_tint>
+        <soft_neutral_grey>#E9EFF5</soft_neutral_grey>
+      </backgrounds>
+      <text>
+        <primary>#0F1A2A</primary>
+        <secondary>#4B637D</secondary>
+        <muted>#8DA1B5</muted>
+      </text>
+      <accents>
+        <primary>#3B82F6</primary>
+        <secondary>#06B6D4</secondary>
+        <success>#10B981</success>
+        <warning>#F59E0B</warning>
+        <error>#EF4444</error>
+      </accents>
+      <borders>
+        <border>#DCE3EC</border>
+        <shadow>rgba(15, 26, 42, 0.08)</shadow>
+      </borders>
+    </light_mode>
+    <dark_mode>
+      <backgrounds>
+        <dark_base>#0A0F16</dark_base>
+        <deep_blue_layer>#0F1724</deep_blue_layer>
+        <panel_surface>#1B2433</panel_surface>
+      </backgrounds>
+      <text>
+        <primary>#F2F6FF</primary>
+        <secondary>#C1CCDD</secondary>
+        <muted>#8A96AA</muted>
+      </text>
+      <accents>
+        <primary>#3B82F6</primary>
+        <secondary>#38BDF8</secondary>
+        <success>#34D399</success>
+        <warning>#FBBF24</warning>
+        <error>#F87171</error>
+      </accents>
+      <borders>
+        <border>#233044</border>
+        <glow_shadow>rgba(59, 130, 246, 0.25)</glow_shadow>
+      </borders>
+    </dark_mode>
+  </color_palette>
+
+  <design_principles>
+    <animations>
+      - Smooth scroll-based animations and parallax effects
+      - Micro-interactions on hover and click states
+      - Page transitions and element reveal animations
+      - GPU-accelerated animations with reduced motion support
+      - GSAP ScrollTrigger for scroll-driven sequences
+      - Framer Motion for component-level animations
+    </animations>
+    <responsive>
+      - Desktop-first approach with full visual experience
+      - Tablet-optimized layouts (768px-1024px)
+      - Mobile-adaptive design (320px-767px)
+      - Fluid typography and spacing scales
+      - Touch-friendly interactive elements
+    </responsive>
+    <accessibility>
+      - WCAG 2.1 AA compliance
+      - Keyboard navigation support
+      - Screen reader optimized
+      - Reduced motion preferences respected
+      - High contrast mode support
+    </accessibility>
+  </design_principles>
+
+  <site_structure>
+    <public_pages>
+      <homepage>
+        - Interactive animated hero section
+        - Scroll-triggered content reveals
+        - Stanford Research highlight section:
+          - "What's Needed to Unlock the Full Potential of AI Agents?"
+          - Key stat callouts (90% failure, 30-40% model contribution)
+          - "Read the Research" CTA linking to /research
+        - Featured projects preview
+        - Latest blog posts (AI Agents series featured)
+        - Call-to-action sections
+      </homepage>
+      <about>
+        - Visual interactive career timeline
+        - Milestone markers with details
+        - Skills and expertise sections
+        - Education highlights (Stanford MSx)
+        - Personal narrative elements
+      </about>
+      <projects>
+        - Category filtering (Pharma, Coding, Research, etc.)
+        - Project cards with hover effects
+        - Detailed project pages
+        - Tech stack tags
+        - Links to live demos/repos
+      </projects>
+      <blog>
+        - Series organization (AI Agentic Capabilities, etc.)
+        - Tag filtering and search
+        - Category filtering (anchor, theme, emergent, practitioner, prototype, conference, methodology)
+        - Post listing with pagination
+        - Individual post pages with MDX
+        - Series navigation (previous/next in series)
+        - Auto-reveal scheduling (posts visible only when publishedAt <= today)
+        - Comments section
+        - Newsletter signup
+        - Related posts suggestions
+        - Reading time and progress indicator
+      </blog>
+      <research>
+        - Dedicated Stanford MSx research landing page
+        - Hero section with research title:
+          "What's Needed to Unlock the Full Potential of AI Agents?"
+        - Abstract preview with "Read Full Report" CTA
+        - Key statistics dashboard:
+          - 90% enterprise pilot failure rate
+          - 30-40% model contribution (60-70% is engineering)
+          - 92% cite system integration as #1 blocker
+          - 80-90% framework abandonment in production
+          - 40% context utilization rule
+        - Full Final Report as centerpiece:
+          - Source: /content/Final_Report.md
+          - Rendered as scrollable MDX content
+          - Table of contents navigation (sticky sidebar)
+          - Section anchors for deep linking
+          - Download options (PDF + Markdown)
+        - Eight pillars framework visualization:
+          1. LLM (Cognitive Engine)
+          2. Context & Memory Management
+          3. System Integration
+          4. Authentication & Identity
+          5. Trust, Governance & Guardrails
+          6. Cost Management
+          7. Agent Evaluations
+          8. Monitoring & Telemetry
+        - Research methodology section (36 interviews, 5 conferences, 3 prototypes)
+        - Authors section (Fernando Torres & Shekhar Bhende, MSx '26)
+        - Faculty sponsor credit (Prof. Scott J. Brady)
+        - AI Agents series hub below report:
+          - Series category cards linking to filtered blog views
+          - Links to all 25 posts organized by category
+          - "Explore the deep dives" CTA
+      </research>
+      <contact>
+        - Contact form with validation
+        - Social media links grid:
+          - GitHub (https://github.com/FernandoTN)
+          - LinkedIn (https://www.linkedin.com/in/fernandotn/)
+        - Resume/CV download button (/downloads/Fernando_Torres_Resume.pdf)
+        - Professional email display (fertorresnavarrete@gmail.com)
+      </contact>
+    </public_pages>
+    <admin_pages>
+      <dashboard>
+        - Overview statistics (total posts, published, scheduled, views)
+        - Publication calendar preview (upcoming posts)
+        - Recent activity feed
+        - Quick actions (next publication, next LinkedIn post)
+        - AI Agents series progress (X of 25 published)
+      </dashboard>
+      <posts>
+        - Post listing with status filters (draft, scheduled, published)
+        - Category filtering for AI Agents series
+        - Create/edit post interface
+        - Markdown file upload and parsing
+        - Schedule post publication (date/time picker)
+        - Draft/publish workflow
+        - SEO metadata editor per post
+        - Series order management
+        - Preview mode for unpublished posts
+      </posts>
+      <calendar>
+        - Visual publication calendar
+        - 10-week AI Agents series schedule (Dec 8, 2025 - Feb 13, 2026)
+        - Drag-and-drop rescheduling
+        - Status indicators (published, scheduled, draft)
+        - LinkedIn sync status per post
+      </calendar>
+      <linkedin>
+        - LinkedIn post management for all 25 posts
+        - Post preview with character count
+        - Copy-to-clipboard for manual posting
+        - Image preview and download
+        - "Already Scheduled in LinkedIn" checkbox
+        - Optional auto-post via LinkedIn API
+        - Posting status tracker (pending, scheduled, posted)
+        - Optimal posting time guidance (9-11am PST)
+      </linkedin>
+      <analytics>
+        - Traffic overview (page views, visitors, unique)
+        - SEO metrics from Google Search Console
+        - Top performing content
+        - AI Agents series performance breakdown
+        - Referral sources (LinkedIn, organic, direct)
+        - Geographic data
+        - Reading engagement (time on page, scroll depth)
+      </analytics>
+      <subscribers>
+        - Newsletter subscriber list
+        - Export subscribers (CSV)
+        - Subscription analytics
+        - Subscription source tracking
+      </subscribers>
+      <comments>
+        - Comment moderation queue
+        - Approve/reject/delete
+        - Spam filtering
+      </comments>
+      <settings>
+        - Site metadata
+        - Social links
+        - SEO defaults
+        - Admin profile
+      </settings>
+    </admin_pages>
+  </site_structure>
+
+  <database_schema>
+    <tables>
+      <admin_user>
+        - id, email, password_hash, name
+        - created_at, last_login
+      </admin_user>
+
+      <posts>
+        - id, slug, title, excerpt
+        - content (MDX string)
+        - featured_image, og_image
+        - status (draft, scheduled, published)
+        - published_at, scheduled_for
+        - series_id, series_order (position 1-25)
+        - category (anchor, theme, emergent, practitioner, prototype, conference, methodology)
+        - author
+        - meta_title, meta_description
+        - created_at, updated_at
+        - view_count
+        - reading_time_minutes
+      </posts>
+
+      <series>
+        - id, slug, name, description
+        - cover_image, color
+        - post_count, is_featured
+        - start_date, end_date
+        - created_at
+      </series>
+
+      <linkedin_posts>
+        - id, post_id (FK to posts)
+        - content (LinkedIn post text)
+        - hashtags (JSON array)
+        - scheduled_date, scheduled_time
+        - image_file
+        - status (pending, manually_scheduled, posted)
+        - manually_scheduled (boolean)
+        - linkedin_post_url
+        - posted_at
+        - created_at, updated_at
+      </linkedin_posts>
+
+      <tags>
+        - id, slug, name
+        - post_count
+      </tags>
+
+      <post_tags>
+        - post_id, tag_id
+      </post_tags>
+
+      <projects>
+        - id, slug, title, description
+        - content (MDX string)
+        - featured_image, gallery (JSON)
+        - category, tech_stack (JSON)
+        - live_url, repo_url
+        - is_featured, display_order
+        - created_at, updated_at
+      </projects>
+
+      <categories>
+        - id, slug, name, description
+        - color, icon
+      </categories>
+
+      <comments>
+        - id, post_id, parent_id
+        - author_name, author_email
+        - content, status (pending, approved, spam)
+        - created_at
+      </comments>
+
+      <subscribers>
+        - id, email, name
+        - status (active, unsubscribed)
+        - subscribed_at, unsubscribed_at
+        - source
+      </subscribers>
+
+      <contact_submissions>
+        - id, name, email
+        - subject, message
+        - status (new, read, replied)
+        - created_at
+      </contact_submissions>
+
+      <page_views>
+        - id, path, referrer
+        - user_agent, country
+        - created_at
+      </page_views>
+
+      <timeline_events>
+        - id, title, description
+        - date, end_date
+        - type (education, work, achievement)
+        - company, location
+        - icon, color
+        - display_order
+      </timeline_events>
+
+      <site_settings>
+        - key, value (JSON)
+        - updated_at
+      </site_settings>
+    </tables>
+  </database_schema>
+
+  <api_endpoints>
+    <public>
+      - GET /api/posts (list with pagination, filters)
+      - GET /api/posts/[slug]
+      - GET /api/posts/series/[series]
+      - GET /api/posts/tag/[tag]
+      - GET /api/series
+      - GET /api/projects
+      - GET /api/projects/[slug]
+      - GET /api/projects/category/[category]
+      - GET /api/timeline
+      - GET /api/research
+      - POST /api/contact
+      - POST /api/subscribe
+      - POST /api/comments
+      - GET /api/comments/[postId]
+    </public>
+    <admin>
+      - POST /api/auth/login
+      - POST /api/auth/logout
+      - GET /api/auth/session
+      - GET /api/admin/posts
+      - POST /api/admin/posts
+      - PUT /api/admin/posts/[id]
+      - DELETE /api/admin/posts/[id]
+      - POST /api/admin/posts/upload-md
+      - PUT /api/admin/posts/[id]/schedule
+      - PUT /api/admin/posts/[id]/publish
+      - GET /api/admin/posts/series/[seriesId] (series posts with order)
+      - PUT /api/admin/posts/[id]/series-order
+      - GET /api/admin/projects
+      - POST /api/admin/projects
+      - PUT /api/admin/projects/[id]
+      - DELETE /api/admin/projects/[id]
+      - GET /api/admin/comments
+      - PUT /api/admin/comments/[id]/approve
+      - DELETE /api/admin/comments/[id]
+      - GET /api/admin/subscribers
+      - GET /api/admin/subscribers/export
+      - GET /api/admin/analytics/traffic
+      - GET /api/admin/analytics/seo
+      - GET /api/admin/analytics/content
+      - GET /api/admin/analytics/series/[seriesId] (series performance)
+      - GET /api/admin/contact-submissions
+      - PUT /api/admin/contact-submissions/[id]
+      - GET /api/admin/settings
+      - PUT /api/admin/settings
+      - GET /api/admin/timeline
+      - POST /api/admin/timeline
+      - PUT /api/admin/timeline/[id]
+      - DELETE /api/admin/timeline/[id]
+      - GET /api/admin/linkedin (all LinkedIn posts)
+      - GET /api/admin/linkedin/[id]
+      - PUT /api/admin/linkedin/[id] (update status, manually_scheduled)
+      - POST /api/admin/linkedin/[id]/post (trigger LinkedIn API post)
+      - GET /api/admin/calendar (publication calendar)
+      - PUT /api/admin/calendar/[postId] (reschedule)
+    </admin>
+    <cron>
+      - POST /api/cron/publish-scheduled (auto-reveal posts)
+      - POST /api/cron/linkedin-reminder (notify about pending LinkedIn posts)
+    </cron>
+  </api_endpoints>
+
+  <mdx_components>
+    <content_blocks>
+      - Callout (info, warning, success, error)
+      - CodeBlock with syntax highlighting and copy button
+      - ImageGallery with lightbox
+      - VideoEmbed (YouTube, Vimeo)
+      - TweetEmbed
+      - CodePenEmbed
+      - Chart (bar, line, pie via Recharts)
+      - TableOfContents (auto-generated)
+      - Footnote
+      - Quote with attribution
+    </content_blocks>
+    <interactive>
+      - Accordion/Collapsible sections
+      - Tabs
+      - ProgressBar
+      - AnimatedCounter
+      - BeforeAfter image comparison
+      - InteractiveDemo wrapper
+    </interactive>
+    <typography>
+      - Heading with anchor links
+      - Lead paragraph
+      - Highlight text
+      - Kbd (keyboard shortcut)
+      - Abbr with tooltip
+    </typography>
+  </mdx_components>
+
+  <implementation_phases>
+
+    <phase number="1">
+      <title>Foundation & Public Site</title>
+      <description>
+        Set up project infrastructure, implement core design system, and build all public-facing
+        pages with full animations and responsive design. Database schema and basic API routes.
+      </description>
+      <tasks>
+        <setup>
+          - Initialize Next.js 14 project with TypeScript
+          - Configure Tailwind CSS with custom color palette
+          - Set up Prisma with PostgreSQL schema
+          - Configure Framer Motion and GSAP
+          - Implement dark/light mode theming
+          - Set up project folder structure
+        </setup>
+        <components>
+          - Build design system (buttons, cards, inputs, typography)
+          - Create animation wrapper components
+          - Implement responsive navigation and footer
+          - Build reusable section layouts
+        </components>
+        <homepage>
+          - Interactive animated hero with GSAP
+          - Scroll-triggered section reveals
+          - Featured projects carousel/grid
+          - Latest blog posts preview
+          - Call-to-action sections
+        </homepage>
+        <about_page>
+          - Visual interactive career timeline
+          - Animated milestone markers
+          - Skills visualization
+          - Education section with Stanford MSx highlight
+        </about_page>
+        <projects_page>
+          - Category filter system
+          - Project cards with hover animations
+          - Project detail page template
+          - Tech stack tag display
+        </projects_page>
+        <contact_page>
+          - Contact form with validation
+          - Social media links grid
+          - Resume/CV download integration
+          - Form submission API route
+        </contact_page>
+        <infrastructure>
+          - Basic API routes structure
+          - Database seed scripts
+          - Environment configuration
+          - Vercel deployment setup
+        </infrastructure>
+      </tasks>
+      <deliverables>
+        - Fully functional public website (without blog content system)
+        - All pages responsive and animated
+        - Dark/light mode working
+        - Contact form functional
+        - Deployed to Vercel
+      </deliverables>
+    </phase>
+
+    <phase number="2">
+      <title>Blog & Content System + AI Agents Series Integration</title>
+      <description>
+        Implement the complete blog system with MDX support, custom components, series organization,
+        comments, newsletter, and the dedicated Stanford Research page. Integrate all 25 pre-written
+        AI Agents Research posts with scheduled auto-reveal. Full SEO optimization.
+      </description>
+      <tasks>
+        <content_integration>
+          - Import 25 MDX posts from /content/deliverables/blog-posts/
+          - Parse and validate frontmatter (title, summary, publishedAt, tags, etc.)
+          - Add series_order and category fields to each post
+          - Create "AI Agents Research" series in database
+          - Set up publication schedule (Dec 8, 2025 - Feb 13, 2026)
+          - Import LinkedIn posts from /content/deliverables/linkedin-posts/
+          - Copy images to /public/images/blog/ organized by category
+          - Copy Final Report PDF to /public/downloads/
+        </content_integration>
+        <blog_core>
+          - MDX processing pipeline with next-mdx-remote
+          - Custom MDX components library (Callout, CodeBlock, Quote, etc.)
+          - Blog listing page with pagination
+          - Category filtering (anchor, theme, emergent, practitioner, prototype, conference, methodology)
+          - Individual post page template
+          - Series navigation (previous/next in series)
+          - Auto-reveal logic (posts visible only when publishedAt <= today)
+          - Tag filtering system
+          - Full-text search implementation
+        </blog_core>
+        <blog_features>
+          - Comments system with moderation status
+          - Newsletter signup form and confirmation
+          - Related posts algorithm (same series, same category, same tags)
+          - Reading time calculation and progress indicator
+          - Table of contents generation
+          - Social sharing buttons
+          - Post view counter
+          - Series progress indicator (Post 5 of 25)
+        </blog_features>
+        <research_page>
+          - Stanford MSx research landing page with hero section
+          - Key statistics visualization (90% failure, 30-40% model contribution, etc.)
+          - AI Agentic Capabilities series hub with category cards
+          - Table of contents navigation for full report content
+          - PDF download option
+          - Author section with LinkedIn links
+          - Series post grid organized by category
+        </research_page>
+        <seo>
+          - next-sitemap configuration (exclude scheduled posts)
+          - Dynamic meta tags with next-seo
+          - JSON-LD structured data (Article, Person, Organization, ResearchProject)
+          - Open Graph images per post
+          - RSS feed generation
+          - robots.txt configuration
+        </seo>
+        <email>
+          - Email service integration (Resend/SendGrid)
+          - Contact form email notifications
+          - Newsletter welcome email
+          - Email templates
+        </email>
+      </tasks>
+      <deliverables>
+        - Complete blog system with MDX
+        - All 25 AI Agents posts imported with correct schedule
+        - Auto-reveal working (posts appear on publishedAt date)
+        - All custom MDX components working
+        - Comments and newsletter functional
+        - Research page complete with PDF download
+        - Full SEO implementation
+        - Email notifications working
+      </deliverables>
+    </phase>
+
+    <phase number="3">
+      <title>Admin Dashboard, LinkedIn Management & Analytics</title>
+      <description>
+        Build the complete admin dashboard for content management, including post creation/editing,
+        scheduling, markdown upload, analytics integration, subscriber management, and LinkedIn
+        post management for the AI Agents series.
+      </description>
+      <tasks>
+        <authentication>
+          - NextAuth.js setup with credentials provider
+          - Admin login page
+          - Protected route middleware
+          - Session management
+        </authentication>
+        <admin_layout>
+          - Admin dashboard shell with series progress
+          - Sidebar navigation (Dashboard, Posts, Calendar, LinkedIn, Analytics, etc.)
+          - Header with user menu
+          - Responsive admin layout
+        </admin_layout>
+        <post_management>
+          - Posts listing with status filters (draft, scheduled, published)
+          - Category filtering for AI Agents series
+          - Rich text/MDX editor interface
+          - Markdown file upload and parsing
+          - Image upload to storage
+          - Draft save functionality
+          - Schedule publication date/time
+          - Publish/unpublish controls
+          - SEO metadata editor per post
+          - Series order management
+          - Preview mode for unpublished posts
+        </post_management>
+        <publication_calendar>
+          - Visual calendar view with 10-week schedule
+          - Status indicators (published, scheduled, draft)
+          - Drag-and-drop rescheduling
+          - Week-by-week theme grouping
+          - LinkedIn sync status per post
+          - Quick stats (X of 25 published)
+        </publication_calendar>
+        <linkedin_management>
+          - LinkedIn posts listing for all 25 posts
+          - Post preview with character count
+          - Copy-to-clipboard for manual posting
+          - Image preview and download
+          - "Already Scheduled in LinkedIn" checkbox
+          - Status tracker (pending, manually_scheduled, posted)
+          - Optimal posting time guidance (9-11am PST)
+          - Optional: LinkedIn API integration for auto-posting
+          - Post URL tracking after manual posting
+        </linkedin_management>
+        <project_management>
+          - Projects CRUD interface
+          - Category management
+          - Display order controls
+          - Gallery image management
+        </project_management>
+        <timeline_management>
+          - Timeline events CRUD
+          - Drag-and-drop reordering
+          - Event type categorization
+        </timeline_management>
+        <analytics_dashboard>
+          - Vercel Analytics integration
+          - Google Search Console API connection
+          - Traffic overview charts (Recharts)
+          - Top pages report
+          - AI Agents series performance breakdown
+          - Search queries report
+          - Click-through rate data
+          - Geographic distribution
+          - Device breakdown
+          - LinkedIn referral tracking
+        </analytics_dashboard>
+        <content_moderation>
+          - Comments moderation queue
+          - Approve/reject/spam actions
+          - Contact form submissions viewer
+          - Reply tracking
+        </content_moderation>
+        <subscriber_management>
+          - Subscriber list with search
+          - Export to CSV
+          - Unsubscribe management
+          - Subscription source tracking
+        </subscriber_management>
+        <settings>
+          - Site metadata configuration
+          - Social links management
+          - Default SEO settings
+          - Admin profile settings
+        </settings>
+        <scheduling>
+          - Vercel Cron job setup
+          - Scheduled post publisher (auto-reveal)
+          - Publication notifications
+        </scheduling>
+      </tasks>
+      <deliverables>
+        - Complete admin dashboard with series progress
+        - Full post lifecycle management
+        - Publication calendar with 10-week view
+        - LinkedIn management for all 25 posts
+        - Analytics with traffic, SEO, and series performance data
+        - Comment moderation system
+        - Subscriber management with export
+        - Automated scheduled publishing (auto-reveal)
+        - All settings configurable
+      </deliverables>
+    </phase>
+
+  </implementation_phases>
+
+  <publication_calendar>
+    <series_info>
+      <name>AI Agents Research Publication Series</name>
+      <start_date>2025-12-08</start_date>
+      <end_date>2026-02-13</end_date>
+      <total_weeks>10</total_weeks>
+      <total_posts>25</total_posts>
+      <posting_frequency>2-3 posts per week (Mon/Wed/Fri or Tue/Thu)</posting_frequency>
+      <linkedin_time>09:00 PST (optimal engagement)</linkedin_time>
+    </series_info>
+    <schedule_overview>
+      | Week | Dates          | Theme                | Posts | Categories                    |
+      |------|----------------|----------------------|-------|-------------------------------|
+      | 1    | Dec 8-12       | Launch Week          | 3     | anchor, theme, theme          |
+      | 2    | Dec 15-19      | Framework Week       | 2     | theme, theme                  |
+      | 3    | Dec 22-26      | Enterprise Week      | 3     | theme, theme, emergent        |
+      | 4    | Dec 29 - Jan 2 | Insights Week        | 2     | emergent, emergent            |
+      | 5    | Jan 5-9        | Evaluation Week      | 3     | emergent, emergent, emergent  |
+      | 6    | Jan 12-16      | Practitioner Week 1  | 2     | practitioner, practitioner    |
+      | 7    | Jan 19-23      | Practitioner Week 2  | 3     | practitioner, practitioner, practitioner |
+      | 8    | Jan 26-30      | Prototype Week       | 2     | prototype, prototype          |
+      | 9    | Feb 2-6        | Conference Week      | 3     | prototype, conference, conference |
+      | 10   | Feb 9-13       | Closing Week         | 2     | conference, methodology       |
+    </schedule_overview>
+    <content_source>/content/deliverables/blog-posts/ (25 MDX files ready)</content_source>
+    <linkedin_source>/content/deliverables/linkedin-posts/ (25 MD files ready)</linkedin_source>
+  </publication_calendar>
+
+  <success_criteria>
+    <functionality>
+      - All public pages load fast and are fully responsive
+      - Animations run smoothly at 60fps
+      - Blog posts render MDX correctly with all components
+      - Comments and newsletter systems work reliably
+      - Admin dashboard manages all content effectively
+      - Scheduled posts publish automatically (auto-reveal)
+      - Analytics display accurate, up-to-date data
+      - Search Console integration provides SEO insights
+    </functionality>
+    <ai_agents_series>
+      - All 25 posts imported with correct publishedAt dates
+      - Auto-reveal works (posts appear on scheduled date)
+      - Series navigation functions correctly (prev/next)
+      - Category filtering works for all 7 categories
+      - Research page displays all posts organized by category
+      - LinkedIn posts manageable through admin dashboard
+      - Publication calendar shows accurate 10-week schedule
+      - PDF download of Final Report works
+    </ai_agents_series>
+    <user_experience>
+      - Interactive hero creates strong first impression
+      - Navigation is intuitive across all devices
+      - Dark/light mode respects system preferences
+      - Forms provide clear feedback and validation
+      - Page transitions feel smooth and natural
+      - Content is easy to discover and read
+      - Series progress clear (Post X of 25)
+    </user_experience>
+    <technical_quality>
+      - Lighthouse performance score > 90
+      - Core Web Vitals pass all metrics
+      - Type-safe codebase with no TS errors
+      - Clean, maintainable component structure
+      - Proper error handling and loading states
+      - Secure authentication and API routes
+    </technical_quality>
+    <seo>
+      - All pages have proper meta tags
+      - Sitemap auto-generates and updates (excludes scheduled posts)
+      - Structured data validates without errors
+      - Blog posts are indexable and rank-ready
+      - RSS feed available for subscribers
+      - Open Graph previews display correctly
+    </seo>
+  </success_criteria>
+
+  <testing_strategy>
+    <overview>
+      Comprehensive testing ensures reliability before deployment. Run all tests locally
+      before pushing to production. CI/CD pipeline runs tests on every PR.
+    </overview>
+
+    <unit_tests>
+      <framework>Vitest</framework>
+      <coverage_target>80%</coverage_target>
+      <scope>
+        - Utility functions (date formatting, slug generation, reading time calculation)
+        - React hooks (useTheme, useScrollProgress, useMediaQuery)
+        - API route handlers (input validation, response formatting)
+        - Database queries (Prisma client mocks)
+        - MDX processing functions
+        - Authentication logic
+      </scope>
+      <commands>
+        - pnpm test              # Run all unit tests
+        - pnpm test:watch        # Watch mode for development
+        - pnpm test:coverage     # Generate coverage report
+      </commands>
+    </unit_tests>
+
+    <integration_tests>
+      <framework>Vitest + Testing Library</framework>
+      <scope>
+        - API endpoints (POST /api/contact, POST /api/subscribe, etc.)
+        - Database operations (CRUD for posts, projects, comments)
+        - Authentication flow (login, session, protected routes)
+        - Email sending (mocked)
+        - Cron job handlers
+      </scope>
+      <commands>
+        - pnpm test:integration  # Run integration tests
+      </commands>
+    </integration_tests>
+
+    <e2e_tests>
+      <framework>Playwright</framework>
+      <browsers>["chromium", "firefox", "webkit"]</browsers>
+      <scope>
+        - Public pages render correctly (homepage, about, projects, blog, research, contact)
+        - Navigation and routing works
+        - Dark/light mode toggle functions
+        - Contact form submission
+        - Newsletter signup
+        - Blog post rendering with MDX
+        - Series navigation (prev/next)
+        - Search functionality
+        - Mobile responsiveness
+        - Admin login and dashboard (authenticated)
+        - Post creation and editing
+        - Comment moderation
+      </scope>
+      <commands>
+        - pnpm e2e               # Run all e2e tests
+        - pnpm e2e:headed        # Run with browser visible
+        - pnpm e2e:ui            # Playwright UI mode
+      </commands>
+    </e2e_tests>
+
+    <component_tests>
+      <framework>Storybook + Testing Library</framework>
+      <scope>
+        - UI components (Button, Card, Input, etc.)
+        - Animation components
+        - MDX custom components (Callout, CodeBlock, Quote)
+        - Layout components (Navigation, Footer)
+        - Form components with validation
+      </scope>
+      <commands>
+        - pnpm storybook         # Run Storybook
+        - pnpm test:storybook    # Run Storybook tests
+      </commands>
+    </component_tests>
+
+    <accessibility_tests>
+      <tools>
+        - axe-core (via @axe-core/playwright)
+        - Lighthouse CI
+      </tools>
+      <standards>WCAG 2.1 AA</standards>
+      <scope>
+        - Color contrast ratios
+        - Keyboard navigation
+        - Screen reader compatibility
+        - Focus management
+        - ARIA attributes
+      </scope>
+    </accessibility_tests>
+
+    <performance_tests>
+      <tools>
+        - Lighthouse CI
+        - Web Vitals monitoring
+      </tools>
+      <thresholds>
+        - Performance score: >= 90
+        - Accessibility score: >= 90
+        - Best Practices score: >= 90
+        - SEO score: >= 90
+        - LCP: < 2.5s
+        - FID: < 100ms
+        - CLS: < 0.1
+      </thresholds>
+    </performance_tests>
+
+    <ci_cd_pipeline>
+      <platform>GitHub Actions</platform>
+      <triggers>
+        - Push to main branch
+        - Pull request to main
+      </triggers>
+      <jobs>
+        <lint>
+          - ESLint
+          - Prettier check
+          - TypeScript type check
+        </lint>
+        <test>
+          - Unit tests
+          - Integration tests
+          - E2E tests (Playwright)
+        </test>
+        <build>
+          - Next.js build
+          - Lighthouse CI audit
+        </build>
+        <deploy>
+          - Vercel preview deployment (PRs)
+          - Vercel production deployment (main)
+        </deploy>
+      </jobs>
+      <config_file>.github/workflows/ci.yml</config_file>
+    </ci_cd_pipeline>
+
+    <test_data>
+      <fixtures>
+        - Sample blog posts (3-5 for testing)
+        - Sample projects
+        - Sample comments
+        - Sample subscribers
+        - Mock user session
+      </fixtures>
+      <database>
+        - Use separate test database
+        - Reset between test runs
+        - Seed with fixtures
+      </database>
+    </test_data>
+  </testing_strategy>
+
+  <environment_variables>
+    <local_development>
+      <file>.env.local</file>
+      <variables>
+        # Database
+        DATABASE_URL="postgresql://postgres:password@localhost:5432/personal_website_dev"
+
+        # NextAuth
+        NEXTAUTH_URL="http://localhost:3000"
+        NEXTAUTH_SECRET="your-development-secret-min-32-chars"
+
+        # Admin credentials (for seeding)
+        ADMIN_EMAIL="admin@localhost"
+        ADMIN_PASSWORD="dev-password-change-in-prod"
+
+        # Email (Resend)
+        RESEND_API_KEY="re_development_key"
+        EMAIL_FROM="noreply@localhost"
+        CONTACT_EMAIL="fertorresnavarrete@gmail.com"
+
+        # Analytics (optional for local)
+        # NEXT_PUBLIC_VERCEL_ANALYTICS_ID=""
+        # GOOGLE_SEARCH_CONSOLE_API_KEY=""
+
+        # Feature flags
+        NEXT_PUBLIC_ENABLE_COMMENTS="true"
+        NEXT_PUBLIC_ENABLE_NEWSLETTER="true"
+      </variables>
+    </local_development>
+
+    <production>
+      <file>Vercel Environment Variables</file>
+      <variables>
+        # Database (Vercel Postgres or Neon)
+        DATABASE_URL="postgresql://..."
+        DATABASE_URL_UNPOOLED="postgresql://..." # For migrations
+
+        # NextAuth
+        NEXTAUTH_URL="https://fernandotorres.io"
+        NEXTAUTH_SECRET="[generate-secure-32-char-secret]"
+
+        # Admin
+        ADMIN_EMAIL="fertorresnavarrete@gmail.com"
+        ADMIN_PASSWORD="[secure-password]"
+
+        # Email
+        RESEND_API_KEY="re_live_..."
+        EMAIL_FROM="hello@fernandotorres.io"
+        CONTACT_EMAIL="fertorresnavarrete@gmail.com"
+
+        # Analytics
+        NEXT_PUBLIC_VERCEL_ANALYTICS_ID="[from-vercel-dashboard]"
+        GOOGLE_SEARCH_CONSOLE_SITE_URL="https://fernandotorres.io"
+        GOOGLE_SEARCH_CONSOLE_CLIENT_EMAIL="[service-account-email]"
+        GOOGLE_SEARCH_CONSOLE_PRIVATE_KEY="[service-account-key]"
+
+        # Cron secret (for Vercel Cron)
+        CRON_SECRET="[generate-secure-secret]"
+
+        # Optional: LinkedIn API (for auto-posting)
+        # LINKEDIN_CLIENT_ID=""
+        # LINKEDIN_CLIENT_SECRET=""
+        # LINKEDIN_ACCESS_TOKEN=""
+      </variables>
+    </production>
+
+    <test>
+      <file>.env.test</file>
+      <variables>
+        DATABASE_URL="postgresql://postgres:password@localhost:5432/personal_website_test"
+        NEXTAUTH_URL="http://localhost:3000"
+        NEXTAUTH_SECRET="test-secret-for-testing-only-32ch"
+      </variables>
+    </test>
+  </environment_variables>
+
+  <typography>
+    <fonts>
+      <primary>
+        <name>Inter</name>
+        <source>Google Fonts / next/font</source>
+        <weights>[400, 500, 600, 700]</weights>
+        <usage>Body text, UI elements</usage>
+      </primary>
+      <heading>
+        <name>Cal Sans</name>
+        <source>Local font file</source>
+        <weights>[600, 700]</weights>
+        <usage>Headings, hero text</usage>
+        <fallback>Inter, system-ui, sans-serif</fallback>
+      </heading>
+      <mono>
+        <name>JetBrains Mono</name>
+        <source>Google Fonts</source>
+        <weights>[400, 500]</weights>
+        <usage>Code blocks, technical content</usage>
+      </mono>
+    </fonts>
+
+    <scale>
+      <!-- Desktop scale (rem) -->
+      <xs>0.75rem (12px)</xs>
+      <sm>0.875rem (14px)</sm>
+      <base>1rem (16px)</base>
+      <lg>1.125rem (18px)</lg>
+      <xl>1.25rem (20px)</xl>
+      <2xl>1.5rem (24px)</2xl>
+      <3xl>1.875rem (30px)</3xl>
+      <4xl>2.25rem (36px)</4xl>
+      <5xl>3rem (48px)</5xl>
+      <6xl>3.75rem (60px)</6xl>
+      <7xl>4.5rem (72px)</7xl>
+    </scale>
+
+    <line_heights>
+      <tight>1.25</tight>
+      <snug>1.375</snug>
+      <normal>1.5</normal>
+      <relaxed>1.625</relaxed>
+      <loose>2</loose>
+    </line_heights>
+  </typography>
+
+  <assets>
+    <favicon>
+      <source>Generate from profile photo or custom design</source>
+      <files>
+        - /public/favicon.ico (32x32)
+        - /public/favicon-16x16.png
+        - /public/favicon-32x32.png
+        - /public/apple-touch-icon.png (180x180)
+        - /public/android-chrome-192x192.png
+        - /public/android-chrome-512x512.png
+        - /public/site.webmanifest
+      </files>
+    </favicon>
+
+    <og_images>
+      <default>/public/og-image.png (1200x630)</default>
+      <blog_template>Auto-generated per post with title overlay</blog_template>
+      <research>/public/og-research.png</research>
+    </og_images>
+
+    <placeholder_images>
+      <project>/public/images/placeholder-project.jpg</project>
+      <blog>/public/images/placeholder-blog.jpg</blog>
+      <avatar>/public/images/placeholder-avatar.jpg</avatar>
+    </placeholder_images>
+  </assets>
+
+  <error_pages>
+    <404>
+      <title>Page Not Found</title>
+      <description>The page you're looking for doesn't exist or has been moved.</description>
+      <features>
+        - Animated illustration
+        - Search bar
+        - Links to main sections (Home, Blog, Projects)
+        - Contact link
+      </features>
+    </404>
+    <500>
+      <title>Something Went Wrong</title>
+      <description>We're experiencing technical difficulties. Please try again later.</description>
+      <features>
+        - Error illustration
+        - Retry button
+        - Contact support link
+        - Return to home
+      </features>
+    </500>
+    <offline>
+      <title>You're Offline</title>
+      <description>Please check your internet connection and try again.</description>
+    </offline>
+  </error_pages>
+
+  <security>
+    <authentication>
+      - NextAuth.js with credentials provider
+      - Secure session cookies (httpOnly, secure, sameSite)
+      - CSRF protection built into NextAuth
+      - Password hashing with bcrypt (min 12 rounds)
+    </authentication>
+
+    <api_security>
+      - Rate limiting on public endpoints (100 req/min)
+      - Rate limiting on auth endpoints (10 req/min)
+      - Input validation with Zod schemas
+      - SQL injection prevention via Prisma parameterized queries
+      - XSS prevention via React's default escaping
+    </api_security>
+
+    <headers>
+      <!-- next.config.js security headers -->
+      - X-DNS-Prefetch-Control: on
+      - Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+      - X-Frame-Options: SAMEORIGIN
+      - X-Content-Type-Options: nosniff
+      - Referrer-Policy: origin-when-cross-origin
+      - Permissions-Policy: camera=(), microphone=(), geolocation=()
+      - Content-Security-Policy: (configured per environment)
+    </headers>
+
+    <cron_security>
+      - Verify CRON_SECRET header on cron endpoints
+      - Only allow requests from Vercel's cron IP range
+    </cron_security>
+
+    <data_protection>
+      - No sensitive data in client-side code
+      - Environment variables for all secrets
+      - Subscriber emails stored encrypted at rest
+      - GDPR-compliant data handling
+    </data_protection>
+  </security>
+
+  <local_development>
+    <prerequisites>
+      - Node.js 18+ (recommend 20 LTS)
+      - pnpm 8+
+      - PostgreSQL 15+ (local or Docker)
+      - Git
+    </prerequisites>
+
+    <setup_commands>
+      # Clone and install
+      git clone https://github.com/FernandoTN/personal-website.git
+      cd personal-website
+      pnpm install
+
+      # Set up environment
+      cp .env.example .env.local
+      # Edit .env.local with your values
+
+      # Database setup (using Docker)
+      docker-compose up -d postgres
+
+      # Or local PostgreSQL
+      createdb personal_website_dev
+
+      # Run migrations
+      pnpm prisma migrate dev
+
+      # Seed database with sample data
+      pnpm prisma db seed
+
+      # Start development server
+      pnpm dev
+    </setup_commands>
+
+    <docker_compose>
+      # docker-compose.yml for local development
+      services:
+        postgres:
+          image: postgres:15-alpine
+          ports:
+            - "5432:5432"
+          environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: password
+            POSTGRES_DB: personal_website_dev
+          volumes:
+            - postgres_data:/var/lib/postgresql/data
+      volumes:
+        postgres_data:
+    </docker_compose>
+
+    <scripts>
+      - pnpm dev           # Start Next.js dev server (port 3000)
+      - pnpm build         # Production build
+      - pnpm start         # Start production server
+      - pnpm lint          # Run ESLint
+      - pnpm format        # Run Prettier
+      - pnpm typecheck     # TypeScript type checking
+      - pnpm test          # Run unit tests
+      - pnpm e2e           # Run Playwright e2e tests
+      - pnpm prisma studio # Open Prisma Studio (database GUI)
+    </scripts>
+
+    <local_urls>
+      - http://localhost:3000           # Main site
+      - http://localhost:3000/admin     # Admin dashboard
+      - http://localhost:5555           # Prisma Studio (pnpm prisma studio)
+    </local_urls>
+  </local_development>
+
+  <deployment>
+    <platform>Vercel</platform>
+    <domain>fernandotorres.io</domain>
+
+    <vercel_setup>
+      1. Connect GitHub repository to Vercel
+      2. Configure environment variables in Vercel dashboard
+      3. Set up Vercel Postgres database
+      4. Configure custom domain (fernandotorres.io)
+      5. Enable Vercel Analytics
+      6. Set up Vercel Cron for scheduled posts
+    </vercel_setup>
+
+    <vercel_config>
+      # vercel.json
+      {
+        "crons": [
+          {
+            "path": "/api/cron/publish-scheduled",
+            "schedule": "0 * * * *"  # Every hour
+          },
+          {
+            "path": "/api/cron/linkedin-reminder",
+            "schedule": "0 16 * * *"  # 9am PST daily
+          }
+        ]
+      }
+    </vercel_config>
+
+    <dns_configuration>
+      # Add these records to your domain registrar
+      Type: A     Name: @    Value: 76.76.21.21
+      Type: CNAME Name: www  Value: cname.vercel-dns.com
+    </dns_configuration>
+
+    <deployment_checklist>
+      <pre_deployment>
+        - [ ] All tests passing locally
+        - [ ] No TypeScript errors
+        - [ ] No ESLint warnings
+        - [ ] Environment variables configured in Vercel
+        - [ ] Database migrations applied
+        - [ ] Seed data loaded (admin user, initial content)
+      </pre_deployment>
+      <post_deployment>
+        - [ ] Verify all pages load correctly
+        - [ ] Test contact form submission
+        - [ ] Test newsletter signup
+        - [ ] Verify admin login works
+        - [ ] Check analytics are tracking
+        - [ ] Verify cron jobs are scheduled
+        - [ ] Test on mobile devices
+        - [ ] Run Lighthouse audit
+      </post_deployment>
+    </deployment_checklist>
+
+    <rollback>
+      - Vercel maintains deployment history
+      - Instant rollback to previous deployment via Vercel dashboard
+      - Database migrations should be backward-compatible
+    </rollback>
+  </deployment>
+
+  <legal_pages>
+    <privacy_policy>
+      <required>Yes (for newsletter and contact form)</required>
+      <content>
+        - What data is collected (email, name, messages)
+        - How data is used (newsletter, responding to inquiries)
+        - Data storage and retention
+        - Third-party services (Vercel, Resend, Google Analytics)
+        - User rights (unsubscribe, data deletion)
+        - Contact information
+      </content>
+      <route>/privacy</route>
+    </privacy_policy>
+    <terms_of_use>
+      <required>Optional but recommended</required>
+      <content>
+        - Content ownership and licensing
+        - Acceptable use of comments
+        - Disclaimer for blog opinions
+        - Limitation of liability
+      </content>
+      <route>/terms</route>
+    </terms_of_use>
+  </legal_pages>
+
+</project_specification>

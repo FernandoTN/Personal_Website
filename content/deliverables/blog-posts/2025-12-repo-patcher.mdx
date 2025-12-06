@@ -1,0 +1,191 @@
+---
+title: 'Repo Patcher: Using State Machines to Make AI Agents Reliable'
+summary: 'How the INGEST-PLAN-PATCH-TEST-REPAIR-PR state machine approach provides deterministic governance over probabilistic agent behavior, with lessons from building a production-ready coding agent.'
+publishedAt: '2025-12-20'
+tags:
+  ['AI Agents', 'State Machines', 'Reliability', 'Code Agents', 'Production']
+featured: false
+author: 'Fernando Torres'
+image: '/images/blog/repo-patcher-cover.png'
+---
+
+What if the solution to AI agent reliability was hiding in computer science fundamentals from the 1950s?
+
+After interviewing 36 experts building production AI agents and repeatedly hearing about the "doom loop" problem—where fixing one scenario breaks another—I decided to test a hypothesis: Could state machines, one of the oldest patterns in computing, provide the deterministic governance that probabilistic AI systems desperately need?
+
+The result was Repo Patcher, a multi-language coding agent that automatically fixes failing tests and creates pull requests. Building it taught me more about production AI reliability than any interview ever could.
+
+## The Discovery
+
+The reliability problem for AI agents is well-documented. During my research, I encountered the same pattern across dozens of conversations:
+
+> "Most people building technology over the last 30 years aren't used to probabilistic stochastic systems. They're used to deterministic things. So the expectation is if I see it working once, I expect it to work reliably from that point on."
+> — a founder, an AI infrastructure company
+
+This fundamental mismatch between deterministic expectations and probabilistic reality creates what practitioners call the "demo-to-production gap." A 70% success rate is impressive in a demo—the presenter knows they got lucky on that particular run. But at production scale, that same 70% reliability means systematic failure.
+
+The question became: How do you impose structure on systems that are inherently non-deterministic? The answer I found was not in the latest framework or prompt engineering technique. It was in something far older.
+
+## What We Found
+
+State machines have governed complex systems since the dawn of computing—from vending machines to network protocols to compiler design. Their power lies in making state transitions explicit, with clear entry conditions, exit conditions, and failure handling for each state.
+
+When applied to AI agents, this pattern transforms the reliability equation. Instead of a free-form agent that can "take a left turn" after several iterations (a failure mode described repeatedly in my interviews), you get deterministic progression through defined stages with built-in error recovery.
+
+### The INGEST-PLAN-PATCH-TEST-REPAIR-PR Workflow
+
+Repo Patcher implements a six-stage state machine that provides structured control flow over the inherently probabilistic code generation:
+
+```
+INGEST -> PLAN -> PATCH -> TEST -> REPAIR -> PR
+   |        |       |        |        |       |
+   v        v       v        v        v       v
+[parse]  [schema] [apply] [verify] [retry] [submit]
+```
+
+**INGEST**: The agent ingests the repository context—file structure, test configurations, failing test output. This stage has explicit success criteria: all necessary context must be available before proceeding. The agent parses error messages, identifies affected files, and builds a comprehensive understanding of the failure mode.
+
+**PLAN**: Using the ingested context, the agent generates a structured plan for the fix. This is not free-form reasoning; it produces a JSON schema-validated plan with specific files to modify and changes to make. The deterministic schema validation catches malformed plans before they can cause downstream problems.
+
+**PATCH**: The agent applies the planned changes. Risk assessment scores each modification (low/medium/high), and file protection prevents modifications to critical infrastructure like `.github/` directories, Docker configurations, and environment files. Only approved changes proceed.
+
+**TEST**: The patched code runs through the test suite. This stage provides deterministic validation—tests either pass or they do not. No probabilistic ambiguity here. The binary outcome drives the next state transition.
+
+**REPAIR**: If tests still fail, the agent analyzes the failure and attempts repair. This stage has bounded retry limits to prevent infinite loops—a common failure mode in unconstrained agents. Each repair attempt incorporates context from previous failures.
+
+**PR**: Once tests pass, the agent creates a pull request with comprehensive documentation of changes, risk assessment results, and audit trails. The workflow completes with full accountability for what was changed and why.
+
+### Why State Machines Work for Probabilistic Systems
+
+> "That's where the skill problem really starts to kind of hurt is because most people aren't used to how to make that better. They kind of go into this like doom loop almost... They'll go, oh, I see, okay, this scenario didn't work. I'll go change the prompt and the instructions and the data or whatever to make this scenario work. But then they go, oh, but the other one stopped working and they're now in this continuous loop."
+> — a founder, an AI infrastructure company
+
+The doom loop exists because unconstrained agents have too many degrees of freedom. Each fix can affect any part of the system. State machines address this by:
+
+**Bounding the action space**: At each stage, the agent can only perform actions relevant to that stage. The PLAN stage produces plans; it cannot modify files. The PATCH stage modifies files; it cannot create PRs. This constraint prevents cascading unintended effects.
+
+**Creating deterministic checkpoints**: The transition between stages provides natural validation points. Did the plan meet the schema requirements? Did the tests pass after patching? These binary checks do not suffer from probabilistic uncertainty.
+
+**Enabling targeted debugging**: When something fails, you know exactly which stage failed and can examine the inputs and outputs of that specific stage. This is dramatically easier than debugging free-form agent behavior where failures can originate anywhere.
+
+**Supporting controlled iteration**: You can improve each stage independently. Better prompts for planning do not affect patching behavior. This enables the scientific approach multiple interviewees recommended:
+
+> "I will set up some controls, I'll set up an iterative process. I look at my data, do error analysis, figure out what are the category of errors... make sure that there's a set of tests that are evals that makes sure that I don't regress as I try to progress."
+> — a founder, an AI infrastructure company
+
+## Risk-Based HITL Escalation
+
+One of the most surprising insights from building Repo Patcher was reframing human-in-the-loop (HITL) from a failure of autonomy to an enabler of production deployment.
+
+The risk assessment system scores every change before application:
+
+**Low risk**: Modifications to test files, assertions, and mock configurations can be auto-approved. These changes have limited blast radius and are easy to revert if something goes wrong.
+
+**Medium risk**: Changes to implementation files require additional validation. The agent must provide stronger justification, and automated checks run additional verification before proceeding.
+
+**High risk**: Modifications affecting multiple files or core logic escalate to human approval. Changes to protected directories (`.github/`, Docker configurations, environment files) always require human review.
+
+This pattern—automatic for low-risk, human review for high-risk—balances automation velocity with governance requirements. It directly addresses the enterprise trust barrier I heard about repeatedly:
+
+> "It's hard to really put agents in production because you have to be able to trust the LLM to make decisions on your behalf. And that is more of a people and processes kind of issue, not just technology."
+> — a practitioner, AI Practitioner
+
+Rather than attempting full autonomy (which creates trust barriers), intelligent triage lets the agent handle routine cases while humans focus on genuinely complex decisions. This "augmented automation" model may be more pragmatic than the "autonomous agent" framing that dominates current discourse.
+
+### File Protection Mechanisms
+
+Context-aware file restrictions provide an additional safety layer. The system maintains lists of protected file patterns that cannot be modified regardless of risk score:
+
+- CI/CD configurations (`.github/`, `.gitlab-ci.yml`)
+- Container definitions (`Dockerfile`, `docker-compose.yml`)
+- Environment and secrets (`.env`, `credentials.json`)
+- Package lock files (`package-lock.json`, `poetry.lock`)
+
+This defense-in-depth approach ensures that even if risk assessment fails, critical infrastructure remains protected. Complete audit trails enable compliance tracking and accountability—essential for regulated environments.
+
+## Cost Optimization: Less Than $0.25 Per Fix
+
+Production agents must be economically viable. Interview subjects repeatedly cited cost as a blocker, with some noting that current agents cost more than offshore labor for equivalent tasks.
+
+> "Model only contributes 30-40% of the whole thing. The framework, the whole system you build upon the model is much more important."
+> — an AI autonomous agent company Co-Founder
+
+Repo Patcher targets less than $0.25 per fix through explicit cost management architecture:
+
+**Multi-level caching**: TTL and LRU eviction reduces redundant API calls for repository analysis and similar queries. When the agent needs to understand a codebase, it caches structural information rather than re-analyzing on every operation. This alone can reduce costs by 60-70% for iterative fix attempts.
+
+**Strategic model selection**: Using appropriate model sizes for different stages rather than defaulting to the most powerful (and expensive) option. The INGEST stage can use faster, cheaper models for parsing. The PLAN stage might use more capable models for complex reasoning. Each stage gets the model that matches its requirements.
+
+**Token management**: Structured prompts and context compression prevent context window bloat that drives costs. The system maintains only relevant context at each stage rather than accumulating everything into a single massive prompt. This aligns with the 40% context rule identified at the Production Agents Summit:
+
+> "If your agent is using anything more than 40% of the context window, it's probably going to make mistakes."
+> — Production Agents Summit
+
+By keeping context lean at each stage, we simultaneously improve reliability and reduce costs.
+
+## Observability: The Non-Negotiable Requirement
+
+> "I think a lot of companies that are doing agents, there's not like a standardized way of logging what are the exact actions and being able to do like really detailed debugging and maybe even like time traveling of why did the agent take this action at this moment in time?"
+> — a practitioner, an AI observability company
+
+Building Repo Patcher validated this observation completely. Debugging probabilistic multi-step systems requires comprehensive tracing infrastructure that cannot be retrofitted—it must be architectural from the start.
+
+**OpenTelemetry integration**: Distributed tracing across all agent operations provides visibility into what happened at each stage. Prometheus metrics enable real-time performance monitoring and alerting. When something fails, you can trace the exact sequence of operations that led to the failure.
+
+**Session persistence**: Complete conversation memory tracking enables reproducibility. If a fix attempt fails, you can replay the exact same context to understand why. This "time travel" debugging capability is essential for improving probabilistic systems.
+
+**Audit trails**: Compliance-ready logging of all decisions and actions. Every stage transition, risk assessment, and file modification is recorded. This supports both debugging and enterprise governance requirements.
+
+**Health checks and dashboards**: Production monitoring requires visibility into system health, not just individual operation outcomes. The agent exposes health endpoints and performance metrics that integrate with standard monitoring infrastructure.
+
+The absence of standardized logging for agent actions represents both a current gap in the ecosystem and a market opportunity for observability-focused tooling.
+
+## Why This Matters
+
+The Repo Patcher prototype validates several core findings from my research:
+
+**State machines address the reliability gap**: The 90% pilot failure rate cited by multiple sources stems largely from inability to manage probabilistic behavior at scale. State machines provide the structural governance that traditional software testing cannot.
+
+**HITL is not failure**: Intelligent escalation patterns enable production deployment by addressing trust barriers. The goal is not full autonomy; it is appropriate automation with governance.
+
+**Framework minimalism works**: Despite interview subjects reporting extensive framework bloat with a popular AI agent framework and similar tools, Repo Patcher achieves production readiness with minimal dependencies (OpenAI API + OpenTelemetry). This suggests that avoiding heavyweight frameworks may be viable—even preferable—for production systems with clear requirements.
+
+**Cost is manageable with architecture**: The "agents are too expensive" narrative partially dissolves when explicit cost optimization is designed in from the start. Less than $0.25 per fix is achievable with proper caching and model selection.
+
+**Observability is non-negotiable**: Production deployment requires purpose-built monitoring infrastructure. This cannot be an afterthought.
+
+### The Broader Pattern
+
+The prototype demonstrates that building vs. configuring is the real choice for production agents. Vendors promise frameworks that "just work," but production reality requires custom architecture: state machines for reliability, risk assessment for governance, tool abstractions for extensibility, and observability stacks for debugging.
+
+This challenges the dominant narrative that better prompts or more powerful models will solve reliability problems. The evidence suggests architectural patterns matter more than model improvements for production deployment.
+
+## What You Can Do
+
+Based on building Repo Patcher and triangulating against 36 expert interviews, here are actionable recommendations:
+
+- **Design with state machines**: Whether building coding agents, sales automation, or knowledge workers, define explicit stages with clear entry/exit criteria and failure handling. This single pattern addresses a surprising number of reliability challenges.
+
+- **Implement risk-based HITL escalation**: Rather than all-or-nothing automation, design intelligent triage. Auto-approve low-risk, require human review for high-risk. This builds trust while enabling meaningful automation.
+
+- **Treat cost as first-class**: Design caching, model selection, and token management from the start. The difference between $0.25 and $2.50 per operation determines economic viability.
+
+- **Build observability early**: Instrument from day one with distributed tracing, metrics, and audit trails. Debugging probabilistic systems without observability is nearly impossible.
+
+- **Test across failure modes**: The 20 diverse test scenarios in Repo Patcher (covering import errors, logic bugs, assertion problems, mock configurations, data structure mismatches, and async operations) reveal that coding agents need evaluation across failure categories, not just happy paths.
+
+- **Start minimal on frameworks**: Consider whether heavyweight frameworks add value or just complexity. For bounded problems with clear requirements, direct API usage may provide better control and performance.
+
+## The Bottom Line
+
+State machines represent one of the oldest patterns in computer science. Their application to AI agents is not revolutionary—it is common sense that got lost in the hype around autonomous systems. By imposing deterministic structure on probabilistic behavior, we can build agents that are actually deployable in production.
+
+The 90% pilot failure rate does not have to be the norm. With architectural patterns that respect the probabilistic nature of LLMs while providing governance and observability, production deployment becomes achievable.
+
+The code is available at [github.com/FernandoTN/repo-patcher](https://github.com/FernandoTN/repo-patcher) for those who want to examine the implementation details.
+
+---
+
+_This post is part of my research series on AI Agent deployment, based on 36 expert interviews, 5 industry conferences, and 3 functional prototypes. [Read the full research overview](/blog/ai-agents-research-overview)._
+
+_Have thoughts on AI agent deployment? Connect with me on [LinkedIn](https://www.linkedin.com/in/fernandotn/) or [email me](mailto:fertorresnavarrete@gmail.com)._

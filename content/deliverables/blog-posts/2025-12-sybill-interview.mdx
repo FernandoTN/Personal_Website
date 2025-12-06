@@ -1,0 +1,123 @@
+---
+title: "An AI Sales Intelligence Company's Approach: Building AI Sales Agents That Actually Work"
+summary: 'an AI lead from an AI sales intelligence company shares battle-tested insights on component-level evaluation, data architecture as competitive moat, and why opinionated design trumps flexibility for vertical AI agents.'
+publishedAt: '2025-12-18'
+tags:
+  [
+    'AI Agents',
+    'an AI sales intelligence company',
+    'Sales',
+    'Vertical AI',
+    'Evaluation',
+  ]
+featured: false
+author: 'Fernando Torres'
+image: '/images/blog/practitioner-interview-5-cover.png'
+---
+
+When most teams are obsessing over prompt engineering and model selection, an AI sales intelligence company took a radically different approach: they built their AI sales platform before ChatGPT existed, and in doing so, discovered principles that most companies are still learning the hard way.
+
+As part of my research into AI agent deployment, I spoke with an AI lead from an AI sales intelligence company to understand how they built a production system that powers 12-14 features from a single unified AI pipeline. What she shared challenged several assumptions I had brought into the conversation.
+
+## The Discovery
+
+an AI sales intelligence company is an AI platform powering sales teams, and they faced an unusual challenge from the start. Their platform integrates with CRM systems, email, Slack, and call recording platforms, generating massive amounts of data for each customer. The scale is staggering and worth understanding in concrete terms.
+
+> "For any specific company you would typically have like 60 million data points. For any specific deal you would have at least like 500, 600k data points. And using all of this you're supposed to... a lot of the AI and the agents that we use are in service of figuring out how to make these 600k data points go to like the 20 data points that are actually relevant to answering that question."
+> — an AI lead, an AI sales intelligence company
+
+This quote captures the fundamental challenge an AI sales intelligence company faces daily. The core problem an AI lead and her team had to solve was not generation quality or prompt optimization. It was context management at scale: how do you reduce 600,000 data points to the 20 that actually matter for answering a user's question?
+
+This is not a theoretical concern. Every sales team using an AI sales intelligence company has data scattered across multiple systems: CRM records, email threads, Slack conversations, and recorded calls. Each interaction creates more data points, and the system must rapidly identify which ones are relevant to any given query.
+
+This challenge led them to develop a set of principles that contradict much of the conventional wisdom in the AI agent space. Their insights come from building production systems before the hype cycle, giving them a clear-eyed view of what actually works versus what merely demos well.
+
+## What We Found
+
+an AI sales intelligence company's approach rests on several foundational insights that emerged from years of production experience.
+
+### Component-Level Evaluation Over End-to-End Testing
+
+Perhaps the most counterintuitive principle an AI lead shared was their evaluation philosophy. In a field obsessed with end-to-end testing and comprehensive benchmarks, an AI sales intelligence company took the opposite approach.
+
+> "Almost never do we evaluate something end to end because it is pointless. So if you can evaluate a system at a time, and that is how you grow better... we built it blind after step one... the only thing that we continuously tested for is that it gets the first step right. The first step typically ends up being retrieval. If it gets the first step right, if it has the right data at that point in time, everything after that will work."
+> — an AI lead, an AI sales intelligence company
+
+This philosophy, which an AI lead describes as "building blind after step one," inverts traditional testing wisdom. Instead of evaluating the entire probabilistic pipeline, they focus exclusively on the deterministic component: retrieval. Their reasoning is that if the system retrieves the correct context, the generation step will follow. They trust foundation models to handle generation once they have the right information.
+
+The result? After building their system with only first-step evaluation, when they finally tested end-to-end, "it just magically worked." This approach dramatically reduced testing overhead while maintaining production quality.
+
+### Context Is the Competitive Moat, Not Generation
+
+an AI sales intelligence company was among the first companies in their space to use LLMs, predating the ChatGPT explosion. This early adoption gave them a strategic insight that many companies are still discovering.
+
+> "We were the first company who in at least in our space who used LLMs and came out... we realized like it was very clear that, you know, the final generation in the retrieval augmented generation generation is not where our strength is going to lie. That is basically foundational model, company level thing... The only thing we need to do is how to build a system so that it's almost like as they get better, we get better by default."
+> — an AI lead, an AI sales intelligence company
+
+This insight led them to focus their engineering efforts on context retrieval and data architecture rather than prompt engineering. Their perspective is that generation quality is foundation model territory, and as those models improve, an AI sales intelligence company automatically benefits. The defensible moat lies in proprietary data integration and schema design.
+
+### Structured Graphs Over Knowledge Graphs
+
+One of an AI lead's strongest opinions concerns the use of graph databases. She explicitly critiques the Neo4j-style approach of using LLM-generated knowledge graphs, which has become popular in the RAG community.
+
+> "I think one of the mistakes that people do. Like I think Neo4j made this popular and I think it is a very problematic construct. They tend to use graph for things which are unstructured... It is very hard to maintain that graph, it is very hard to update it, it is very hard to delete it. It all becomes this humongous giant mess that is essentially problematic in a production system. What we use graphs for is for something very structured that would neither fit well in a MongoDB and definitely won't fit well in a Vector DB."
+> — an AI lead, an AI sales intelligence company
+
+an AI sales intelligence company's alternative is a three-database architecture: Vector DB for embeddings, Graph DB for structured relationships with fixed nodes (companies, people, deals) and defined ontology, and Standard DB for transactional data. The key distinction is using graphs for structured data with predefined schemas, not for unstructured knowledge extracted by LLMs.
+
+### The LLM-as-Judge Boundary
+
+an AI lead also articulated a clear rule for when LLM-based evaluation is appropriate, providing a practical heuristic that many teams lack.
+
+> "You shouldn't use LLM to judge something which as a human, you find extremely hard to judge. Like, it's a recipe for disaster. It will be inconsistent."
+> — an AI lead, an AI sales intelligence company
+
+This principle helps teams avoid the common trap of using LLM evaluation for subjective generation quality where even humans struggle to agree. The insight suggests limiting LLM-as-judge approaches to tasks where human judgment is clear and consistent.
+
+### Progressive UI Abstraction
+
+An interesting pattern an AI lead described is how an AI sales intelligence company handles the tension between flexible agent queries and consistent user experience. Rather than exposing raw prompt interfaces, they analyze common user questions and convert frequently-asked queries into UI buttons. This approach hides prompt engineering complexity from users while maintaining the same agent backend.
+
+This pattern, which an AI lead calls "progressive UI abstraction," allows the team to maintain a flexible agent system while presenting users with opinionated, pre-designed interactions. The agent capabilities remain unchanged, but the user experience becomes increasingly polished as the team identifies and standardizes common workflows.
+
+### Pre-Processing Over Real-Time Retrieval
+
+Another architectural decision that sets an AI sales intelligence company apart is their commitment to pre-processing data rather than querying sources in real time. While many systems rely on on-the-fly retrieval from integrated sources, an AI sales intelligence company stores and preprocesses all integrated data in a unified schema. Their databases update in real time as new data arrives, but queries are served from internal structures rather than reaching out to CRM, email, or other external systems.
+
+This approach trades storage costs for query speed and reliability. By controlling the data schema and storage, they can optimize for the specific access patterns their agents require, rather than working around the limitations of external APIs.
+
+## Why This Matters
+
+an AI sales intelligence company's insights reveal several uncomfortable truths for the AI agent ecosystem.
+
+First, the evaluation landscape is fundamentally broken. Most teams are spending enormous effort on end-to-end testing of probabilistic systems when they should focus on the deterministic components that actually determine success. The "build blind after step one" philosophy suggests that if you get retrieval right, everything else follows.
+
+Second, competitive moats are not where most companies are looking. The race for better prompts, newer models, and fancier frameworks misses the point. Data architecture, integration depth, and schema design create lasting advantages that compound as foundation models improve.
+
+Third, popular patterns may be traps. The Neo4j-style knowledge graph approach that many teams are adopting could be creating "humongous giant messes" that will become maintenance nightmares. The distinction between structured graphs with defined ontology versus unstructured LLM-generated graphs is crucial.
+
+Fourth, model selection matters less than architecture. an AI lead noted that mini-tier models like Haiku are sufficient for retrieval tasks. You do not need frontier models for deterministic steps, which has significant cost implications for production systems.
+
+## What You Can Do
+
+Based on an AI sales intelligence company's hard-won insights, here are actionable recommendations for teams building AI agents:
+
+- **Focus evaluation on first-step retrieval**: Instead of complex end-to-end testing, invest in robust evaluation of your retrieval component. If you get the right context, generation follows.
+
+- **Architect for model-agnostic operation**: Build systems that improve automatically as foundation models improve. Focus engineering effort on context quality, not generation tuning.
+
+- **Use structured graphs with defined schemas**: If you need graph databases, use them for structured relationships with fixed nodes and ontology. Avoid LLM-generated knowledge graphs for production systems.
+
+- **Apply the human judgment test for LLM evaluation**: Only use LLM-as-judge for tasks where humans can reliably agree. If human judgment is inconsistent, LLM judgment will be worse.
+
+- **Consider a three-database architecture**: Vector DB, Graph DB, and Standard DB each serve different purposes. Match your data storage to access patterns rather than forcing everything into one paradigm.
+
+## The Bottom Line
+
+an AI sales intelligence company's approach demonstrates that production AI agents require fundamentally different engineering priorities than demo systems. By focusing on context retrieval, data architecture, and component-level evaluation, they built a system that scales to millions of data points while remaining maintainable. The lesson is clear: the path to production is through rigorous architecture decisions, not prompt optimization or model chasing.
+
+---
+
+_This post is part of my research series on AI Agent deployment, based on 36 expert interviews, 5 industry conferences, and 3 functional prototypes. [Read the full research overview](/blog/ai-agents-research)._
+
+_Have thoughts on AI agent deployment? Connect with me on [LinkedIn](https://www.linkedin.com/in/fernandotn/) or [email me](mailto:fertorresnavarrete@gmail.com)._

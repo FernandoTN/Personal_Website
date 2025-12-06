@@ -1,0 +1,245 @@
+{
+  "project": "AI Agents Research Publishing",
+  "totalPublications": 25,
+  "lastUpdated": "2025-12-03",
+  "publications": [
+    {
+      "id": 1,
+      "title": "What's Really Blocking AI Agents from Production? Insights from 36 Expert Interviews",
+      "filename": "2025-12-ai-agents-research-overview.mdx",
+      "status": "ready",
+      "type": "anchor",
+      "wordCount": 1850,
+      "linkedInPost": "01-anchor-post.md"
+    },
+    {
+      "id": 2,
+      "title": "The 92% Problem: Why System Integration Breaks AI Agent Deployments",
+      "filename": "2025-12-system-integration-92-percent.mdx",
+      "status": "ready",
+      "type": "theme",
+      "wordCount": 2100,
+      "linkedInPost": "02-system-integration.md"
+    },
+    {
+      "id": 3,
+      "title": "The 40% Rule: Why Larger Context Windows Won't Save Your AI Agent",
+      "filename": "2025-12-40-percent-context-rule.mdx",
+      "status": "ready",
+      "type": "theme",
+      "wordCount": 2000,
+      "linkedInPost": "03-context-management.md"
+    },
+    {
+      "id": 4,
+      "title": "The Framework Paradox: Why 80-90% of Teams Abandon a popular AI agent framework for Production",
+      "filename": "2025-12-framework-abandonment.mdx",
+      "status": "ready",
+      "type": "theme",
+      "wordCount": 2300,
+      "linkedInPost": "04-framework-abandonment.md"
+    },
+    {
+      "id": 5,
+      "title": "The Demo-Production Chasm: Why 70% Accuracy Creates False Expectations",
+      "filename": "2025-12-demo-production-chasm.mdx",
+      "status": "ready",
+      "type": "theme",
+      "wordCount": 2400,
+      "linkedInPost": "05-demo-production-chasm.md"
+    },
+    {
+      "id": 6,
+      "title": "Why 90% of AI Agent Pilots Fail Before Hitting Technical Limits",
+      "filename": "2025-12-enterprise-business-case.mdx",
+      "status": "ready",
+      "type": "theme",
+      "wordCount": 2200,
+      "linkedInPost": "06-enterprise-blockers.md"
+    },
+    {
+      "id": 7,
+      "title": "The Coding Agent Exception: Why AI Works for Code but Struggles Everywhere Else",
+      "filename": "2025-12-coding-agent-exception.mdx",
+      "status": "ready",
+      "type": "theme",
+      "wordCount": 2500,
+      "linkedInPost": "07-coding-agent-exception.md"
+    },
+    {
+      "id": 8,
+      "title": "The 30-40% Model Myth: Why Framework Architecture Matters More Than Model Capability",
+      "filename": "2025-12-model-myth.mdx",
+      "status": "ready",
+      "type": "theme",
+      "wordCount": 2800,
+      "linkedInPost": "08-model-myth.md"
+    },
+    {
+      "id": 9,
+      "title": "Dual Memory Architecture: The Distinction Most AI Companies Miss",
+      "filename": "2025-12-dual-memory-architecture.mdx",
+      "status": "ready",
+      "type": "theme",
+      "wordCount": 3100,
+      "linkedInPost": "10-dual-memory.md"
+    },
+    {
+      "id": 10,
+      "title": "MCP Reality Check: The 25-Tool Accuracy Cliff No One Talks About",
+      "filename": "2025-12-mcp-tool-cliff.mdx",
+      "status": "ready",
+      "type": "theme",
+      "wordCount": 2400,
+      "linkedInPost": "11-mcp-tool-cliff.md"
+    },
+    {
+      "id": 11,
+      "title": "Handoff Rate: The North Star Metric for AI Agent Success",
+      "filename": "2025-12-handoff-rate-metric.mdx",
+      "status": "ready",
+      "type": "methodology",
+      "wordCount": 2000,
+      "linkedInPost": "09-handoff-rate.md"
+    },
+    {
+      "id": 12,
+      "title": "Component-Level Evaluation: Why End-to-End Testing Fails for AI Agents",
+      "filename": "2025-12-component-evaluation.mdx",
+      "status": "ready",
+      "type": "methodology",
+      "wordCount": 2000,
+      "linkedInPost": "12-component-evaluation.md"
+    },
+    {
+      "id": 13,
+      "title": "The Evaluation Gap: Why 7 YC Companies Building Eval Tools Have Zero Adoption",
+      "filename": "2025-12-evaluation-gap.mdx",
+      "status": "ready",
+      "type": "theme",
+      "wordCount": 3000,
+      "linkedInPost": "13-evaluation-gap.md"
+    },
+    {
+      "id": 14,
+      "title": "an AI infrastructure company's Take: Managing Expectations with Probabilistic Systems",
+      "filename": "2025-12-practitioner-interview-2.mdx",
+      "status": "ready",
+      "type": "interview",
+      "wordCount": 2400,
+      "linkedInPost": "15-practitioner-interview-2.md"
+    },
+    {
+      "id": 15,
+      "title": "Inside an AI agent orchestration company: Why 90% of Enterprise AI Agent Pilots Never Convert to Production",
+      "filename": "2025-12-practitioner-interview-1.mdx",
+      "status": "ready",
+      "type": "interview",
+      "wordCount": 2400,
+      "linkedInPost": "14-practitioner-interview-1.md"
+    },
+    {
+      "id": 16,
+      "title": "How a major enterprise identity company is Solving AI Agent Identity: The Next SSO Moment",
+      "filename": "2025-12-practitioner-interview-3.mdx",
+      "status": "ready",
+      "type": "interview",
+      "wordCount": 2400,
+      "linkedInPost": "16-practitioner-interview-3.md"
+    },
+    {
+      "id": 17,
+      "title": "a multi-agent framework company's Lesson: Why Enterprise Topology Complexity Is Your Moat",
+      "filename": "2025-12-practitioner-interview-4.mdx",
+      "status": "ready",
+      "type": "interview",
+      "wordCount": 2400,
+      "linkedInPost": "17-practitioner-interview-4.md"
+    },
+    {
+      "id": 18,
+      "title": "an AI sales intelligence company's Approach: Building AI Sales Agents That Actually Work",
+      "filename": "2025-12-practitioner-interview-5.mdx",
+      "status": "ready",
+      "type": "interview",
+      "wordCount": 2000,
+      "linkedInPost": "18-practitioner-interview-5.md"
+    },
+    {
+      "id": 19,
+      "title": "Building a Shopping Agent: Framework Bloat in Action",
+      "filename": "2025-12-shopping-agent.mdx",
+      "status": "ready",
+      "type": "prototype",
+      "wordCount": 2400,
+      "linkedInPost": "19-shopping-agent.md"
+    },
+    {
+      "id": 20,
+      "title": "Repo Patcher: Using State Machines to Make AI Agents Reliable",
+      "filename": "2025-12-repo-patcher.mdx",
+      "status": "ready",
+      "type": "prototype",
+      "wordCount": 3200,
+      "linkedInPost": "20-repo-patcher.md"
+    },
+    {
+      "id": 21,
+      "title": "Good Agents: Implementing Plan-Verify-Execute for Multi-Agent Orchestration",
+      "filename": "2025-12-good-agents.mdx",
+      "status": "ready",
+      "type": "prototype",
+      "wordCount": 2700,
+      "linkedInPost": "21-good-agents.md"
+    },
+    {
+      "id": 22,
+      "title": "an AI autonomous agent company Fireside: The 30-40% Model Revelation That Changed Everything",
+      "filename": "2025-12-autonomous-agent-fireside.mdx",
+      "status": "ready",
+      "type": "conference",
+      "wordCount": 2000,
+      "linkedInPost": "22-autonomous-agent-fireside.md"
+    },
+    {
+      "id": 23,
+      "title": "Why 95% of Agentic AI Projects Fail: Key Takeaways from the Conference Everyone's Talking About",
+      "filename": "2025-12-why-95-fail.mdx",
+      "status": "ready",
+      "type": "conference",
+      "wordCount": 2500,
+      "linkedInPost": "23-why-95-fail.md"
+    },
+    {
+      "id": 24,
+      "title": "Production Agents Summit: The 40% Context Rule and Other Uncomfortable Truths",
+      "filename": "2025-12-production-summit.mdx",
+      "status": "ready",
+      "type": "conference",
+      "wordCount": 2700,
+      "linkedInPost": "24-production-summit.md"
+    },
+    {
+      "id": 25,
+      "title": "How We Processed 44 Sources Into Actionable Research",
+      "filename": "2025-12-research-methodology.mdx",
+      "status": "ready",
+      "type": "methodology",
+      "wordCount": 2000,
+      "linkedInPost": "25-research-methodology.md"
+    }
+  ],
+  "summary": {
+    "ready": 25,
+    "draft": 0,
+    "pending": 0
+  },
+  "byType": {
+    "anchor": 1,
+    "theme": 10,
+    "interview": 5,
+    "conference": 3,
+    "prototype": 3,
+    "methodology": 3
+  }
+}

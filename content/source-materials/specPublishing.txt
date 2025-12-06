@@ -1,0 +1,884 @@
+================================================================================
+PUBLISHING SPECIFICATION
+================================================================================
+Title: AI Agents Research Publication Series
+Research Source: GSBGEN 390 — Individual Research (Autumn 2025)
+Author: Fernando Torres (MSx '26)
+Target Platform: Personal Website (fernandotorres.io)
+Content Type: Blog Posts + LinkedIn Posts
+Total Deliverables: 25+ Standalone Publications
+================================================================================
+
+EXECUTIVE OVERVIEW
+--------------------------------------------------------------------------------
+This specification defines how to transform the AI Agents research project into
+a comprehensive publication series for Fernando Torres's personal website. The
+research comprises 36 expert interviews, 5 industry conferences, and 3 functional
+prototypes—generating rich content that can be repurposed into standalone blog
+posts, each accompanied by a LinkedIn promotional post.
+
+THE VISION:
+The goal is to establish thought leadership in AI agent deployment through a
+systematic content publishing strategy. Each publication will be:
+  1. Standalone and valuable without requiring readers to consume other posts
+  2. SEO-optimized with clear titles and structured content
+  3. Linked to the umbrella research project for credibility
+  4. Accompanied by a LinkedIn post driving traffic to the website
+  5. Formatted as MDX files compatible with the existing website architecture
+
+SCOPE SUMMARY:
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ CONTENT SOURCES                                                             │
+├─────────────────────────────────────────────────────────────────────────────┤
+│   • 36 Expert Interviews (17 documented + 19 confidential)                  │
+│   • 5 Industry Conferences                                                  │
+│   • 3 Functional Prototypes                                                 │
+│   • 6 Core Themes + 17 Emergent Themes                                      │
+│   • 1 Evolution Narrative                                                   │
+│   • 1 Final Research Report                                                 │
+│                                                                             │
+│ DELIVERABLES                                                                │
+├─────────────────────────────────────────────────────────────────────────────┤
+│   • 25 Blog Posts (MDX files)                                               │
+│   • 25 LinkedIn Posts (companion promotional content)                       │
+│   • 1 Series Landing Page (research hub)                                    │
+│   • Image assets for each publication                                       │
+│                                                                             │
+│ INTEGRATION TARGET                                                          │
+├─────────────────────────────────────────────────────────────────────────────┤
+│   • Website: /Users/fernandotn/Projects/FernandoTorresWebsite               │
+│   • Blog Path: /content/blog/ (MDX files)                                   │
+│   • Project Path: /content/projects/ (MDX files)                            │
+│   • Assets Path: /public/images/blog/                                       │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+================================================================================
+SECTION 1: PUBLICATION INVENTORY
+================================================================================
+
+The research material yields 25 distinct publications organized into 7 categories.
+Each publication is designed to be standalone while contributing to a cohesive
+narrative about AI agent deployment challenges.
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ CATEGORY 1: ANCHOR PUBLICATION (1 post)                                     │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ This is the flagship post that introduces the entire research project and   │
+│ serves as the hub for all other publications.                               │
+│                                                                             │
+│ Publication 1:                                                              │
+│   Title: "What's Really Blocking AI Agents from Production?                 │
+│           Insights from 36 Expert Interviews"                               │
+│   Summary: Comprehensive overview of the research findings, key patterns,   │
+│            and the fundamental insight that production deployment is an     │
+│            engineering problem, not an AI problem.                          │
+│   Length: 2,500-3,000 words                                                 │
+│   Featured: Yes (homepage feature)                                          │
+│   Tags: ['AI Agents', 'Research', 'Enterprise AI', 'Production']            │
+│                                                                             │
+│   Key Content:                                                              │
+│     • 36 interviews, 5 conferences, 3 prototypes methodology               │
+│     • 30-40% model / 60-70% architecture insight                           │
+│     • 90% pilot failure rate revelation                                    │
+│     • Links to all theme-specific deep dives                               │
+│                                                                             │
+│   Source Files:                                                             │
+│     • FinalReport/Final_Report.md                                          │
+│     • Aggregations/Theme_Frequency_Analysis.md                             │
+│     • Aggregations/Evolution_Narrative.md                                  │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ CATEGORY 2: THEME DEEP DIVES (6 posts)                                      │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ One post per core research theme, providing detailed exploration with       │
+│ supporting evidence from multiple sources.                                  │
+│                                                                             │
+│ Publication 2: System Integration                                           │
+│   Title: "Why 92% of AI Agent Deployments Struggle with System Integration" │
+│   Summary: Deep dive into the #1 enterprise challenge—heterogeneous tech    │
+│            stacks, custom integration as moat, and why MCP isn't the answer.│
+│   Length: 2,000-2,500 words                                                 │
+│   Tags: ['AI Agents', 'System Integration', 'MCP', 'Enterprise']            │
+│   Source: Aggregations/Theme_System_Integration.md                          │
+│                                                                             │
+│   Key Content:                                                              │
+│     • 40-50% deployment time on integration (the practitioner/an AI agent orchestration company)                │
+│     • Custom integration as competitive moat (a multi-agent framework company)                      │
+│     • MCP 25-tool accuracy cliff (CC/an AI infrastructure company)                              │
+│     • Prototype validation from Shopping Agent and Good Agents             │
+│                                                                             │
+│ Publication 3: Context Management                                           │
+│   Title: "The 40% Rule: Why Larger Context Windows Won't Save Your AI Agent"│
+│   Summary: The counterintuitive finding that quality degrades at 40%        │
+│            utilization regardless of window size. Context engineering >     │
+│            context capacity.                                                │
+│   Length: 1,800-2,200 words                                                 │
+│   Tags: ['AI Agents', 'Context Windows', 'Memory', 'RAG']                   │
+│   Source: Aggregations/Theme_Context_Management.md                          │
+│                                                                             │
+│   Key Content:                                                              │
+│     • 40% context utilization rule (Production Agents Summit)              │
+│     • Dual memory architecture: user vs agent memory                       │
+│     • Context compression strategies (notes summarization, JIT retrieval)  │
+│     • Sub-agent patterns for context management                            │
+│                                                                             │
+│ Publication 4: Framework Ecosystem                                          │
+│   Title: "80-90% of Teams Abandon a popular AI agent framework for Production - Here's Why"    │
+│   Summary: The framework abandonment pattern revealed—why abstractions      │
+│            that accelerate prototyping become production obstacles.         │
+│   Length: 2,000-2,400 words                                                 │
+│   Tags: ['AI Agents', 'a popular AI agent framework', 'Frameworks', 'Production']              │
+│   Source: Aggregations/Theme_Framework_Tooling.md                           │
+│                                                                             │
+│   Key Content:                                                              │
+│     • 80-90% abandonment rate (Cynthia/a consulting firm)                         │
+│     • 3-4x performance gap with custom solutions (a practitioner/a CRM AI company)         │
+│     • Shopping Agent framework switch story                                 │
+│     • Framework bloat vs control tradeoff                                  │
+│                                                                             │
+│ Publication 5: Probabilistic Systems                                        │
+│   Title: "The Demo-Production Chasm: Why 70% Accuracy Creates False         │
+│           Expectations"                                                     │
+│   Summary: How 30 years of deterministic conditioning creates expectation   │
+│            mismatches when deploying stochastic AI systems.                 │
+│   Length: 2,200-2,600 words                                                 │
+│   Tags: ['AI Agents', 'Reliability', 'Evaluation', 'Production']            │
+│   Source: Aggregations/Theme_Probabilistic_Systems.md                       │
+│                                                                             │
+│   Key Content:                                                              │
+│     • 70% demo threshold (the founder/an AI infrastructure company)                                 │
+│     • 90% pilot failure rate (the practitioner/an AI agent orchestration company)                               │
+│     • Doom loop: fixing one scenario breaks another                        │
+│     • State machine approach (Repo Patcher validation)                     │
+│                                                                             │
+│ Publication 6: Enterprise Blockers                                          │
+│   Title: "Enterprise AI Agents: When Business Case Failure Precedes         │
+│           Technical Failure"                                                │
+│   Summary: The unexpected finding that 90% of pilots fail due to undefined  │
+│            ROI, not technical limitations. Economics before engineering.    │
+│   Length: 2,000-2,400 words                                                 │
+│   Tags: ['AI Agents', 'Enterprise', 'ROI', 'Governance']                    │
+│   Source: Aggregations/Theme_Enterprise_Blockers.md                         │
+│                                                                             │
+│   Key Content:                                                              │
+│     • ROI as primary failure mode (the practitioner/an AI agent orchestration company, first interview)         │
+│     • Pricing model confusion blocking adoption (Anon/Anon)                │
+│     • $400-750/month willingness to pay (an engineering leader/a workforce platform)                    │
+│     • Identity and trust deficits in regulated industries                  │
+│                                                                             │
+│ Publication 7: Model Capabilities                                           │
+│   Title: "Why Coding Agents Are the Exception, Not the Rule"                │
+│   Summary: The generation vs analysis asymmetry—why coding agent success    │
+│            patterns don't transfer to knowledge work domains.               │
+│   Length: 1,800-2,200 words                                                 │
+│   Tags: ['AI Agents', 'Coding Agents', 'Cursor', 'Model Capabilities']      │
+│   Source: Aggregations/Theme_Model_Capabilities.md                          │
+│                                                                             │
+│   Key Content:                                                              │
+│     • "Only two killer apps: search and coding" (a developer/an AI coding company)         │
+│     • 3x productivity for coding vs 3-5x cost disadvantage elsewhere       │
+│     • Generation (unstructured) vs Analysis (structured) asymmetry         │
+│     • Structured outputs and immediate verification advantages             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ CATEGORY 3: EMERGENT INSIGHTS (6 posts)                                     │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Novel findings that emerged during research but weren't in initial          │
+│ hypotheses. These represent original contributions to the field.            │
+│                                                                             │
+│ Publication 8:                                                              │
+│   Title: "The 30-40% Model Myth: Why Framework Architecture Matters More    │
+│           Than Model Capability"                                            │
+│   Summary: The counterintuitive discovery that models contribute 30-40%     │
+│            while framework/architecture contributes 60-70% to agent success.│
+│   Length: 1,800-2,200 words                                                 │
+│   Tags: ['AI Agents', 'Architecture', 'Models', 'Infrastructure']           │
+│   Source: Evolution_Narrative.md (Pivot 2: an AI autonomous agent company Fireside)                  │
+│                                                                             │
+│ Publication 9:                                                              │
+│   Title: "Handoff Rate: The North Star Metric for AI Agent Success"         │
+│   Summary: Why measuring the percentage of tasks passed back to humans      │
+│            trumps accuracy, latency, and token efficiency metrics.          │
+│   Length: 1,500-1,800 words                                                 │
+│   Tags: ['AI Agents', 'Metrics', 'Evaluation', 'Automation']                │
+│   Source: Why_95_Percent_Fail_extraction.md + Theme_Frequency_Analysis.md   │
+│                                                                             │
+│ Publication 10:                                                             │
+│   Title: "Dual Memory Architecture: The Distinction Most AI Companies Miss" │
+│   Summary: User memory (preferences) vs Agent memory (tool patterns) are    │
+│            architecturally distinct problems requiring separate solutions.  │
+│   Length: 1,600-2,000 words                                                 │
+│   Tags: ['AI Agents', 'Memory', 'Architecture', 'RAG']                      │
+│   Source: a practitioner_an AI observability company_extraction.md + Theme_Context_Management.md         │
+│                                                                             │
+│ Publication 11:                                                             │
+│   Title: "MCP Reality Check: The 25-Tool Accuracy Cliff No One Talks About" │
+│   Summary: Why Model Context Protocol accuracy drops to 30% beyond 25 tools │
+│            and what this means for enterprise integration strategies.       │
+│   Length: 1,800-2,200 words                                                 │
+│   Tags: ['AI Agents', 'MCP', 'Integration', 'Tools']                        │
+│   Source: CC_an AI infrastructure company_extraction.md + Theme_System_Integration.md            │
+│                                                                             │
+│ Publication 12:                                                             │
+│   Title: "Component-Level Evaluation: Why End-to-End Testing Fails for      │
+│           AI Agents"                                                        │
+│   Summary: The an AI sales intelligence company insight—test deterministic components (especially     │
+│            first-step retrieval) rather than entire probabilistic pipelines.│
+│   Length: 1,600-2,000 words                                                 │
+│   Tags: ['AI Agents', 'Evaluation', 'Testing', 'QA']                        │
+│   Source: the AI lead_an AI sales intelligence company_extraction.md + Evolution_Narrative.md               │
+│                                                                             │
+│ Publication 13:                                                             │
+│   Title: "The Evaluation Gap: Why 7 YC Companies Building Eval Tools Have   │
+│           Zero Adoption"                                                    │
+│   Summary: The market opportunity in outcome-focused evaluation—measuring   │
+│            handoff rate instead of intermediate technical metrics.          │
+│   Length: 1,800-2,200 words                                                 │
+│   Tags: ['AI Agents', 'Evaluation', 'Startups', 'Market Opportunity']       │
+│   Source: Stephen_GMI_extraction.md + Theme_Probabilistic_Systems.md        │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ CATEGORY 4: PRACTITIONER PERSPECTIVES (5 posts)                             │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Interview highlights showcasing specific expert insights. Written with      │
+│ permission considerations for attribution.                                  │
+│                                                                             │
+│ Publication 14:                                                             │
+│   Title: "Inside an AI agent orchestration company: Why 90% of Enterprise AI Agent Pilots Never       │
+│           Convert to Production"                                            │
+│   Summary: the practitioner's insights on business case failure, integration           │
+│            complexity, and the path to enterprise adoption.                 │
+│   Length: 1,800-2,200 words                                                 │
+│   Tags: ['AI Agents', 'Enterprise', 'an AI agent orchestration company', 'Case Study']                │
+│   Source: the practitioner_an AI agent orchestration company_extraction.md                                       │
+│   Note: Obtain attribution permission before publishing                     │
+│                                                                             │
+│ Publication 15:                                                             │
+│   Title: "an AI infrastructure company's Take: Managing Expectations with Probabilistic Systems"│
+│   Summary: a founder at an AI infrastructure company on the paradigm shift from deterministic to        │
+│            stochastic systems and why demos create false expectations.      │
+│   Length: 1,600-2,000 words                                                 │
+│   Tags: ['AI Agents', 'an AI infrastructure company', 'Reliability', 'Expectations']            │
+│   Source: the founder_an AI infrastructure company_extraction.md                                     │
+│   Note: Obtain attribution permission before publishing                     │
+│                                                                             │
+│ Publication 16:                                                             │
+│   Title: "How a major enterprise identity company is Solving AI Agent Identity: The Next SSO Moment"       │
+│   Summary: Anon's insights on enterprise identity standards, MCP            │
+│            extensions, and why CISO/CIO are the real gatekeepers.           │
+│   Length: 1,800-2,200 words                                                 │
+│   Tags: ['AI Agents', 'a major enterprise identity company', 'Identity', 'Security', 'Enterprise']         │
+│   Source: Anon.md                                           │
+│   Note: Obtain attribution permission before publishing                     │
+│                                                                             │
+│ Publication 17:                                                             │
+│   Title: "a multi-agent framework company's Lesson: Why Enterprise Topology Complexity Is Your Moat" │
+│   Summary: the co-founder's perspective on 40-country presence, labor laws, and why   │
+│            integration complexity can't be solved by throwing money at it.  │
+│   Length: 1,600-2,000 words                                                 │
+│   Tags: ['AI Agents', 'a multi-agent framework company', 'Enterprise', 'Integration']                │
+│   Source: a multi-agent framework company_extraction.md                                              │
+│   Note: Obtain attribution permission before publishing                     │
+│                                                                             │
+│ Publication 18:                                                             │
+│   Title: "an AI sales intelligence company's Approach: Building AI Sales Agents That Actually Work"   │
+│   Summary: the AI lead's insights on component-level evaluation, data moats,      │
+│            and opinionated design for vertical AI agents.                   │
+│   Length: 1,600-2,000 words                                                 │
+│   Tags: ['AI Agents', 'an AI sales intelligence company', 'Sales', 'Vertical AI']                     │
+│   Source: the AI lead_an AI sales intelligence company_extraction.md                                        │
+│   Note: Obtain attribution permission before publishing                     │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ CATEGORY 5: PROTOTYPE LEARNINGS (3 posts)                                   │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Hands-on engineering insights from building actual AI agent systems.        │
+│ Demonstrates practitioner credibility through concrete implementation.      │
+│                                                                             │
+│ Publication 19:                                                             │
+│   Title: "Building a Shopping Agent: Framework Bloat in Action"             │
+│   Summary: The story of switching from LangGraph to a popular AI agent framework mid-          │
+│            development and what it taught us about framework selection.     │
+│   Length: 2,000-2,400 words                                                 │
+│   Tags: ['AI Agents', 'LangGraph', 'a popular AI agent framework', 'Prototyping']              │
+│   Source: Extractions/Prototypes/Shopping_Agent_extraction.md               │
+│   GitHub: https://github.com/FernandoTN/Shopping_Agent                      │
+│                                                                             │
+│   Key Content:                                                              │
+│     • Framework selection decision process                                  │
+│     • LangGraph complexity and bloat experience                            │
+│     • Mid-development switch under deadline pressure                       │
+│     • Lessons for future framework evaluation                              │
+│                                                                             │
+│ Publication 20:                                                             │
+│   Title: "Repo Patcher: Using State Machines to Make AI Agents Reliable"    │
+│   Summary: How the INGEST→PLAN→PATCH→TEST→REPAIR→PR state machine          │
+│            approach provides deterministic governance over probabilistic    │
+│            agent behavior.                                                  │
+│   Length: 2,200-2,600 words                                                 │
+│   Tags: ['AI Agents', 'State Machines', 'Reliability', 'Code Agents']       │
+│   Source: Extractions/Prototypes/Repo_Patcher_extraction.md                 │
+│   GitHub: https://github.com/FernandoTN/repo-patcher                        │
+│                                                                             │
+│   Key Content:                                                              │
+│     • State machine architecture diagram                                    │
+│     • Risk-based HITL escalation design                                    │
+│     • <$0.25 per fix cost optimization                                     │
+│     • Observability and debugging patterns                                 │
+│                                                                             │
+│ Publication 21:                                                             │
+│   Title: "Good Agents: Implementing Plan-Verify-Execute for Multi-Agent     │
+│           Orchestration"                                                    │
+│   Summary: The verification phase pattern—validating feasibility before     │
+│            execution and using transparency to build user trust.            │
+│   Length: 2,000-2,400 words                                                 │
+│   Tags: ['AI Agents', 'Multi-Agent', 'Orchestration', 'Trust']              │
+│   Source: Extractions/Prototypes/Good_Agents_extraction.md                  │
+│   GitHub: https://github.com/FernandoTN/goodAgents                          │
+│                                                                             │
+│   Key Content:                                                              │
+│     • Plan-Verify-Execute pattern explanation                              │
+│     • MCP integration challenges                                           │
+│     • SSE streaming for transparency                                       │
+│     • Security (OAuth, RBAC) implementation                                │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ CATEGORY 6: CONFERENCE INSIGHTS (3 posts)                                   │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Key takeaways from major industry events, providing field perspective.      │
+│                                                                             │
+│ Publication 22:                                                             │
+│   Title: "an AI autonomous agent company Fireside: The 30-40% Model Revelation That Changed          │
+│           Everything"                                                       │
+│   Summary: How a single statement at the an AI autonomous agent company event inverted our           │
+│            understanding of what matters for AI agent success.              │
+│   Length: 1,600-2,000 words                                                 │
+│   Tags: ['AI Agents', 'an AI autonomous agent company', 'Conference', 'Models']                      │
+│   Source: an AI autonomous agent company_Fireside_extraction.md + Evolution_Narrative.md             │
+│                                                                             │
+│ Publication 23:                                                             │
+│   Title: "Why 95% of Agentic AI Projects Fail: Key Takeaways from the       │
+│           Conference Everyone's Talking About"                              │
+│   Summary: The four traps (RAG chatbots, drag-and-drop lock-in, MCP bloat,  │
+│            tech debt) and the handoff rate metric revelation.               │
+│   Length: 1,800-2,200 words                                                 │
+│   Tags: ['AI Agents', 'Conference', 'Failure Patterns', 'Best Practices']   │
+│   Source: Why_95_Percent_Fail_extraction.md                                 │
+│                                                                             │
+│ Publication 24:                                                             │
+│   Title: "Production Agents Summit: The 40% Context Rule and Other          │
+│           Uncomfortable Truths"                                             │
+│   Summary: Snowflake's summit revealed the context utilization threshold,   │
+│            observability requirements, and enterprise security realities.   │
+│   Length: 1,800-2,200 words                                                 │
+│   Tags: ['AI Agents', 'Snowflake', 'Conference', 'Production']              │
+│   Source: Production_Agents_Summit_extraction.md                            │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ CATEGORY 7: METHODOLOGY & META (1 post)                                     │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Behind-the-scenes content showing research process and credibility.         │
+│                                                                             │
+│ Publication 25:                                                             │
+│   Title: "How We Processed 36 Interviews into One Research Report:          │
+│           A Systematic Approach"                                            │
+│   Summary: The extraction→aggregation→synthesis methodology that            │
+│            transformed qualitative interviews into quantified insights.     │
+│   Length: 2,000-2,400 words                                                 │
+│   Tags: ['Research', 'Methodology', 'AI Agents', 'Stanford GSB']            │
+│   Source: ProcessRecap.md + spec.txt                                        │
+│                                                                             │
+│   Key Content:                                                              │
+│     • Two-phase extraction and aggregation                                 │
+│     • Parallel sub-agent execution pattern                                 │
+│     • Theme frequency analysis approach                                    │
+│     • Lessons learned for future research                                  │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+================================================================================
+SECTION 2: WEBSITE INTEGRATION SPECIFICATION
+================================================================================
+
+The publications will integrate into the existing website structure at:
+/Users/fernandotn/Projects/FernandoTorresWebsite
+
+WEBSITE ARCHITECTURE ANALYSIS:
+--------------------------------------------------------------------------------
+The website is a Next.js 14 application using:
+  • Contentlayer for content management
+  • MDX for rich content with React components
+  • Tailwind CSS for styling
+  • TypeScript for type safety
+
+CONTENT STRUCTURE:
+  /content/
+    /blog/           <- Blog posts (MDX files)
+    /projects/       <- Project showcases (MDX files)
+
+BLOG POST FORMAT (from contentlayer.config.js):
+--------------------------------------------------------------------------------
+Required fields:
+  • title: string (required)
+  • summary: string (required)
+  • publishedAt: date (required)
+
+Optional fields:
+  • tags: list of strings (default: [])
+  • image: string (cover image path)
+  • author: string (default: 'Fernando Torres')
+  • featured: boolean (default: false)
+
+Computed fields (automatic):
+  • slug: generated from file path
+  • readingTime: calculated from content
+
+FOLDER STRUCTURE TO CREATE:
+--------------------------------------------------------------------------------
+390/
+├── publishing/                              <- NEW: Publishing workspace
+│   ├── deliverables/                        <- NEW: Final outputs
+│   │   ├── blog-posts/                      <- MDX files ready for website
+│   │   │   ├── 2025-12-ai-agents-research-overview.mdx
+│   │   │   ├── 2025-12-system-integration-92-percent.mdx
+│   │   │   ├── 2025-12-40-percent-context-rule.mdx
+│   │   │   ├── ... (25 total MDX files)
+│   │   │   └── README.md                    <- Index of all blog posts
+│   │   │
+│   │   ├── linkedin-posts/                  <- LinkedIn promotional content
+│   │   │   ├── 01-anchor-post.md
+│   │   │   ├── 02-system-integration.md
+│   │   │   ├── ... (25 total LinkedIn posts)
+│   │   │   └── README.md                    <- Posting schedule
+│   │   │
+│   │   └── images/                          <- Cover images and diagrams
+│   │       ├── ai-agents-research-cover.png
+│   │       ├── system-integration-diagram.png
+│   │       └── ... (supporting visuals)
+│   │
+│   └── staging/                             <- Work in progress
+│       ├── drafts/                          <- Posts being written
+│       └── review/                          <- Posts awaiting review
+
+INTEGRATION STEPS:
+--------------------------------------------------------------------------------
+1. Copy MDX files from publishing/deliverables/blog-posts/ to:
+   /Users/fernandotn/Projects/FernandoTorresWebsite/content/blog/
+
+2. Copy images from publishing/deliverables/images/ to:
+   /Users/fernandotn/Projects/FernandoTorresWebsite/public/images/blog/
+
+3. Run `npm run build` to regenerate contentlayer files
+
+4. Verify posts appear at https://fernandotorres.io/blog/[slug]
+
+================================================================================
+SECTION 3: BLOG POST TEMPLATE
+================================================================================
+
+Each blog post MUST follow this MDX template structure:
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ BLOG POST MDX TEMPLATE                                                       │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│ ---                                                                         │
+│ title: '[TITLE]'                                                            │
+│ summary: '[1-2 sentence summary for SEO and preview cards]'                 │
+│ publishedAt: '2025-12-XX'                                                   │
+│ tags: ['AI Agents', 'Tag2', 'Tag3', 'Tag4']                                 │
+│ featured: [true/false]                                                      │
+│ author: 'Fernando Torres'                                                   │
+│ image: '/images/blog/[image-name].png'                                      │
+│ ---                                                                         │
+│                                                                             │
+│ [HOOK - Opening paragraph that grabs attention, 2-3 sentences]              │
+│                                                                             │
+│ ## The Discovery                                                            │
+│                                                                             │
+│ [Context section - What led to this insight, 150-200 words]                 │
+│                                                                             │
+│ ## What We Found                                                            │
+│                                                                             │
+│ [Main content - The core finding with evidence, 500-800 words]              │
+│                                                                             │
+│ ### Key Insight 1                                                           │
+│                                                                             │
+│ > "[Direct quote from interview/conference source]"                         │
+│ > — [Speaker Name], [Company/Role]                                          │
+│                                                                             │
+│ [Explanation of the insight, 100-150 words]                                 │
+│                                                                             │
+│ ### Key Insight 2                                                           │
+│                                                                             │
+│ [Pattern continues...]                                                      │
+│                                                                             │
+│ ## Why This Matters                                                         │
+│                                                                             │
+│ [Implications section - What this means for practitioners, 200-300 words]   │
+│                                                                             │
+│ ## What You Can Do                                                          │
+│                                                                             │
+│ [Actionable recommendations, bullet points, 150-200 words]                  │
+│                                                                             │
+│ - **Action 1**: Brief description                                           │
+│ - **Action 2**: Brief description                                           │
+│ - **Action 3**: Brief description                                           │
+│                                                                             │
+│ ## The Bottom Line                                                          │
+│                                                                             │
+│ [Conclusion - Tie back to main thesis, 2-3 sentences]                       │
+│                                                                             │
+│ ---                                                                         │
+│                                                                             │
+│ _This post is part of my research series on AI Agent deployment,            │
+│ based on 36 expert interviews, 5 industry conferences, and 3 functional     │
+│ prototypes. [Read the full research overview](/blog/ai-agents-research)._   │
+│                                                                             │
+│ _Have thoughts on AI agent deployment? Connect with me on                   │
+│ [LinkedIn](https://www.linkedin.com/in/fernandotn/) or                      │
+│ [email me](mailto:fertorresnavarrete@gmail.com)._                           │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+CONTENT GUIDELINES:
+--------------------------------------------------------------------------------
+• Length: 1,500-2,600 words depending on topic depth
+• Reading time: 6-12 minutes target
+• Quotes: Minimum 2-3 direct quotes with attribution per post
+• Data points: Include specific numbers (90%, 40-50%, 80-90%) when available
+• Code blocks: Use sparingly, only for illustrative examples
+• Headers: Use ## for main sections, ### for subsections
+• Lists: Prefer bullet points for action items and takeaways
+• Links: Link to other posts in the series where relevant
+
+================================================================================
+SECTION 4: LINKEDIN POST TEMPLATE
+================================================================================
+
+Each blog post requires an accompanying LinkedIn post to drive traffic.
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ LINKEDIN POST TEMPLATE                                                       │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│ [HOOK - Pattern interrupt or surprising statistic, 1 line]                  │
+│                                                                             │
+│ [CONTEXT - Brief setup of the problem/question, 2-3 lines]                  │
+│                                                                             │
+│ [KEY INSIGHT - The main finding, formatted for impact, 3-5 lines]           │
+│                                                                             │
+│ Here's what we discovered:                                                  │
+│                                                                             │
+│ [BULLET POINTS - 3-4 key takeaways]                                         │
+│ • Takeaway 1                                                                │
+│ • Takeaway 2                                                                │
+│ • Takeaway 3                                                                │
+│                                                                             │
+│ [CTA - Call to action with link, 1-2 lines]                                 │
+│                                                                             │
+│ Full breakdown in my latest post: [LINK]                                    │
+│                                                                             │
+│ [ENGAGEMENT PROMPT - Question to encourage comments, 1 line]                │
+│                                                                             │
+│ What's been your experience with [topic]?                                   │
+│                                                                             │
+│ ---                                                                         │
+│                                                                             │
+│ [HASHTAGS - 3-5 relevant hashtags]                                          │
+│ #AIAgents #EnterpriseAI #LLMs #TechLeadership #ProductionAI                 │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+LINKEDIN POST EXAMPLE (for Publication 2):
+--------------------------------------------------------------------------------
+92% of AI agent deployments struggle with the same problem.
+
+And it's not what you think.
+
+After interviewing 36 experts building production AI agents, we found the #1
+challenge isn't model capability or context windows.
+
+It's system integration.
+
+Here's what the data shows:
+
+• 40-50% of deployment time is spent on integration (not AI work)
+• MCP accuracy drops to 30% beyond 25 tools
+• Custom integration is treated as competitive moat, not problem to solve
+• SAP, Salesforce, core banking systems "never talked to each other"
+
+The bottleneck isn't AI intelligence—it's the mundane work of connecting
+heterogeneous enterprise systems.
+
+Full breakdown with quotes from practitioners: [LINK]
+
+What integration challenges have you faced deploying AI agents?
+
+#AIAgents #EnterpriseAI #SystemIntegration #LLMs #ProductionAI
+
+================================================================================
+SECTION 5: PUBLICATION SCHEDULE
+================================================================================
+
+The 25 publications should be released over 8-10 weeks following a strategic
+sequence that builds audience engagement and establishes thought leadership.
+
+PUBLISHING STRATEGY:
+--------------------------------------------------------------------------------
+Phase 1: Foundation (Week 1-2)
+  • Publication 1: Anchor post (featured, builds awareness)
+
+Phase 2: Core Themes (Week 2-4)
+  • Publications 2-7: One theme deep dive every 2-3 days
+
+Phase 3: Emergent Insights (Week 4-6)
+  • Publications 8-13: Novel findings for thought leadership
+
+Phase 4: Practitioner Perspectives (Week 6-7)
+  • Publications 14-18: Interview highlights (after permissions)
+
+Phase 5: Hands-On Learning (Week 7-8)
+  • Publications 19-21: Prototype case studies
+
+Phase 6: Conference Insights (Week 8-9)
+  • Publications 22-24: Event takeaways
+
+Phase 7: Meta (Week 9-10)
+  • Publication 25: Research methodology
+
+RECOMMENDED POSTING CADENCE:
+--------------------------------------------------------------------------------
+• Blog posts: 3 per week (Mon/Wed/Fri)
+• LinkedIn posts: Same day as blog post, ideally 9-11am PST
+• Featured posts: Tuesdays (higher engagement)
+• Cross-promotion: Reference previous posts in series
+
+================================================================================
+SECTION 6: TASK BREAKDOWN
+================================================================================
+
+This specification generates approximately 75 discrete tasks:
+
+PHASE 1: SETUP (~5 tasks)
+--------------------------------------------------------------------------------
+[ ] Create publishing/ folder structure
+[ ] Create deliverables/ subfolders (blog-posts, linkedin-posts, images)
+[ ] Create staging/ subfolders (drafts, review)
+[ ] Create README.md templates for each folder
+[ ] Set up tracking spreadsheet for publication status
+
+PHASE 2: ANCHOR PUBLICATION (~5 tasks)
+--------------------------------------------------------------------------------
+[ ] Draft anchor post (Publication 1)
+[ ] Create LinkedIn post for anchor
+[ ] Design/source cover image
+[ ] Review and edit
+[ ] Move to deliverables/
+
+PHASE 3: THEME DEEP DIVES (~30 tasks)
+--------------------------------------------------------------------------------
+For each of 6 theme publications (2-7):
+  [ ] Extract key quotes from source files
+  [ ] Draft blog post following template
+  [ ] Create LinkedIn post
+  [ ] Review and edit
+  [ ] Move to deliverables/
+
+PHASE 4: EMERGENT INSIGHTS (~30 tasks)
+--------------------------------------------------------------------------------
+For each of 6 emergent insight publications (8-13):
+  [ ] Identify novel angle and supporting evidence
+  [ ] Draft blog post
+  [ ] Create LinkedIn post
+  [ ] Review and edit
+  [ ] Move to deliverables/
+
+PHASE 5: PRACTITIONER PERSPECTIVES (~25 tasks)
+--------------------------------------------------------------------------------
+For each of 5 interview publications (14-18):
+  [ ] Obtain attribution permission
+  [ ] Extract compelling narrative
+  [ ] Draft blog post
+  [ ] Create LinkedIn post
+  [ ] Move to deliverables/
+
+PHASE 6: PROTOTYPE LEARNINGS (~15 tasks)
+--------------------------------------------------------------------------------
+For each of 3 prototype publications (19-21):
+  [ ] Document key learnings with code examples
+  [ ] Draft blog post
+  [ ] Create LinkedIn post
+  [ ] Add GitHub repo links
+  [ ] Move to deliverables/
+
+PHASE 7: CONFERENCE INSIGHTS (~15 tasks)
+--------------------------------------------------------------------------------
+For each of 3 conference publications (22-24):
+  [ ] Extract key quotes and moments
+  [ ] Draft blog post
+  [ ] Create LinkedIn post
+  [ ] Review and edit
+  [ ] Move to deliverables/
+
+PHASE 8: METHODOLOGY (~5 tasks)
+--------------------------------------------------------------------------------
+[ ] Draft methodology post (Publication 25)
+[ ] Create LinkedIn post
+[ ] Create process diagrams
+[ ] Review and edit
+[ ] Move to deliverables/
+
+PHASE 9: WEBSITE INTEGRATION (~10 tasks)
+--------------------------------------------------------------------------------
+[ ] Copy all MDX files to website content/blog/
+[ ] Copy all images to website public/images/blog/
+[ ] Run npm run build
+[ ] Test all post URLs
+[ ] Verify cross-linking works
+[ ] Update homepage featured posts if needed
+[ ] Generate sitemap
+[ ] Generate RSS feed
+[ ] Test social sharing metadata
+[ ] Final QA pass
+
+================================================================================
+SECTION 7: SUCCESS CRITERIA
+================================================================================
+
+The publishing project is complete when:
+
+CONTENT DELIVERABLES:
+[ ] 25 blog posts (MDX files) in publishing/deliverables/blog-posts/
+[ ] 25 LinkedIn posts in publishing/deliverables/linkedin-posts/
+[ ] Cover images for all posts in publishing/deliverables/images/
+[ ] README files with indexes in each deliverable folder
+
+WEBSITE INTEGRATION:
+[ ] All MDX files copied to website content/blog/
+[ ] All images copied to website public/images/blog/
+[ ] npm run build completes successfully
+[ ] All 25 posts accessible at their URLs
+[ ] Cross-linking between posts works correctly
+[ ] Featured posts appear on homepage
+[ ] RSS feed includes new posts
+[ ] Sitemap includes new posts
+
+QUALITY STANDARDS:
+[ ] Each post follows the MDX template structure
+[ ] Each post includes minimum 2-3 attributed quotes
+[ ] Each post includes specific data points where available
+[ ] Each post ends with series footer and contact info
+[ ] All LinkedIn posts follow template structure
+[ ] No broken links in any content
+[ ] No typos or grammatical errors
+
+ATTRIBUTION REQUIREMENTS:
+[ ] Permissions obtained for named practitioner posts (14-18)
+[ ] Confidential sources properly anonymized
+[ ] All quotes attributed correctly
+[ ] GitHub repos linked for prototype posts
+
+================================================================================
+SECTION 8: REFERENCE: DATA POINTS FOR PUBLICATIONS
+================================================================================
+
+Key statistics and quotes to be used across publications:
+
+QUANTITATIVE DATA POINTS:
+--------------------------------------------------------------------------------
+• 92% of sources cite system integration challenges (Theme_Frequency_Analysis)
+• 90% of pilot projects fail to reach production (the practitioner/an AI agent orchestration company)
+• 80-90% abandon a popular AI agent framework for production (Cynthia/a consulting firm)
+• 85% of sources discuss probabilistic reliability gaps
+• 40-50% of deployment time is integration, not AI work (the practitioner/an AI agent orchestration company)
+• 30-40% model contribution vs 60-70% framework/system (an AI autonomous agent company)
+• 25-tool limit for MCP before accuracy drops to 30% (CC/an AI infrastructure company)
+• 40% context window utilization rule (Production Agents Summit)
+• 3-4x productivity gains for coding agents (Anon/Anon, a developer/an AI coding company)
+• 3-5x cost disadvantage for generic agents vs offshore labor (Anon/Anon)
+• $2M single use case savings, $100M annual target (a multi-agent framework company customer)
+• $400-750/month willingness to pay vs $20/month current (an engineering leader/a workforce platform)
+• 3-4x slower with a popular AI agent framework vs custom (a practitioner/a CRM AI company)
+• 36 interviews, 5 conferences, 3 prototypes (research scope)
+• 6 core themes + 17 emergent themes (analysis results)
+
+KEY QUOTES FOR ATTRIBUTION:
+--------------------------------------------------------------------------------
+an enterprise AI deployment expert:
+  "Most AI agent deployments fail due to undefined ROI calculations and
+   lack of commercial mindset, not technical limitations."
+
+a founder at an AI infrastructure company:
+  "70% reliability is demo-able, but creates false expectations... Most
+   people building technology over the last 30 years aren't used to
+   probabilistic stochastic systems."
+
+an AI autonomous agent company Co-Founder:
+  "Model only contributes 30-40% of the whole thing. The framework, the
+   whole system you build upon the model is much more important."
+
+Cynthia (Wise Agents):
+  "80-90% abandon a popular AI agent framework for production... they realize it's full of
+   bloat."
+
+a practitioner at an AI infrastructure company:
+  "When you have more than 25 MCP tools, accuracy will drop to 30%."
+
+an AI lead at a sales intelligence company:
+  "Almost never evaluate end-to-end because it is pointless... we built
+   it blind after step one."
+
+a developer at an AI coding company:
+  "Only two killer apps: search and coding agents."
+
+Production Agents Summit:
+  "If your agent is using anything more than 40% of the context window,
+   it's probably going to make mistakes."
+
+Why 95% Fail Conference:
+  "The real question is does it actually reduce the handoff to humans."
+
+================================================================================
+SECTION 9: NOTES & CONSTRAINTS
+================================================================================
+
+PRIVACY REQUIREMENTS:
+--------------------------------------------------------------------------------
+• 19 confidential interviews must NOT have names/companies disclosed
+• Use "multiple interviewees" or "practitioners we spoke with" for attribution
+• Practitioner perspective posts (14-18) require explicit permission
+• Conference quotes are public unless marked confidential
+
+CONTENT CONSIDERATIONS:
+--------------------------------------------------------------------------------
+• Focus on insights, not company promotion
+• Balance critical findings with constructive recommendations
+• Avoid sensationalism; maintain academic credibility
+• Include actionable takeaways in every post
+• Reference Stanford GSB affiliation appropriately
+
+TECHNICAL REQUIREMENTS:
+--------------------------------------------------------------------------------
+• MDX files must be valid (test with npm run build)
+• Images should be optimized for web (max 200KB)
+• Use relative paths for images (/images/blog/...)
+• Maintain consistent date format (YYYY-MM-DD)
+• Use consistent tag capitalization
+
+CROSS-LINKING STRATEGY:
+--------------------------------------------------------------------------------
+• Every post links to anchor post
+• Theme posts link to related emergent insight posts
+• Prototype posts link to relevant theme posts
+• Conference posts link to themes they validated
+• Methodology post links to all major findings
+
+================================================================================
+END OF SPECIFICATION
+================================================================================

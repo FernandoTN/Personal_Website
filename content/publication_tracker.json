@@ -1,0 +1,494 @@
+{
+  "project": {
+    "name": "AI Agents Research Publication Series",
+    "total_publications": 25,
+    "research_source": "GSBGEN 390 - Individual Research (Autumn 2025)",
+    "author": "Fernando Torres (MSx '26)",
+    "target_platform": "Personal Website (fernandotorres.io)",
+    "last_updated": "2025-12-03"
+  },
+  "publications": [
+    {
+      "id": 1,
+      "title": "What's Really Blocking AI Agents from Production? Insights from 36 Expert Interviews",
+      "category": "anchor",
+      "status": "ready",
+      "draft_date": "2025-12-03",
+      "review_date": null,
+      "publish_date": null,
+      "linkedin_posted": null,
+      "url_slug": "ai-agents-research-overview",
+      "featured": true,
+      "tags": [
+        "AI Agents",
+        "Research",
+        "Enterprise AI",
+        "Production",
+        "Stanford GSB"
+      ],
+      "estimated_length": "2500-3000 words",
+      "source_files": [
+        "FinalReport/Final_Report.md",
+        "Aggregations/Theme_Frequency_Analysis.md",
+        "Aggregations/Evolution_Narrative.md"
+      ],
+      "deliverable_file": "publishing/deliverables/blog-posts/2025-12-ai-agents-research-overview.mdx"
+    },
+    {
+      "id": 2,
+      "title": "Why 92% of AI Agent Deployments Struggle with System Integration",
+      "category": "theme-deep-dive",
+      "status": "not_started",
+      "draft_date": null,
+      "review_date": null,
+      "publish_date": null,
+      "linkedin_posted": null,
+      "url_slug": "system-integration-92-percent",
+      "featured": false,
+      "tags": ["AI Agents", "System Integration", "MCP", "Enterprise"],
+      "estimated_length": "2000-2500 words",
+      "source_files": ["Aggregations/Theme_System_Integration.md"]
+    },
+    {
+      "id": 3,
+      "title": "The 40% Rule: Why Larger Context Windows Won't Save Your AI Agent",
+      "category": "theme-deep-dive",
+      "status": "not_started",
+      "draft_date": null,
+      "review_date": null,
+      "publish_date": null,
+      "linkedin_posted": null,
+      "url_slug": "40-percent-context-rule",
+      "featured": false,
+      "tags": ["AI Agents", "Context Windows", "Memory", "RAG"],
+      "estimated_length": "1800-2200 words",
+      "source_files": ["Aggregations/Theme_Context_Management.md"]
+    },
+    {
+      "id": 4,
+      "title": "80-90% of Teams Abandon a popular AI agent framework for Production - Here's Why",
+      "category": "theme-deep-dive",
+      "status": "not_started",
+      "draft_date": null,
+      "review_date": null,
+      "publish_date": null,
+      "linkedin_posted": null,
+      "url_slug": "langchain-abandonment-pattern",
+      "featured": false,
+      "tags": [
+        "AI Agents",
+        "a popular AI agent framework",
+        "Frameworks",
+        "Production"
+      ],
+      "estimated_length": "2000-2400 words",
+      "source_files": ["Aggregations/Theme_Framework_Tooling.md"]
+    },
+    {
+      "id": 5,
+      "title": "The Demo-Production Chasm: Why 70% Accuracy Creates False Expectations",
+      "category": "theme-deep-dive",
+      "status": "not_started",
+      "draft_date": null,
+      "review_date": null,
+      "publish_date": null,
+      "linkedin_posted": null,
+      "url_slug": "demo-production-chasm",
+      "featured": false,
+      "tags": ["AI Agents", "Reliability", "Evaluation", "Production"],
+      "estimated_length": "2200-2600 words",
+      "source_files": ["Aggregations/Theme_Probabilistic_Systems.md"]
+    },
+    {
+      "id": 6,
+      "title": "Enterprise AI Agents: When Business Case Failure Precedes Technical Failure",
+      "category": "theme-deep-dive",
+      "status": "not_started",
+      "draft_date": null,
+      "review_date": null,
+      "publish_date": null,
+      "linkedin_posted": null,
+      "url_slug": "enterprise-business-case-failure",
+      "featured": false,
+      "tags": ["AI Agents", "Enterprise", "ROI", "Governance"],
+      "estimated_length": "2000-2400 words",
+      "source_files": ["Aggregations/Theme_Enterprise_Blockers.md"]
+    },
+    {
+      "id": 7,
+      "title": "Why Coding Agents Are the Exception, Not the Rule",
+      "category": "theme-deep-dive",
+      "status": "not_started",
+      "draft_date": null,
+      "review_date": null,
+      "publish_date": null,
+      "linkedin_posted": null,
+      "url_slug": "coding-agents-exception",
+      "featured": false,
+      "tags": ["AI Agents", "Coding Agents", "Cursor", "Model Capabilities"],
+      "estimated_length": "1800-2200 words",
+      "source_files": ["Aggregations/Theme_Model_Capabilities.md"]
+    },
+    {
+      "id": 8,
+      "title": "The 30-40% Model Myth: Why Framework Architecture Matters More Than Model Capability",
+      "category": "emergent-insight",
+      "status": "not_started",
+      "draft_date": null,
+      "review_date": null,
+      "publish_date": null,
+      "linkedin_posted": null,
+      "url_slug": "30-40-percent-model-myth",
+      "featured": false,
+      "tags": ["AI Agents", "Architecture", "Models", "Infrastructure"],
+      "estimated_length": "1800-2200 words",
+      "source_files": ["Aggregations/Evolution_Narrative.md"]
+    },
+    {
+      "id": 9,
+      "title": "Handoff Rate: The North Star Metric for AI Agent Success",
+      "category": "emergent-insight",
+      "status": "not_started",
+      "draft_date": null,
+      "review_date": null,
+      "publish_date": null,
+      "linkedin_posted": null,
+      "url_slug": "handoff-rate-north-star-metric",
+      "featured": false,
+      "tags": ["AI Agents", "Metrics", "Evaluation", "Automation"],
+      "estimated_length": "1500-1800 words",
+      "source_files": [
+        "Extractions/Conferences/Why_95_Percent_Fail_extraction.md",
+        "Aggregations/Theme_Frequency_Analysis.md"
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Dual Memory Architecture: The Distinction Most AI Companies Miss",
+      "category": "emergent-insight",
+      "status": "not_started",
+      "draft_date": null,
+      "review_date": null,
+      "publish_date": null,
+      "linkedin_posted": null,
+      "url_slug": "dual-memory-architecture",
+      "featured": false,
+      "tags": ["AI Agents", "Memory", "Architecture", "RAG"],
+      "estimated_length": "1600-2000 words",
+      "source_files": [
+        "Extractions/Interviews/a practitioner_an AI observability company_extraction.md",
+        "Aggregations/Theme_Context_Management.md"
+      ]
+    },
+    {
+      "id": 11,
+      "title": "MCP Reality Check: The 25-Tool Accuracy Cliff No One Talks About",
+      "category": "emergent-insight",
+      "status": "not_started",
+      "draft_date": null,
+      "review_date": null,
+      "publish_date": null,
+      "linkedin_posted": null,
+      "url_slug": "mcp-25-tool-accuracy-cliff",
+      "featured": false,
+      "tags": ["AI Agents", "MCP", "Integration", "Tools"],
+      "estimated_length": "1800-2200 words",
+      "source_files": [
+        "Extractions/Interviews/CC_an AI infrastructure company_extraction.md",
+        "Aggregations/Theme_System_Integration.md"
+      ]
+    },
+    {
+      "id": 12,
+      "title": "Component-Level Evaluation: Why End-to-End Testing Fails for AI Agents",
+      "category": "emergent-insight",
+      "status": "not_started",
+      "draft_date": null,
+      "review_date": null,
+      "publish_date": null,
+      "linkedin_posted": null,
+      "url_slug": "component-level-evaluation",
+      "featured": false,
+      "tags": ["AI Agents", "Evaluation", "Testing", "QA"],
+      "estimated_length": "1600-2000 words",
+      "source_files": [
+        "Extractions/Interviews/the AI lead_an AI sales intelligence company_extraction.md",
+        "Aggregations/Evolution_Narrative.md"
+      ]
+    },
+    {
+      "id": 13,
+      "title": "The Evaluation Gap: Why 7 YC Companies Building Eval Tools Have Zero Adoption",
+      "category": "emergent-insight",
+      "status": "not_started",
+      "draft_date": null,
+      "review_date": null,
+      "publish_date": null,
+      "linkedin_posted": null,
+      "url_slug": "evaluation-gap-yc-companies",
+      "featured": false,
+      "tags": ["AI Agents", "Evaluation", "Startups", "Market Opportunity"],
+      "estimated_length": "1800-2200 words",
+      "source_files": [
+        "Extractions/Interviews/Stephen_GMI_extraction.md",
+        "Aggregations/Theme_Probabilistic_Systems.md"
+      ]
+    },
+    {
+      "id": 14,
+      "title": "Inside an AI agent orchestration company: Why 90% of Enterprise AI Agent Pilots Never Convert to Production",
+      "category": "practitioner-perspective",
+      "status": "not_started",
+      "draft_date": null,
+      "review_date": null,
+      "publish_date": null,
+      "linkedin_posted": null,
+      "url_slug": "practitioner-interview-1-pilot-conversion",
+      "featured": false,
+      "tags": [
+        "AI Agents",
+        "Enterprise",
+        "an AI agent orchestration company",
+        "Case Study"
+      ],
+      "estimated_length": "1800-2200 words",
+      "source_files": [
+        "Extractions/Interviews/the practitioner_an AI agent orchestration company_extraction.md"
+      ],
+      "requires_permission": true
+    },
+    {
+      "id": 15,
+      "title": "an AI infrastructure company's Take: Managing Expectations with Probabilistic Systems",
+      "category": "practitioner-perspective",
+      "status": "not_started",
+      "draft_date": null,
+      "review_date": null,
+      "publish_date": null,
+      "linkedin_posted": null,
+      "url_slug": "practitioner-interview-2-probabilistic-systems",
+      "featured": false,
+      "tags": [
+        "AI Agents",
+        "an AI infrastructure company",
+        "Reliability",
+        "Expectations"
+      ],
+      "estimated_length": "1600-2000 words",
+      "source_files": [
+        "Extractions/Interviews/the founder_an AI infrastructure company_extraction.md"
+      ],
+      "requires_permission": true
+    },
+    {
+      "id": 16,
+      "title": "How a major enterprise identity company is Solving AI Agent Identity: The Next SSO Moment",
+      "category": "practitioner-perspective",
+      "status": "not_started",
+      "draft_date": null,
+      "review_date": null,
+      "publish_date": null,
+      "linkedin_posted": null,
+      "url_slug": "practitioner-interview-3-ai-agent-identity",
+      "featured": false,
+      "tags": [
+        "AI Agents",
+        "a major enterprise identity company",
+        "Identity",
+        "Security",
+        "Enterprise"
+      ],
+      "estimated_length": "1800-2200 words",
+      "source_files": ["Extractions/Interviews/Anon.md"],
+      "requires_permission": true
+    },
+    {
+      "id": 17,
+      "title": "a multi-agent framework company's Lesson: Why Enterprise Topology Complexity Is Your Moat",
+      "category": "practitioner-perspective",
+      "status": "not_started",
+      "draft_date": null,
+      "review_date": null,
+      "publish_date": null,
+      "linkedin_posted": null,
+      "url_slug": "practitioner-interview-4-enterprise-topology",
+      "featured": false,
+      "tags": [
+        "AI Agents",
+        "a multi-agent framework company",
+        "Enterprise",
+        "Integration"
+      ],
+      "estimated_length": "1600-2000 words",
+      "source_files": [
+        "Extractions/Interviews/a multi-agent framework company_extraction.md"
+      ],
+      "requires_permission": true
+    },
+    {
+      "id": 18,
+      "title": "an AI sales intelligence company's Approach: Building AI Sales Agents That Actually Work",
+      "category": "practitioner-perspective",
+      "status": "not_started",
+      "draft_date": null,
+      "review_date": null,
+      "publish_date": null,
+      "linkedin_posted": null,
+      "url_slug": "practitioner-interview-5-ai-sales-agents",
+      "featured": false,
+      "tags": [
+        "AI Agents",
+        "an AI sales intelligence company",
+        "Sales",
+        "Vertical AI"
+      ],
+      "estimated_length": "1600-2000 words",
+      "source_files": [
+        "Extractions/Interviews/the AI lead_an AI sales intelligence company_extraction.md"
+      ],
+      "requires_permission": true
+    },
+    {
+      "id": 19,
+      "title": "Building a Shopping Agent: Framework Bloat in Action",
+      "category": "prototype-learning",
+      "status": "not_started",
+      "draft_date": null,
+      "review_date": null,
+      "publish_date": null,
+      "linkedin_posted": null,
+      "url_slug": "shopping-agent-framework-bloat",
+      "featured": false,
+      "tags": [
+        "AI Agents",
+        "LangGraph",
+        "a popular AI agent framework",
+        "Prototyping"
+      ],
+      "estimated_length": "2000-2400 words",
+      "source_files": ["Extractions/Prototypes/Shopping_Agent_extraction.md"],
+      "github_repo": "https://github.com/FernandoTN/Shopping_Agent"
+    },
+    {
+      "id": 20,
+      "title": "Repo Patcher: Using State Machines to Make AI Agents Reliable",
+      "category": "prototype-learning",
+      "status": "not_started",
+      "draft_date": null,
+      "review_date": null,
+      "publish_date": null,
+      "linkedin_posted": null,
+      "url_slug": "repo-patcher-state-machines",
+      "featured": false,
+      "tags": ["AI Agents", "State Machines", "Reliability", "Code Agents"],
+      "estimated_length": "2200-2600 words",
+      "source_files": ["Extractions/Prototypes/Repo_Patcher_extraction.md"],
+      "github_repo": "https://github.com/FernandoTN/repo-patcher"
+    },
+    {
+      "id": 21,
+      "title": "Good Agents: Implementing Plan-Verify-Execute for Multi-Agent Orchestration",
+      "category": "prototype-learning",
+      "status": "not_started",
+      "draft_date": null,
+      "review_date": null,
+      "publish_date": null,
+      "linkedin_posted": null,
+      "url_slug": "good-agents-plan-verify-execute",
+      "featured": false,
+      "tags": ["AI Agents", "Multi-Agent", "Orchestration", "Trust"],
+      "estimated_length": "2000-2400 words",
+      "source_files": ["Extractions/Prototypes/Good_Agents_extraction.md"],
+      "github_repo": "https://github.com/FernandoTN/goodAgents"
+    },
+    {
+      "id": 22,
+      "title": "an AI autonomous agent company Fireside: The 30-40% Model Revelation That Changed Everything",
+      "category": "conference-insight",
+      "status": "not_started",
+      "draft_date": null,
+      "review_date": null,
+      "publish_date": null,
+      "linkedin_posted": null,
+      "url_slug": "autonomous-agent-fireside-model-revelation",
+      "featured": false,
+      "tags": [
+        "AI Agents",
+        "an AI autonomous agent company",
+        "Conference",
+        "Models"
+      ],
+      "estimated_length": "1600-2000 words",
+      "source_files": [
+        "Extractions/Conferences/an AI autonomous agent company_Fireside_extraction.md",
+        "Aggregations/Evolution_Narrative.md"
+      ]
+    },
+    {
+      "id": 23,
+      "title": "Why 95% of Agentic AI Projects Fail: Key Takeaways from the Conference Everyone's Talking About",
+      "category": "conference-insight",
+      "status": "not_started",
+      "draft_date": null,
+      "review_date": null,
+      "publish_date": null,
+      "linkedin_posted": null,
+      "url_slug": "95-percent-agentic-ai-failure",
+      "featured": false,
+      "tags": ["AI Agents", "Conference", "Failure Patterns", "Best Practices"],
+      "estimated_length": "1800-2200 words",
+      "source_files": [
+        "Extractions/Conferences/Why_95_Percent_Fail_extraction.md"
+      ]
+    },
+    {
+      "id": 24,
+      "title": "Production Agents Summit: The 40% Context Rule and Other Uncomfortable Truths",
+      "category": "conference-insight",
+      "status": "not_started",
+      "draft_date": null,
+      "review_date": null,
+      "publish_date": null,
+      "linkedin_posted": null,
+      "url_slug": "production-agents-summit-40-percent",
+      "featured": false,
+      "tags": ["AI Agents", "Snowflake", "Conference", "Production"],
+      "estimated_length": "1800-2200 words",
+      "source_files": [
+        "Extractions/Conferences/Production_Agents_Summit_extraction.md"
+      ]
+    },
+    {
+      "id": 25,
+      "title": "How We Processed 36 Interviews into One Research Report: A Systematic Approach",
+      "category": "methodology",
+      "status": "not_started",
+      "draft_date": null,
+      "review_date": null,
+      "publish_date": null,
+      "linkedin_posted": null,
+      "url_slug": "research-methodology-systematic-approach",
+      "featured": false,
+      "tags": ["Research", "Methodology", "AI Agents", "Stanford GSB"],
+      "estimated_length": "2000-2400 words",
+      "source_files": ["ProcessRecap.md", "spec.txt"]
+    }
+  ],
+  "status_summary": {
+    "not_started": 24,
+    "in_progress": 0,
+    "in_review": 0,
+    "ready": 1,
+    "completed": 0,
+    "published": 0
+  },
+  "categories": {
+    "anchor": 1,
+    "theme-deep-dive": 6,
+    "emergent-insight": 6,
+    "practitioner-perspective": 5,
+    "prototype-learning": 3,
+    "conference-insight": 3,
+    "methodology": 1
+  }
+}

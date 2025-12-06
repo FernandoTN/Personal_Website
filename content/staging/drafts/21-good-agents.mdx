@@ -1,0 +1,178 @@
+---
+title: 'Good Agents: Implementing Plan-Verify-Execute for Multi-Agent Orchestration'
+summary: 'How the Plan-Verify-Execute pattern provides governance for probabilistic agent behavior by validating feasibility before execution, building user trust through transparency.'
+publishedAt: '2025-12-23'
+tags: ['AI Agents', 'Multi-Agent', 'Orchestration', 'Trust']
+author: 'Fernando Torres'
+featured: false
+image: '/images/blog/good-agents.png'
+github: 'https://github.com/FernandoTN/goodAgents'
+---
+
+What if the most dangerous thing about AI agents isn't what they do wrong—but what they do without checking first?
+
+During our research, we interviewed 36 experts and heard the same concern repeatedly: agents that execute quickly can cause irreversible damage, while agents that require constant human approval become unusably slow. We needed a middle ground. Building the Good Agents prototype taught us that the solution lies in an architectural pattern that validates feasibility before any action is taken—the Plan-Verify-Execute pattern. This approach embeds governance directly into the orchestration layer, managing probabilistic behavior through structure rather than hoping for better models.
+
+## The Discovery
+
+Building multi-agent systems revealed a fundamental tension at the heart of AI agent deployment. Traditional software follows deterministic paths: input A produces output B, reliably and repeatedly. But agents operate probabilistically, making decisions that can vary across identical inputs. This creates unique governance challenges—how do you maintain control over systems that don't behave the same way twice?
+
+Our interviews surfaced this problem repeatedly. a founder at an AI infrastructure company at an AI infrastructure company described the core issue:
+
+> "Most people that have built and deployed technology over the last, say, 30 years aren't used to probabilistic stochastic systems. They're used to deterministic things. So the expectation is if I see it working once, I expect it to work reliably from that point on."
+
+The Good Agents prototype became our testbed for solving this problem. We implemented a three-phase orchestration pattern that separates planning from execution with an explicit verification step in between. Rather than treating agents as black boxes that produce magic outputs, we designed an architecture that makes agent reasoning visible and controllable at every step.
+
+## What We Found
+
+### The Plan-Verify-Execute Pattern
+
+The pattern operates in three distinct phases, each with clear responsibilities and handoff criteria:
+
+**Planning Phase**: The orchestrator receives user intent and decomposes it into discrete sub-tasks. This isn't just task splitting—it's creating a verifiable plan that can be evaluated before any action occurs. The plan includes not only what needs to happen, but what tools are required, what permissions are needed, and what could go wrong.
+
+**Verification Phase**: Before execution, the system validates three critical dimensions:
+
+- **Feasibility**: Can this plan actually be accomplished with available tools? Are all required MCP servers responsive? Do we have the necessary data access?
+- **Safety**: Does this plan require actions that could cause harm? Are there operations that should trigger human review?
+- **Authorization**: Does the user have permission for these operations? Does RBAC policy allow the planned actions?
+
+**Execution Phase**: Only after verification passes does the system dispatch tasks to specialized agents. If verification fails, the system returns to planning with the failure reason—creating a feedback loop that improves subsequent attempts.
+
+> "Agents are just software. All the previous engineering principles that we've learned over the past couple of decades still apply to a large degree. We're still just engineering a problem, but the problem is around this weird box of an LLM."
+> — Tyler, CopilotKit, Production Agents Summit
+
+This quote captures the essence of our approach: agents require engineering discipline, not just prompting cleverness. The verification phase applies traditional software engineering principles—validation, type checking, permission verification—to probabilistic systems.
+
+The pattern works because it separates the probabilistic components (planning, task decomposition) from deterministic checkpoints (verification, authorization). The LLM can be creative in how it plans; the verification phase ensures that creativity stays within safe bounds.
+
+### MCP Integration Challenges
+
+Our prototype used MCP servers for search, cart, and offers capabilities—testing the protocol in practice rather than theory. The experience revealed both the promise and practical hurdles of MCP standardization.
+
+Model Context Protocol provides a standardized way to expose tools to agents, theoretically solving the fragmentation problem where every integration requires custom code. In practice, we encountered significant integration complexity despite the standardization promise.
+
+The most significant finding aligned with what CC Fan at an AI infrastructure company told us about the 25-tool accuracy cliff:
+
+> "When you have more than 20 MCP like 30 40, the agent totally cannot work. We were tested and some posts on Internet test that if your MCP amount exceeds 25, your LM accuracy will drop to 30%. So that's totally cannot use in production for enterprise usage."
+
+Key challenges encountered:
+
+- **Operation Specificity**: Generic MCP servers expose too many operations without use-case-specific context. We needed custom wrappers to filter and contextualize available operations for our shopping domain.
+- **Deployment Complexity**: Running multiple MCP servers (search, cart, offers) introduced operational overhead that wasn't apparent in documentation. Container orchestration, health monitoring, and failure handling all required custom solutions.
+- **Accuracy Degradation**: Consistent with interview findings, tool selection accuracy degraded as we added more MCP operations. We had to carefully curate the tool surface area exposed to the agent.
+
+> "There was a lot of talk around MCP kind of solving for everybody. We quickly learned that it didn't work out of the box for us... the MCPs that either companies are putting up themselves or frankly at the time there was a lot of like open source third party MCP servers... they had way too many operations specified. There is no specificity."
+> — a practitioner, an AI observability company
+
+This finding validates concerns raised across our 36 interviews: MCP provides structure but not simplicity. The protocol standardizes the interface without reducing the integration work required to make tools useful for specific use cases.
+
+### SSE for Transparency: Event Streaming
+
+One of our most impactful architectural decisions was implementing Server-Sent Events (SSE) for streaming agent activity to the frontend. This wasn't just about user experience—it was about building trust through transparency.
+
+When users can see what an agent is doing, they develop appropriate mental models of its capabilities and limitations. The "black box" problem—where users don't know why an agent made a decision—erodes trust faster than occasional errors.
+
+Event types we exposed:
+
+- `plan`: The orchestrator's decomposed task list, showing users what the agent intends to do before doing it
+- `tool_call`: Each tool invocation as it happens, making the agent's reasoning visible
+- `token`: Streaming LLM output for real-time feedback, eliminating the perception of the agent "thinking silently"
+- `complete`: Final results and status, with clear indication of what was accomplished
+
+Progressive disclosure of agent reasoning addresses multiple pain points identified in our research. Users who can watch an agent work are more tolerant of failures, more effective at providing corrections, and more likely to adopt the technology for complex tasks.
+
+> "Agents change user experience and I think to a large extent we haven't even caught up with all of the implications of that. I think that we're bolting on these long running processes to traditional software principles and design."
+> — Tyler, CopilotKit, Production Agents Summit
+
+Event streaming transforms agents from batch processors into collaborative partners. Users don't wait for final results—they watch the work unfold and intervene when needed.
+
+### Security Implementation: OAuth, RBAC, and PII Redaction
+
+Security cannot be retrofitted. Our prototype implemented OAuth 2.0, Role-Based Access Control (RBAC), PII redaction, and AES-256 encryption from the start—treating these as architectural decisions rather than features to add later.
+
+This security-by-design approach directly addresses enterprise blockers identified in our interviews—organizations won't deploy agents that can't demonstrate proper access control and data protection.
+
+Key security components:
+
+- **OAuth 2.0 Authentication**: Standard identity verification ensuring every request is attributable to a specific user
+- **RBAC**: Permission-based access to agent capabilities, controlling what actions different user roles can trigger
+- **PII Redaction**: Automatic detection and masking of sensitive data before logging or external API calls
+- **AES-256 Encryption**: Protection for data at rest, ensuring agent memory and session data remain secure
+
+> "There is a lot of resistance in sharing data with the agentic systems, whether it's on their premise, out of premise... there is a lot of trust deficit in terms of sharing, especially with out of the box models."
+> — an engineering leader Shukla, a workforce platform
+
+The "verify" step in Plan-Verify-Execute integrates with these security controls. Verification includes authorization checks—ensuring the planned actions are permitted for the current user's role before execution begins. This prevents the common failure mode where agents execute actions and only later discover permission violations.
+
+### Observability: Building for Debugging
+
+Production agent systems require purpose-built observability stacks. Traditional logging is insufficient for debugging non-deterministic multi-step processes. When something goes wrong in a multi-agent system, the failure often originates several steps before it manifests—making root cause analysis particularly challenging.
+
+Our Good Agents prototype implemented a comprehensive monitoring infrastructure:
+
+- **OpenTelemetry**: Distributed tracing across microservices, capturing context available at each decision point
+- **Jaeger**: Trace visualization enabling engineers to follow request paths and understand decision sequences
+- **Langfuse**: LLM-specific analytics for token usage, latency, and cost tracking
+- **Prometheus and Grafana**: Metrics and dashboards for operational monitoring
+
+> "I think a lot of companies that are doing agents, there's not like a standardized way of logging what are the exact actions and being able to do like really detailed debugging and maybe even like time traveling of like, why did the agent take this action at this moment in time?"
+> — a practitioner, an AI observability company
+
+This observability stack addresses the debugging challenge unique to probabilistic systems. When an agent fails, engineers need to understand not just what happened, but what context the agent had when making each decision. The goal is "time travel" debugging—reconstructing the exact state the agent was in when it made a particular choice.
+
+Critically, observability cannot be retrofitted effectively. The infrastructure must be designed into the system from the beginning. Teams that add observability after encountering production failures invariably discover they're missing the specific data needed to diagnose the issue.
+
+## Why This Matters
+
+The Plan-Verify-Execute pattern represents a shift from "trust and verify" to "verify then trust" in agent systems. This isn't just a technical distinction—it's a fundamental change in how we think about deploying probabilistic systems in production.
+
+Traditional agent architectures assume success and handle failures reactively. The agent plans, executes, and when something goes wrong, attempts recovery or escalates to humans. This reactive approach has several problems: failures can be costly or irreversible, user trust erodes with each unexpected outcome, and debugging is difficult because failures are discovered far from their causes.
+
+The Plan-Verify-Execute pattern inverts this model. By validating before executing, we catch failures in the planning stage when they're cheap to address. The verification phase provides a natural checkpoint for human oversight—users can review plans before execution without interrupting every action.
+
+Interview after interview confirmed that the bottleneck isn't model capability—current models are "good enough" for many use cases. the practitioner at an AI agent orchestration company stated explicitly:
+
+> "The intelligence is really smart enough right. So so it doesn't doesn't need the model to be much better to make this work in enterprise. So the real sticking point is system integration which has to do with all this you know system that doesn't have never talked to each other."
+
+The real challenges are architectural: managing non-deterministic behavior, building user trust, ensuring security, and providing observability for debugging. This aligns with what the an AI autonomous agent company co-founder revealed:
+
+> "We found out actually model only maybe contributes 30 or 40% of the whole thing. And the framework, the whole system you build upon the model is much more important, you know, than the model itself."
+
+If models contribute only 30-40% of the outcome, the remaining 60-70% comes from architecture, orchestration, security, observability, and user experience design. The Plan-Verify-Execute pattern addresses this 60-70%:
+
+1. **Embeds Governance**: Rather than relying on external monitoring, governance is built into the execution flow. Every action passes through verification, ensuring consistent policy enforcement.
+
+2. **Enables Transparency**: The verification phase provides a natural point for user visibility and intervention. Users can see what's planned and approve or modify before execution.
+
+3. **Supports Enterprise Requirements**: Security, access control, and audit capabilities are architectural, not afterthoughts. The verification step integrates with RBAC and compliance controls.
+
+4. **Manages Probabilistic Behavior**: The explicit verification step catches potential failures before they become actual failures, reducing the cost of agent mistakes.
+
+## What You Can Do
+
+Based on our experience building Good Agents, here are actionable recommendations for teams building multi-agent systems:
+
+- **Separate Planning from Execution**: Don't let agents act on plans immediately. Insert a verification phase that validates feasibility, safety, and authorization before any action occurs. Start with simple feasibility checks and expand to safety and authorization as your system matures.
+
+- **Stream Agent Reasoning**: Implement event streaming (SSE or WebSocket) to expose agent decision-making in real-time. Transparency builds trust more effectively than perfect accuracy. Users who can see what's happening are more forgiving of imperfection.
+
+- **Design Security In**: Treat OAuth, RBAC, and data protection as architectural decisions, not features to add later. Retrofitting security is expensive and often incomplete. Plan for enterprise requirements from day one.
+
+- **Test MCP Integration Early**: If using Model Context Protocol, validate integration complexity during prototyping. The standardization promise doesn't eliminate implementation effort. Start with a minimal tool surface area and expand carefully, monitoring for accuracy degradation.
+
+- **Build Comprehensive Observability**: Plan for OpenTelemetry, distributed tracing, and LLM-specific analytics from the start. You cannot debug what you cannot observe. Budget for observability infrastructure as a core cost, not an afterthought.
+
+- **Measure Handoff Rate, Not Just Accuracy**: Track what percentage of tasks get passed back to humans. As the "Why 95% Fail" conference emphasized: "The real question is does it actually reduce the handoff to humans."
+
+## The Bottom Line
+
+The Plan-Verify-Execute pattern provides what probabilistic systems need most: governance without paralysis. By validating before executing and streaming reasoning in real-time, multi-agent systems can earn the trust required for production deployment.
+
+The complete Good Agents implementation, including the orchestrator, MCP servers, and observability stack, is available on GitHub: [github.com/FernandoTN/goodAgents](https://github.com/FernandoTN/goodAgents).
+
+---
+
+_This post is part of my research series on AI Agent deployment, based on 36 expert interviews, 5 industry conferences, and 3 functional prototypes. [Read the full research overview](/blog/ai-agents-research)._
+
+_Have thoughts on AI agent deployment? Connect with me on [LinkedIn](https://www.linkedin.com/in/fernandotn/) or [email me](mailto:fertorresnavarrete@gmail.com)._

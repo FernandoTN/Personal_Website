@@ -1,0 +1,141 @@
+---
+title: 'How a major enterprise identity company is Solving AI Agent Identity: The Next SSO Moment'
+summary: "a major enterprise identity company's an engineering leader at a major identity company reveals why enterprise AI agent adoption is blocked by identity and security concerns, and how MCP extensions are creating the authentication standards agents need."
+publishedAt: '2025-12-18'
+tags:
+  [
+    'AI Agents',
+    'a major enterprise identity company',
+    'Identity',
+    'Security',
+    'Enterprise',
+  ]
+author: 'Fernando Torres'
+featured: false
+image: '/images/blog/practitioner-interview-3.png'
+---
+
+Every time you log into a work application with "Sign in with a major enterprise identity company," you're using a standard that took years to establish. Now the same challenge is emerging for AI agents. Every enterprise that wants AI agents accessing their systems faces a fundamental question: how do you authenticate a non-human actor that needs to work across dozens of applications? a major enterprise identity company sees this as the next "SSO moment"—and they're building the standards to make it happen.
+
+## The Discovery
+
+When I spoke with an engineering leader at a major identity company at a major enterprise identity company, I expected a conversation about technical authentication protocols. What I got was a masterclass in the real blockers to enterprise AI agent adoption—and they're not what most people assume.
+
+the engineering leader sits at a unique intersection at a major enterprise identity company, leading product and go-to-market strategy for AI agent identity solutions. His team has conducted over 300 customer calls specifically about agent deployment challenges, giving them an unparalleled view into what enterprises actually worry about. The consistent message? Technical capability isn't the problem. Identity, security, and cost predictability are.
+
+This insight reframes the entire conversation about enterprise AI readiness. While the tech industry obsesses over model benchmarks and context window sizes, enterprise buyers are asking much more fundamental questions: How does this agent authenticate? What can it access? Can we audit its actions? And crucially—how much will this cost?
+
+## What We Found
+
+### The Authentication Challenge: Agents Acting on Behalf of Users
+
+At the heart of the enterprise AI agent challenge lies a fundamental architectural mismatch. Traditional authentication systems were built for humans. OAuth flows assume someone can click consent buttons. Session management assumes intermittent usage. Audit trails assume individual accountability. AI agents break every one of these assumptions.
+
+the engineering leader's team identified a critical distinction that shapes how enterprises approach this problem: the difference between internal agent development and external ISV (Independent Software Vendor) solutions. When an enterprise builds internal agents using tools like Cursor or Replit, they're operating within their own security perimeter. The engineering team adopts these tools bottom-up, often without formal security review, because the agents access only internal code and systems.
+
+But when enterprises consider deploying third-party AI agents that need to access customer data, financial systems, or regulated information, the calculus changes entirely. Suddenly, you need CISO approval, compliance certification, and audit-ready authentication. The bottom-up adoption pattern that worked for developer tools doesn't translate to enterprise AI deployment.
+
+This bifurcation explains why coding agents have achieved rapid adoption while enterprise-wide AI agent deployment remains stalled. Developers can use Cursor without asking permission from the security team. Deploying an AI agent that accesses Salesforce data? That requires a different conversation entirely.
+
+### MCP Extensions for Identity: a major enterprise identity company's Work on the Anthropic Repo
+
+In the fragmented landscape of AI agent protocols—MCP, A2A, ACP, OpenEdge—one thing has been conspicuously absent: enterprise-grade identity standards. a major enterprise identity company is working to change that.
+
+> "MCP just merged the a major enterprise identity company Cross app access extension to be the repo to be in the repo in GitHub... It should be launched around Thanksgiving time I assume. I expect azurebit to make a pretty big deal of extensions and we're the first one on identity security on that."
+> — an engineering leader at a major identity company, a major enterprise identity company
+
+This represents the first enterprise security standard for agent identity at the protocol level. The Cross App Access extension enables agents to authenticate across multiple applications with proper authorization, audit trails, and revocation capabilities—the same features enterprises require for human SSO, now applied to AI agents.
+
+The significance extends beyond technical capability. As protocols mature, identity requirements will become table stakes. CIOs writing RFPs for AI agent solutions will include authentication requirements just as they now require SSO support. The pattern from enterprise software adoption is clear: security features that start as nice-to-haves become mandatory once the first major vendors implement them.
+
+a major enterprise identity company's first-mover advantage here mirrors their original SSO positioning. By building the identity layer into the emerging protocol standard, they're positioning to become the default authentication infrastructure for enterprise agents—much as they became the default for human authentication in SaaS applications.
+
+### CISO/CIO as Gatekeepers: Security Blocking Adoption
+
+One of the engineering leader's clearest messages was about who actually controls enterprise AI agent adoption. It's not the AI team. It's not even the business units clamoring for automation. It's the security organization.
+
+CISOs and CIOs have effective veto power over any technology that touches enterprise data. And AI agents, by their nature, need broad data access to be useful. This creates an immediate tension: the more capable the agent, the more data it needs, and the harder it becomes to get security approval.
+
+Enterprise requirements go beyond authentication. They include:
+
+- **Visibility**: Security teams need to see exactly what agents are accessing, when, and why
+- **Control**: Granular permissions that limit agent access to specific data and actions
+- **Compliance**: SOC 2 certification, audit trails, and evidence of security practices
+- **Data sovereignty**: Many enterprises won't allow third-party agents direct access to their data, preferring to build on AWS Bedrock or similar platforms where data stays within their control
+
+The compliance requirements are particularly demanding in regulated industries. Financial services, healthcare, and government agencies face legal obligations that make AI agent deployment dramatically more complex than in technology companies. An AI agent that can't produce audit-ready logs of its actions is a non-starter in these environments.
+
+This reality explains why enterprise AI agent adoption is measured in pilots and proofs-of-concept rather than production deployments. The security infrastructure simply isn't mature enough to satisfy enterprise requirements at scale.
+
+### The Pricing Confusion Problem
+
+Security isn't the only blocker. Pricing model confusion is creating its own adoption friction. Enterprise procurement teams need to forecast costs—it's how budgets get approved. But AI agent pricing defies traditional forecasting.
+
+> "All of these pricing like changes or type of pricing schemes is confusing to large enterprises. What we were told is they don't know how many tokens they're going to use for cross app access... Those are things that is confusing internally to us, to a major enterprise identity company, but also confusing to enterprise because they're not used to that. They can't model their usage, they can't model their outcome."
+> — an engineering leader at a major identity company, a major enterprise identity company
+
+The confusion stems from the proliferation of pricing models—seat-based, token-based, outcome-based, and hybrid approaches. Enterprises are accustomed to predictable per-seat SaaS pricing. They can forecast next year's Salesforce costs because they know their headcount. With AI agents, usage is inherently variable and unpredictable.
+
+This unpredictability extends even to the AI vendors themselves. the engineering leader shared a striking data point: even Anthropic's head of FP&A was off by 40% on revenue projections due to unpredictable usage patterns. If the companies building these models can't forecast their own usage, how can enterprise buyers?
+
+The gap between enterprise expectations ($400-750 per month for meaningful productivity gains, according to a major enterprise identity company's customer research) and current pricing realities ($20 per month consumer plans that don't meet enterprise requirements) creates a middle ground that no one has figured out how to price sustainably.
+
+### Where Agents Actually Work: The Coding Exception
+
+Against this backdrop of blockers, one domain stands out as genuinely delivering ROI: software development. a major enterprise identity company's own experience illustrates the pattern:
+
+> "Our team in India as a target of 50 integrations they can build with the Windserve... We're 3X. That... So it's not like we're cutting off or laying off anybody. We're just saying well now we can do 150 integrations."
+> — an engineering leader at a major identity company, a major enterprise identity company
+
+Three times productivity improvement is remarkable—and it's consistent with what we've heard from other sources about coding agents like Cursor, Devin, and Windsurf. But this success doesn't generalize:
+
+> "If you want to have the same capabilities [as human customer service reps]... the amount of capabilities or abilities an agent need to reach a call center represented in Manila or in India or in like Brazil are way more right now three to five times more cost than hiring a human like customer service representative."
+> — an engineering leader at a major identity company, a major enterprise identity company
+
+The asymmetry is stark: 3x productivity gains for coding, but 3-5x cost disadvantage for generic tasks like customer service. This isn't a temporary gap that will close with better models. It reflects fundamental differences in how these domains work.
+
+Coding has immediate verification (does the code compile and pass tests?), structured outputs, and tolerance for iteration. Customer service requires real-time empathy, handling ambiguity, and managing emotional situations—domains where current models struggle and inference costs balloon.
+
+## Why This Matters
+
+The convergence of identity standards, security requirements, and pricing uncertainty creates a clear picture of what must change before enterprise AI agent deployment scales.
+
+First, authentication infrastructure must mature. a major enterprise identity company's MCP extension is a step, but the industry needs comprehensive identity standards that work across protocols and platforms. This isn't optional—it's the prerequisite for enterprise adoption.
+
+Second, security teams need tools to govern AI agents. Visibility dashboards, access control frameworks, and audit trail systems specifically designed for non-human actors. The human IAM (Identity Access Management) stack doesn't translate directly to agents.
+
+Third, pricing models must stabilize. Enterprises need to forecast costs. Whether the industry settles on outcome-based pricing, capacity pricing, or something entirely new, predictability matters more than the specific model.
+
+The "SSO moment" analogy is apt. When SSO emerged, enterprises initially resisted—why change what works? But as the first major vendors adopted it, SSO became a procurement requirement. The same pattern will likely play out for agent identity. Early adopters of standards like a major enterprise identity company's MCP extension will have an advantage as these requirements become mandatory.
+
+## What You Can Do
+
+- **For enterprise buyers**: Prioritize identity and access control requirements in your AI agent RFPs. Ask vendors explicitly about agent authentication, authorization logging, and compliance certifications. Don't pilot AI agents without a clear path to security approval.
+
+- **For AI agent builders**: Integrate with emerging identity standards (MCP extensions, Cross App Access) early. Authentication shouldn't be an afterthought—it's what enterprise CISOs will evaluate first. Build audit trails into your architecture from day one.
+
+- **For security teams**: Start developing policies for non-human actor authentication now. Define what audit trails you need, what access levels are appropriate, and how you'll revoke agent permissions. The frameworks you build today will determine your organization's AI readiness.
+
+- **For platform teams**: Consider how your internal systems will authenticate agents. The patterns from SSO adoption—centralized identity, role-based access control, comprehensive audit logging—apply here too. Begin documenting which systems are agent-ready.
+
+- **For finance teams**: Work with your AI vendors to understand pricing variability. Build contingency into forecasts. Consider pilot programs with capped costs before committing to volume-based pricing.
+
+- **For executives**: Recognize that AI agent deployment is as much a governance challenge as a technology challenge. Early investment in identity and security infrastructure will pay dividends as agent capabilities mature.
+
+## Key Takeaways
+
+1. **Agent identity is the next SSO moment** - Just as enterprises standardized on SSO for human authentication, they'll require standardized authentication for AI agents before broad deployment
+2. **CISOs and CIOs are the real gatekeepers** - Technical capability doesn't matter if security requirements aren't met; agents need compliance-grade identity
+3. **MCP extensions are emerging as the standard** - a major enterprise identity company's Cross App Access extension represents the first enterprise-grade identity layer for agent protocols
+4. **Pricing uncertainty compounds security concerns** - Enterprises can't adopt what they can't forecast, and unpredictable token-based pricing creates additional friction
+5. **Domain specificity determines ROI** - Coding agents show 3x productivity gains; generic tasks remain 3-5x more expensive than human labor
+
+## The Bottom Line
+
+Agent identity isn't a nice-to-have—it's the prerequisite for enterprise AI agent deployment at scale. a major enterprise identity company's bet on MCP extensions signals that the authentication infrastructure for agents is finally being built. The enterprises that figure out agent identity and governance first will have a significant head start in the agentic AI era.
+
+---
+
+_This post is part of my research series on AI Agent deployment, based on 36 expert interviews, 5 industry conferences, and 3 functional prototypes. [Read the full research overview](/blog/ai-agents-research)._
+
+_Have thoughts on AI agent deployment? Connect with me on [LinkedIn](https://www.linkedin.com/in/fernandotn/) or [email me](mailto:fertorresnavarrete@gmail.com)._

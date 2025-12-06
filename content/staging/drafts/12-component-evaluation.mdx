@@ -1,0 +1,115 @@
+---
+title: 'Component-Level Evaluation: Why End-to-End Testing Fails for AI Agents'
+summary: 'The an AI sales intelligence company insight: test deterministic components (especially first-step retrieval) rather than entire probabilistic pipelines. Discover why traditional software testing wisdom breaks down for AI agents.'
+publishedAt: '2025-12-15'
+tags: ['AI Agents', 'Evaluation', 'Testing', 'QA']
+image: '/images/blog/component-evaluation-cover.png'
+author: 'Fernando Torres'
+featured: false
+---
+
+Software engineers have spent decades perfecting end-to-end testing. Unit tests, integration tests, system tests - the testing pyramid is gospel. We have entire disciplines devoted to ensuring that when you test a complete system, you can trust the results. But when it comes to AI agents, this conventional wisdom may be leading teams astray. After interviewing 36 experts building production AI agents, one practitioner's radical approach stood out: "Almost never do we evaluate something end to end because it is pointless."
+
+## The Discovery
+
+The challenge of testing AI agents emerged as a recurring frustration across our research. Teams would build comprehensive test suites, run end-to-end evaluations, and still find their agents failing unpredictably in production. The traditional software testing playbook, refined over thirty years of deterministic systems, simply was not working.
+
+The insight came from the AI lead at an AI sales intelligence company, a company that was among the first in their space to deploy LLMs - even before ChatGPT made them mainstream. This early start gave them years of production experience that most companies are still acquiring. What they learned contradicts much of what the industry currently believes about AI agent evaluation.
+
+Their conclusion was counterintuitive but supported by hard-won operational wisdom: the value of end-to-end testing diminishes rapidly in probabilistic systems. Instead, the teams successfully running agents at scale have discovered that focusing evaluation on specific, deterministic components yields far better results than trying to test entire probabilistic pipelines.
+
+## What We Found
+
+### The Compounding Uncertainty Problem
+
+The fundamental issue with end-to-end testing for AI agents is mathematical. Traditional software testing assumes that each component either works or does not - outputs are deterministic and reproducible. But AI agents introduce uncertainty at every step.
+
+Consider a simple five-step agent pipeline: retrieve relevant context, synthesize information, generate a plan, execute actions, and validate results. If each step operates at 90% accuracy - which would be considered excellent for an LLM-based system - the end-to-end accuracy is not 90%. It is 0.9 raised to the fifth power: approximately 59%.
+
+This compounding effect makes end-to-end tests inherently noisy. When a test fails, you cannot easily distinguish between a retrieval failure, a generation failure, or a validation failure. The test might pass one run and fail the next, even with identical inputs. This is not a bug - it is the nature of probabilistic systems.
+
+> "Almost never do we evaluate something end to end because it is pointless. So if you can evaluate a system at a time, and that is how you grow better... we built it blind after step one."
+> -- the AI lead, an AI sales intelligence company
+
+The phrase "built it blind after step one" captures their approach precisely. Once they validated that the first step - retrieval - was working correctly, they trusted the foundation model to handle generation. They did not waste resources trying to evaluate the inherently uncertain parts of the pipeline.
+
+This approach is not about ignoring quality. It is about recognizing where evaluation provides signal versus noise. End-to-end tests of probabilistic systems produce noisy signals that can mislead teams into optimizing for the wrong things.
+
+### Test Deterministic Steps Instead
+
+The breakthrough insight is to identify which components in your pipeline are deterministic versus probabilistic, then focus your evaluation investment accordingly.
+
+In most AI agent architectures, the first step - typically retrieval - is the critical deterministic component. Retrieval produces concrete, verifiable outputs: which documents were retrieved, which data points were included, how relevant the context is to the query. These are questions with definitive answers that can be evaluated consistently.
+
+Generation, by contrast, produces subjective outputs. Is this summary good enough? Is this response helpful? These judgments are inherently uncertain, vary between evaluators, and depend heavily on the capabilities of the underlying model.
+
+> "The only thing that we continuously tested for is that it gets the first step right. The first step typically ends up being retrieval. If it gets the first step right, if it has the right data at that point in time, everything after that will work."
+> -- the AI lead, an AI sales intelligence company
+
+This retrieval-first evaluation philosophy has profound implications. If your context is correct, generation quality is largely model-dependent - and models are improving rapidly. If your context is wrong, no amount of prompt engineering will save the output.
+
+The data scale at an AI sales intelligence company illustrates why this matters. For any specific company they work with, they typically have 60 million data points. For any specific deal, around 500,000 to 600,000 data points. Their agents must reduce these massive datasets to approximately 20 relevant data points for each query. Getting this compression right is evaluable. Getting the final response "perfect" is not.
+
+### The an AI sales intelligence company Approach
+
+an AI sales intelligence company's early entry into the LLM market gave them a crucial insight that many companies are still learning: generation will commoditize, but context is the differentiator.
+
+> "We realized like it was very clear that, you know, the final generation in the retrieval augmented generation generation is not where our strength is going to lie. That is basically foundational model, company level thing... The only thing we need to do is how to build a system so that it's almost like as they get better, we get better by default."
+> -- the AI lead, an AI sales intelligence company
+
+This is a strategic architectural decision, not just an evaluation strategy. By focusing on context retrieval rather than prompt engineering, an AI sales intelligence company built a model-agnostic system. They do not need to re-engineer their prompts every time a new model is released. When the next generation of models arrives with better generation capabilities, their system improves automatically because the context it provides remains excellent.
+
+This approach inverts the typical priority. Most teams obsess over prompt engineering and fine-tuning to squeeze better outputs from their models. an AI sales intelligence company recognized that this is fighting the wrong battle. Foundation model companies have billions of dollars and thousands of researchers working on generation quality. A startup cannot out-engineer them at their core competency.
+
+But context? That requires domain expertise, proprietary data, and deep integration with customer systems. That is defensible. That is where engineering investment pays off.
+
+### When LLM-as-Judge Fails
+
+A common workaround for evaluation challenges is to use one LLM to judge another LLM's output. This approach can work, but it has clear limitations that teams often ignore.
+
+> "You shouldn't use LLM to judge something which as a human, you find extremely hard to judge. Like, it's a recipe for disaster. It will be inconsistent."
+> -- the AI lead, an AI sales intelligence company
+
+This rule of thumb provides clear boundaries for LLM-as-judge approaches. Factual verification works well - did the response include the correct data points? Format compliance is evaluable - does the output match the required structure? These are tasks where humans can make consistent judgments, so LLMs can too.
+
+But subjective quality assessment - is this response "good"? - fails. If human evaluators would disagree on the answer, LLMs will be inconsistent too. Using LLM-as-judge for inherently subjective tasks produces noisy results that can mislead teams into false confidence or unnecessary pessimism.
+
+## Why This Matters
+
+This insight challenges decades of testing orthodoxy. The software industry has invested enormously in end-to-end testing frameworks, continuous integration pipelines, and comprehensive test suites. These investments pay off in deterministic systems.
+
+But AI agents are not deterministic systems, and treating them as such creates several problems.
+
+First, it explains why many evaluation tools see low adoption. When we spoke with Stephen at GMI, he noted that despite seven YC companies building eval tools in recent cohorts, adoption remained effectively zero even among YC founders themselves. The tools are measuring the wrong things - trying to evaluate entire probabilistic pipelines when they should be helping teams identify and test deterministic components.
+
+Second, it provides a framework for deciding what to test. Instead of trying to evaluate everything, teams can map their pipelines, identify the deterministic boundaries, and focus their evaluation investment where it will produce reliable signal.
+
+Third, it connects to a broader pattern we observed across our research: successful AI agent deployments wrap probabilistic behavior in deterministic governance. State machines, explicit approval flows, component-level evaluation - these patterns all share the same insight. You cannot eliminate uncertainty from LLMs, but you can constrain where that uncertainty can propagate.
+
+The short-term implication is tactical: re-examine your current evaluation strategy. Are you spending resources on end-to-end tests that produce noisy results? Would those resources be better invested in comprehensive retrieval evaluation?
+
+The long-term implication is strategic: as the industry matures, expect a shift toward component-focused evaluation tools and methodologies. The teams that learn this lesson now will build more reliable systems and waste fewer resources on evaluation that does not provide actionable signal.
+
+## What You Can Do
+
+Here is how to apply component-level evaluation to your AI agent systems.
+
+- **Map your pipeline's deterministic vs probabilistic boundaries**: Identify which steps in your agent pipeline produce verifiable outputs (retrieval, data extraction, classification) versus subjective outputs (generation, summarization, creative responses). Your evaluation strategy should differ fundamentally for each type.
+
+- **Focus evaluation investment on first-step accuracy**: Build comprehensive test suites for your retrieval and context steps. If you are using RAG, evaluate whether the right documents are retrieved, not whether the final response is "good." Measure precision and recall. Track which data points are included.
+
+- **Trust foundation models for generation**: Once context is correct, generation quality is largely model-dependent. When outputs are unsatisfactory, first check whether the context was correct. If it was, the solution is often to upgrade models rather than engineer prompts.
+
+- **Limit LLM-as-judge to objective criteria**: Use LLM evaluation only for tasks where human evaluation would be reliable and consistent - factual accuracy, format compliance, presence of required elements. Do not use LLMs to evaluate subjective quality.
+
+- **Build for model-agnosticism**: If your system requires extensive prompt engineering for each model, you are creating technical debt. Focus on delivering excellent context, and your system will improve as models improve.
+
+## The Bottom Line
+
+The teams succeeding with production AI agents are not trying to test the untestable. They have identified the components that can be evaluated deterministically - primarily retrieval and context quality - and focused their evaluation investment there. In a world of probabilistic systems, finding the deterministic anchors is the key to building reliable AI agents. Stop evaluating end-to-end. Start evaluating what you can actually measure.
+
+---
+
+_This post is part of my research series on AI Agent deployment, based on 36 expert interviews, 5 industry conferences, and 3 functional prototypes. [Read the full research overview](/blog/ai-agents-research)._
+
+_Have thoughts on AI agent deployment? Connect with me on [LinkedIn](https://www.linkedin.com/in/fernandotn/) or [email me](mailto:fertorresnavarrete@gmail.com)._

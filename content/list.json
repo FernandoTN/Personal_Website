@@ -1,0 +1,3248 @@
+[
+  {
+    "category": "functional",
+    "description": "Blog listing page displays only published posts (posts with publishedAt <= current date)",
+    "steps": [
+      "Step 1: Navigate to /blog",
+      "Step 2: Verify the page loads without errors",
+      "Step 3: Count the number of visible blog posts",
+      "Step 4: For each visible post, verify publishedAt date is <= today's date",
+      "Step 5: Verify no future-dated posts are visible to public users",
+      "Step 6: Check that posts are sorted by publishedAt in descending order (newest first)"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Individual blog post page renders correctly with all required elements",
+    "steps": [
+      "Step 1: Navigate to /blog/[slug] for a published post",
+      "Step 2: Verify the post title is displayed in an h1 element",
+      "Step 3: Verify the post summary/description is visible",
+      "Step 4: Verify the author name 'Fernando Torres' is displayed",
+      "Step 5: Verify the publishedAt date is formatted and displayed",
+      "Step 6: Verify the reading time estimate is shown",
+      "Step 7: Verify tags are displayed as clickable badges",
+      "Step 8: Verify the cover image is displayed if present",
+      "Step 9: Verify the MDX content body is rendered correctly",
+      "Step 10: Verify the series navigation appears for AI Agents series posts",
+      "Step 11: Verify social share buttons are present"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Blog category filtering shows only posts from selected category",
+    "steps": [
+      "Step 1: Navigate to /blog",
+      "Step 2: Click on 'Theme Deep Dives' category filter",
+      "Step 3: Verify URL updates to /blog?category=theme",
+      "Step 4: Verify only posts with category='theme' are displayed",
+      "Step 5: Count displayed posts and verify count matches expected theme posts",
+      "Step 6: Click on 'Emergent Insights' category filter",
+      "Step 7: Verify only posts with category='emergent' are displayed",
+      "Step 8: Click 'All' to reset filter and verify all published posts appear"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Blog tag filtering shows only posts with selected tag",
+    "steps": [
+      "Step 1: Navigate to /blog",
+      "Step 2: Click on a tag badge (e.g., 'AI Agents')",
+      "Step 3: Verify URL updates to /blog?tag=AI+Agents",
+      "Step 4: Verify only posts containing that tag are displayed",
+      "Step 5: Click on another tag to filter further or reset"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Series navigation allows browsing between AI Agents series posts",
+    "steps": [
+      "Step 1: Navigate to an AI Agents series post (e.g., post #5)",
+      "Step 2: Verify 'Previous in Series' link is present and points to post #4",
+      "Step 3: Verify 'Next in Series' link is present and points to post #6",
+      "Step 4: Click 'Next in Series' link",
+      "Step 5: Verify navigation to the next post in the series",
+      "Step 6: Verify the series position indicator shows correct position (e.g., '6 of 25')",
+      "Step 7: Navigate to first post and verify 'Previous' link is disabled/hidden",
+      "Step 8: Navigate to last post and verify 'Next' link is disabled/hidden"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Featured posts are highlighted on the blog listing and homepage",
+    "steps": [
+      "Step 1: Navigate to homepage",
+      "Step 2: Verify featured posts section exists",
+      "Step 3: Verify posts marked as featured=true appear in this section",
+      "Step 4: Navigate to /blog",
+      "Step 5: Verify featured posts have visual distinction (badge, highlight, or position)",
+      "Step 6: Verify the anchor post (post #1) is marked as featured"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Reading time is calculated and displayed accurately for each post",
+    "steps": [
+      "Step 1: Navigate to a blog post",
+      "Step 2: Verify reading time is displayed (e.g., '8 min read')",
+      "Step 3: Verify reading time calculation is reasonable (approx 200-250 words per minute)",
+      "Step 4: Navigate to a longer post and verify increased reading time",
+      "Step 5: Verify reading time appears in blog listing cards as well"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Auto-reveal system hides future posts from public view",
+    "steps": [
+      "Step 1: Verify a post with publishedAt > today exists in content/blog",
+      "Step 2: Navigate to /blog as public user",
+      "Step 3: Verify the future post is NOT visible in the listing",
+      "Step 4: Attempt to directly navigate to /blog/[future-post-slug]",
+      "Step 5: Verify a 'coming soon' message or 404 is displayed",
+      "Step 6: Verify the publish date is shown in the coming soon message"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Client-side PostGuard component prevents early content reveal",
+    "steps": [
+      "Step 1: Navigate to a published blog post",
+      "Step 2: Verify content renders immediately without loading state",
+      "Step 3: Simulate a post that should be hidden by manipulating date",
+      "Step 4: Verify PostGuard component shows fallback message",
+      "Step 5: Verify fallback includes the correct publish date"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin login page authenticates with correct password",
+    "steps": [
+      "Step 1: Navigate to /admin/login",
+      "Step 2: Verify login form is displayed with password input",
+      "Step 3: Enter incorrect password and submit",
+      "Step 4: Verify error message 'Invalid password' is displayed",
+      "Step 5: Enter correct ADMIN_PASSWORD and submit",
+      "Step 6: Verify redirect to /admin dashboard",
+      "Step 7: Verify admin_token cookie is set with httpOnly flag"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Admin dashboard displays accurate statistics overview",
+    "steps": [
+      "Step 1: Login to admin and navigate to /admin",
+      "Step 2: Verify 'Total Posts' stat card shows 25",
+      "Step 3: Verify 'Published' count matches posts with publishedAt <= today",
+      "Step 4: Verify 'Scheduled' count matches posts with publishedAt > today",
+      "Step 5: Verify 'LinkedIn Posted' count matches linkedin-posts.json posted status",
+      "Step 6: Verify stat cards have correct colors/icons",
+      "Step 7: Verify 'Next Publication' quick action shows correct upcoming post",
+      "Step 8: Verify 'Next LinkedIn Post' shows next pending post"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Admin posts management page lists all 25 posts with correct status",
+    "steps": [
+      "Step 1: Login and navigate to /admin/posts",
+      "Step 2: Verify table displays all 25 blog posts",
+      "Step 3: Verify columns include: #, Title, Category, Publish Date, Status, LinkedIn, Actions",
+      "Step 4: Verify seriesOrder numbers 1-25 are displayed correctly",
+      "Step 5: Verify category badges show correct category for each post",
+      "Step 6: Verify Status column shows 'Published' or 'Scheduled' correctly",
+      "Step 7: Verify LinkedIn status column shows current posting status",
+      "Step 8: Verify 'View' action link opens post in new tab",
+      "Step 9: Verify 'LinkedIn' action link navigates to LinkedIn management for that post"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin posts filtering by category works correctly",
+    "steps": [
+      "Step 1: Navigate to /admin/posts",
+      "Step 2: Select 'Theme Deep Dives' from category dropdown",
+      "Step 3: Verify only 6 theme posts are displayed",
+      "Step 4: Select 'Practitioner Perspectives'",
+      "Step 5: Verify only 5 practitioner posts are displayed",
+      "Step 6: Select 'All Categories' to reset",
+      "Step 7: Verify all 25 posts are displayed again"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin posts filtering by status works correctly",
+    "steps": [
+      "Step 1: Navigate to /admin/posts",
+      "Step 2: Select 'Published' from status dropdown",
+      "Step 3: Verify only posts with publishedAt <= today are shown",
+      "Step 4: Select 'Scheduled' from status dropdown",
+      "Step 5: Verify only posts with publishedAt > today are shown",
+      "Step 6: Select 'All Status' to reset"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin LinkedIn management page displays all 25 LinkedIn posts",
+    "steps": [
+      "Step 1: Login and navigate to /admin/linkedin",
+      "Step 2: Verify page title 'LinkedIn Management' is displayed",
+      "Step 3: Verify LinkedIn connection status indicator is present",
+      "Step 4: Verify stats cards show: Total (25), Posted, Scheduled, Pending counts",
+      "Step 5: Verify filter buttons: All, Pending, Manually Scheduled, Posted",
+      "Step 6: Verify grid displays 25 LinkedIn post cards",
+      "Step 7: Verify each card shows post number, title, scheduled date, and status"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Admin LinkedIn filtering by status works correctly",
+    "steps": [
+      "Step 1: Navigate to /admin/linkedin",
+      "Step 2: Click 'Pending' filter button",
+      "Step 3: Verify only posts with status='pending' AND manuallyScheduled=false are shown",
+      "Step 4: Click 'Manually Scheduled' filter button",
+      "Step 5: Verify only posts with manuallyScheduled=true are shown",
+      "Step 6: Click 'Posted' filter button",
+      "Step 7: Verify only posts with status='posted' are shown",
+      "Step 8: Click 'All' to reset and verify all 25 posts appear"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Individual LinkedIn post page displays full content and controls",
+    "steps": [
+      "Step 1: Navigate to /admin/linkedin/linkedin-01",
+      "Step 2: Verify back link to /admin/linkedin is present",
+      "Step 3: Verify post title 'Post #1: Anchor Post' is displayed",
+      "Step 4: Verify LinkedIn preview card shows formatted content",
+      "Step 5: Verify preview includes author avatar placeholder and name",
+      "Step 6: Verify post content text is displayed in preview",
+      "Step 7: Verify hashtags are displayed in blue text",
+      "Step 8: Verify 'Copy Content to Clipboard' button is present",
+      "Step 9: Verify cover image preview is displayed on the right",
+      "Step 10: Verify 'Download Image' link is present",
+      "Step 11: Verify schedule info shows correct date and time",
+      "Step 12: Verify 'Already Scheduled in LinkedIn' checkbox is present"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "LinkedIn copy to clipboard functionality works correctly",
+    "steps": [
+      "Step 1: Navigate to /admin/linkedin/linkedin-01",
+      "Step 2: Click 'Copy Content to Clipboard' button",
+      "Step 3: Verify button text changes to 'Copied to Clipboard!'",
+      "Step 4: Verify clipboard contains the post content",
+      "Step 5: Verify clipboard content includes hashtags",
+      "Step 6: Verify button reverts to original text after 2 seconds"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "LinkedIn 'Already Scheduled' checkbox updates status correctly",
+    "steps": [
+      "Step 1: Navigate to /admin/linkedin/linkedin-01",
+      "Step 2: Verify checkbox is unchecked initially (if not manually scheduled)",
+      "Step 3: Check the 'Already Scheduled in LinkedIn' checkbox",
+      "Step 4: Verify API call is made to /api/admin/linkedin/update-status",
+      "Step 5: Verify checkbox remains checked after page refresh",
+      "Step 6: Verify status badge updates to 'Manually Scheduled'",
+      "Step 7: Verify auto-post button becomes disabled",
+      "Step 8: Uncheck the checkbox and verify it can be toggled off"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "LinkedIn auto-post button posts content to LinkedIn API",
+    "steps": [
+      "Step 1: Navigate to /admin/linkedin/[id] for a pending post",
+      "Step 2: Verify 'Post to LinkedIn Now' button is enabled",
+      "Step 3: Click the auto-post button",
+      "Step 4: Verify confirmation dialog appears",
+      "Step 5: Confirm the action",
+      "Step 6: Verify loading state 'Posting...' is displayed",
+      "Step 7: Verify API call is made to /api/linkedin/post",
+      "Step 8: Verify success message with LinkedIn post URL is displayed",
+      "Step 9: Verify status updates to 'Posted' with checkmark",
+      "Step 10: Verify button changes to 'Already Posted' and is disabled"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "LinkedIn auto-post is blocked when manually scheduled",
+    "steps": [
+      "Step 1: Navigate to /admin/linkedin/[id] for a pending post",
+      "Step 2: Check 'Already Scheduled in LinkedIn' checkbox",
+      "Step 3: Verify auto-post button becomes disabled",
+      "Step 4: Verify button text changes to 'Manually Scheduled (Auto-Post Disabled)'",
+      "Step 5: Click the disabled button and verify no action occurs"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin calendar view displays 10-week publication schedule",
+    "steps": [
+      "Step 1: Login and navigate to /admin/calendar",
+      "Step 2: Verify calendar header shows 'Publication Calendar'",
+      "Step 3: Verify all 10 weeks are displayed (Dec 8 - Feb 13)",
+      "Step 4: Verify Week 1 shows 3 posts (Mon, Wed, Fri)",
+      "Step 5: Verify each week shows correct date range",
+      "Step 6: Verify posts show correct title and category",
+      "Step 7: Verify published posts have visual distinction from scheduled",
+      "Step 8: Verify clicking a post navigates to post details"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin analytics dashboard displays traffic data",
+    "steps": [
+      "Step 1: Login and navigate to /admin/analytics",
+      "Step 2: Verify period selector shows: 7 Days, 30 Days, 12 Months",
+      "Step 3: Verify default period is 30 Days",
+      "Step 4: Verify stat cards display: Total Visitors, Page Views, Avg Time, Bounce Rate",
+      "Step 5: Verify traffic chart is rendered",
+      "Step 6: Verify 'Top Blog Posts' table is displayed",
+      "Step 7: Verify 'Traffic Sources' table is displayed",
+      "Step 8: Change period to 7 Days and verify data updates",
+      "Step 9: Verify AI Agents Research series specific analytics section"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Research page displays Final Report showcase correctly",
+    "steps": [
+      "Step 1: Navigate to /research",
+      "Step 2: Verify hero section displays with Stanford GSB badge",
+      "Step 3: Verify main title 'What's Needed to Unlock the Full Potential of AI Agents?' is displayed",
+      "Step 4: Verify subtitle mentions 36 interviews, 5 conferences, 3 prototypes",
+      "Step 5: Verify 'Read Full Report' button scrolls to #full-report",
+      "Step 6: Verify 'Download PDF' button is present and links to PDF",
+      "Step 7: Verify key statistics section displays 4 stats: 90%, 30-40%, 80-90%, 92%",
+      "Step 8: Verify table of contents is displayed in sidebar",
+      "Step 9: Verify full report content is rendered",
+      "Step 10: Verify authors section shows Fernando Torres and Shekhar Bhende",
+      "Step 11: Verify 'Explore the Publication Series' section with category cards"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Research page table of contents navigation works correctly",
+    "steps": [
+      "Step 1: Navigate to /research",
+      "Step 2: Verify table of contents shows all major sections",
+      "Step 3: Click on 'B: Major Learnings' in TOC",
+      "Step 4: Verify page scrolls to that section",
+      "Step 5: Verify TOC highlights current section while scrolling",
+      "Step 6: Scroll through document and verify TOC updates",
+      "Step 7: Verify subsections are expandable/visible under main sections"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Research PDF download works correctly",
+    "steps": [
+      "Step 1: Navigate to /research",
+      "Step 2: Click 'Download PDF' button",
+      "Step 3: Verify PDF file starts downloading",
+      "Step 4: Verify filename is 'ai-agents-research-final-report.pdf'",
+      "Step 5: Verify downloaded PDF is readable and contains full report"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Homepage displays hero section with professional stats",
+    "steps": [
+      "Step 1: Navigate to homepage /",
+      "Step 2: Verify hero section loads with name and title",
+      "Step 3: Verify professional stats are displayed",
+      "Step 4: Verify featured content section appears",
+      "Step 5: Verify navigation links to all main sections work",
+      "Step 6: Verify AI Agents Research series is prominently featured"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Newsletter subscription form submits correctly",
+    "steps": [
+      "Step 1: Navigate to homepage or footer",
+      "Step 2: Locate newsletter subscription form",
+      "Step 3: Enter valid email address",
+      "Step 4: Click subscribe button",
+      "Step 5: Verify success message is displayed",
+      "Step 6: Enter invalid email and verify validation error"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Dark mode toggle persists user preference",
+    "steps": [
+      "Step 1: Navigate to any page",
+      "Step 2: Verify current theme (light or dark based on system preference)",
+      "Step 3: Click dark mode toggle in navigation",
+      "Step 4: Verify theme changes to opposite mode",
+      "Step 5: Refresh the page",
+      "Step 6: Verify theme preference persists",
+      "Step 7: Navigate to different page and verify theme persists"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "About page displays professional timeline and bio",
+    "steps": [
+      "Step 1: Navigate to /about",
+      "Step 2: Verify bio section is displayed",
+      "Step 3: Verify professional timeline is present",
+      "Step 4: Verify achievements section exists",
+      "Step 5: Verify CV download button is present",
+      "Step 6: Click CV download and verify PDF downloads"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Projects page displays portfolio grid",
+    "steps": [
+      "Step 1: Navigate to /projects",
+      "Step 2: Verify project cards are displayed in grid",
+      "Step 3: Verify each card shows title, summary, and technologies",
+      "Step 4: Click on a project card",
+      "Step 5: Verify navigation to project detail page",
+      "Step 6: Verify GitHub and website links work if present"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin middleware redirects unauthenticated users",
+    "steps": [
+      "Step 1: Clear all cookies/logout",
+      "Step 2: Attempt to navigate to /admin",
+      "Step 3: Verify redirect to /admin/login",
+      "Step 4: Verify redirect URL includes original destination",
+      "Step 5: Attempt to navigate to /admin/posts",
+      "Step 6: Verify redirect to /admin/login",
+      "Step 7: Attempt to navigate to /admin/linkedin",
+      "Step 8: Verify redirect to /admin/login"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin logout clears session and redirects",
+    "steps": [
+      "Step 1: Login to admin successfully",
+      "Step 2: Verify access to /admin pages",
+      "Step 3: Click logout button",
+      "Step 4: Verify admin_token cookie is cleared",
+      "Step 5: Verify redirect to /admin/login",
+      "Step 6: Attempt to navigate to /admin",
+      "Step 7: Verify redirect back to login"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Contentlayer processes all 25 blog posts with required fields",
+    "steps": [
+      "Step 1: Run npm run build or contentlayer build",
+      "Step 2: Verify no Contentlayer errors in console",
+      "Step 3: Verify all 25 posts are generated",
+      "Step 4: Verify each post has required fields: title, summary, publishedAt",
+      "Step 5: Verify seriesOrder field is present (1-25)",
+      "Step 6: Verify category field matches valid enum value",
+      "Step 7: Verify computed fields: isPublished, daysUntilPublish, readingTime"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "MDX content renders correctly with custom components",
+    "steps": [
+      "Step 1: Navigate to a blog post with MDX content",
+      "Step 2: Verify headings (h1-h6) render with correct styling",
+      "Step 3: Verify code blocks render with syntax highlighting",
+      "Step 4: Verify blockquotes render with correct styling",
+      "Step 5: Verify lists (ordered and unordered) render correctly",
+      "Step 6: Verify images render with proper sizing",
+      "Step 7: Verify links are clickable and styled",
+      "Step 8: Verify custom MDX components render if present"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "LinkedIn posts JSON data matches blog posts correctly",
+    "steps": [
+      "Step 1: Load linkedin-posts.json data",
+      "Step 2: Verify 25 LinkedIn posts exist",
+      "Step 3: For each LinkedIn post, verify blogPostSlug matches an existing blog post",
+      "Step 4: Verify seriesOrder matches between LinkedIn and blog posts",
+      "Step 5: Verify scheduledDate matches publishedAt of corresponding blog post",
+      "Step 6: Verify all required fields are present for each post"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Publication calendar JSON matches blog posts schedule",
+    "steps": [
+      "Step 1: Load publication-calendar.json data",
+      "Step 2: Verify series metadata is correct (25 posts, 10 weeks)",
+      "Step 3: Verify start date is 2025-12-08 and end date is 2025-02-13",
+      "Step 4: For each week, verify posts have correct dates",
+      "Step 5: Verify each post slug matches an existing blog post",
+      "Step 6: Verify total posts across all weeks equals 25"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "GitHub Actions scheduled deploy workflow triggers correctly",
+    "steps": [
+      "Step 1: Verify scheduled-deploy.yml exists in .github/workflows/",
+      "Step 2: Verify cron schedule is '0 14 * * *' (6 AM PST)",
+      "Step 3: Verify workflow has check-and-deploy job",
+      "Step 4: Verify workflow checks for posts to reveal today",
+      "Step 5: Verify workflow triggers main deploy if new posts exist"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "RSS feed includes published blog posts",
+    "steps": [
+      "Step 1: Navigate to /feed.xml or /rss.xml",
+      "Step 2: Verify valid XML is returned",
+      "Step 3: Verify feed title and description are present",
+      "Step 4: Verify only published posts are included",
+      "Step 5: Verify each item has title, link, description, pubDate"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Sitemap includes all published pages",
+    "steps": [
+      "Step 1: Navigate to /sitemap.xml",
+      "Step 2: Verify valid XML sitemap is returned",
+      "Step 3: Verify homepage is included",
+      "Step 4: Verify /about, /projects, /blog, /research pages are included",
+      "Step 5: Verify published blog posts are included",
+      "Step 6: Verify future posts are NOT included"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Blog listing page follows design system typography and spacing",
+    "steps": [
+      "Step 1: Navigate to /blog",
+      "Step 2: Verify page title uses correct heading style (text-3xl font-bold)",
+      "Step 3: Verify blog cards have consistent padding and margins",
+      "Step 4: Verify post titles use Inter font",
+      "Step 5: Verify category badges have correct colors per category",
+      "Step 6: Verify hover states on cards have smooth transitions"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Blog post page has readable content layout",
+    "steps": [
+      "Step 1: Navigate to a blog post",
+      "Step 2: Verify content width is constrained (max-w-4xl or similar)",
+      "Step 3: Verify line height is comfortable for reading (prose styling)",
+      "Step 4: Verify paragraph spacing is consistent",
+      "Step 5: Verify headings have appropriate visual hierarchy",
+      "Step 6: Verify code blocks have distinct background color",
+      "Step 7: Verify blockquotes have left border styling"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Admin dashboard uses consistent card styling",
+    "steps": [
+      "Step 1: Login and navigate to /admin",
+      "Step 2: Verify all stat cards have consistent border radius",
+      "Step 3: Verify stat cards use bg-card background color",
+      "Step 4: Verify numbers are prominently sized",
+      "Step 5: Verify subtitles use text-muted-foreground color",
+      "Step 6: Verify quick action cards have consistent styling"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Admin posts table has proper visual hierarchy",
+    "steps": [
+      "Step 1: Navigate to /admin/posts",
+      "Step 2: Verify table header has bg-muted background",
+      "Step 3: Verify table rows have border separators",
+      "Step 4: Verify hover state on rows has visual feedback",
+      "Step 5: Verify action links use appropriate colors (blue for view, purple for LinkedIn)",
+      "Step 6: Verify status badges have distinct colors (green for published, blue for scheduled)"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "LinkedIn post preview card mimics LinkedIn styling",
+    "steps": [
+      "Step 1: Navigate to /admin/linkedin/[id]",
+      "Step 2: Verify preview card has white background with border",
+      "Step 3: Verify author section has circular avatar placeholder",
+      "Step 4: Verify author name and title are positioned correctly",
+      "Step 5: Verify post content uses appropriate font size",
+      "Step 6: Verify hashtags are styled in blue text"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Research page hero section has gradient background",
+    "steps": [
+      "Step 1: Navigate to /research",
+      "Step 2: Verify hero has gradient from primary/10 to background",
+      "Step 3: Verify hero has appropriate vertical padding (py-20)",
+      "Step 4: Verify title is centered and uses large font size",
+      "Step 5: Verify CTA buttons have distinct primary and outline styles"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Key statistics section uses impactful number display",
+    "steps": [
+      "Step 1: Navigate to /research",
+      "Step 2: Scroll to key findings section",
+      "Step 3: Verify stat values use large, bold typography",
+      "Step 4: Verify stat labels are smaller and positioned below",
+      "Step 5: Verify descriptions are in muted text color",
+      "Step 6: Verify 4-column grid layout on desktop"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Dark mode applies correct color scheme throughout",
+    "steps": [
+      "Step 1: Enable dark mode",
+      "Step 2: Verify background changes to dark color",
+      "Step 3: Verify text changes to light color for contrast",
+      "Step 4: Verify cards use dark bg-card color",
+      "Step 5: Verify borders are visible but subtle",
+      "Step 6: Verify code blocks have appropriate dark theme",
+      "Step 7: Verify images don't have harsh white backgrounds",
+      "Step 8: Navigate through all main pages and verify consistency"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Category badges use consistent color coding",
+    "steps": [
+      "Step 1: Navigate to /blog or /admin/posts",
+      "Step 2: Verify 'anchor' category has distinct color",
+      "Step 3: Verify 'theme' category has distinct color",
+      "Step 4: Verify 'emergent' category has distinct color",
+      "Step 5: Verify 'practitioner' category has distinct color",
+      "Step 6: Verify 'prototype' category has distinct color",
+      "Step 7: Verify 'conference' category has distinct color",
+      "Step 8: Verify 'methodology' category has distinct color",
+      "Step 9: Verify colors are consistent across all pages"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Navigation bar is styled consistently across pages",
+    "steps": [
+      "Step 1: Navigate to homepage",
+      "Step 2: Verify navbar has correct height and padding",
+      "Step 3: Verify logo/name is positioned on the left",
+      "Step 4: Verify navigation links are centered or right-aligned",
+      "Step 5: Verify dark mode toggle is visible",
+      "Step 6: Verify active page has visual indicator",
+      "Step 7: Navigate to other pages and verify navbar consistency"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Footer displays social links and copyright consistently",
+    "steps": [
+      "Step 1: Navigate to any page",
+      "Step 2: Scroll to footer",
+      "Step 3: Verify footer has appropriate background color",
+      "Step 4: Verify social links (LinkedIn, Twitter, GitHub) are present",
+      "Step 5: Verify contact email is displayed",
+      "Step 6: Verify copyright text includes current year",
+      "Step 7: Verify footer is consistent across all pages"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Button components follow design system variants",
+    "steps": [
+      "Step 1: Identify primary buttons throughout the site",
+      "Step 2: Verify primary buttons have bg-primary and white text",
+      "Step 3: Identify outline/secondary buttons",
+      "Step 4: Verify outline buttons have border and text-primary",
+      "Step 5: Verify disabled buttons have reduced opacity",
+      "Step 6: Verify hover states have smooth transitions",
+      "Step 7: Verify focus states have visible outline for accessibility"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Form inputs follow consistent styling patterns",
+    "steps": [
+      "Step 1: Navigate to /admin/login",
+      "Step 2: Verify password input has border and rounded corners",
+      "Step 3: Verify input has appropriate padding",
+      "Step 4: Verify placeholder text is visible and styled",
+      "Step 5: Verify focus state has ring or border color change",
+      "Step 6: Navigate to newsletter form and verify same styling"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Loading states have consistent spinner or skeleton styling",
+    "steps": [
+      "Step 1: Navigate to /admin/analytics and observe loading state",
+      "Step 2: Verify loading spinner or skeleton is displayed",
+      "Step 3: Verify loading state has 'Loading...' text or animation",
+      "Step 4: Verify content replaces loading state smoothly",
+      "Step 5: Test loading state on slow network simulation"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Error states display with appropriate red/warning styling",
+    "steps": [
+      "Step 1: Navigate to /admin/login",
+      "Step 2: Submit with incorrect password",
+      "Step 3: Verify error message appears in red/error color",
+      "Step 4: Verify error text is clearly readable",
+      "Step 5: Test form validation errors and verify consistent styling"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Success states display with appropriate green/success styling",
+    "steps": [
+      "Step 1: Navigate to /admin/linkedin/[id]",
+      "Step 2: Click copy to clipboard",
+      "Step 3: Verify success state shows checkmark or green color",
+      "Step 4: Verify 'Posted' status uses green badge",
+      "Step 5: Test newsletter subscription success and verify styling"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Images have consistent border radius and shadow",
+    "steps": [
+      "Step 1: Navigate to blog listing",
+      "Step 2: Verify post cover images have rounded corners (rounded-lg)",
+      "Step 3: Navigate to individual blog post",
+      "Step 4: Verify hero image has consistent styling",
+      "Step 5: Navigate to /research",
+      "Step 6: Verify author images have circular styling",
+      "Step 7: Check /admin/linkedin for image preview styling"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Spacing system is consistent with Tailwind defaults",
+    "steps": [
+      "Step 1: Inspect padding on page containers (should use px-4)",
+      "Step 2: Verify section spacing uses py-16 or similar multiples of 4",
+      "Step 3: Verify card padding is consistent (p-6)",
+      "Step 4: Verify gap spacing in grids is consistent (gap-6 or gap-8)",
+      "Step 5: Verify margin between sections is consistent"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Typography scale is consistent across pages",
+    "steps": [
+      "Step 1: Verify h1 headings use text-3xl or text-4xl font-bold",
+      "Step 2: Verify h2 headings use text-2xl font-semibold",
+      "Step 3: Verify body text uses default or text-base",
+      "Step 4: Verify small text uses text-sm",
+      "Step 5: Verify muted text uses text-muted-foreground color",
+      "Step 6: Verify all text uses Inter font family"
+    ],
+    "passes": false
+  },
+  {
+    "category": "integration",
+    "description": "Cloudflare Worker LinkedIn OAuth flow works end-to-end",
+    "steps": [
+      "Step 1: Navigate to admin LinkedIn management",
+      "Step 2: Click 'Connect LinkedIn' button",
+      "Step 3: Verify redirect to LinkedIn authorization page",
+      "Step 4: Authorize the application",
+      "Step 5: Verify redirect back to admin with success",
+      "Step 6: Verify LinkedIn connection status shows 'Connected'",
+      "Step 7: Verify access token is stored in Cloudflare KV"
+    ],
+    "passes": false
+  },
+  {
+    "category": "integration",
+    "description": "Cloudflare Worker POST /api/linkedin/post creates LinkedIn post",
+    "steps": [
+      "Step 1: Ensure LinkedIn OAuth is connected",
+      "Step 2: Send POST request to /api/linkedin/post with valid payload",
+      "Step 3: Verify Authorization header with admin token is validated",
+      "Step 4: Verify post content is sent to LinkedIn API",
+      "Step 5: Verify image is uploaded if provided",
+      "Step 6: Verify success response includes LinkedIn post URL",
+      "Step 7: Verify KV storage is updated with posted status"
+    ],
+    "passes": false
+  },
+  {
+    "category": "integration",
+    "description": "Cloudflare Worker handles LinkedIn API errors gracefully",
+    "steps": [
+      "Step 1: Send invalid request to /api/linkedin/post",
+      "Step 2: Verify appropriate error response is returned",
+      "Step 3: Simulate LinkedIn API rate limit",
+      "Step 4: Verify error message indicates rate limiting",
+      "Step 5: Simulate expired access token",
+      "Step 6: Verify error message indicates auth issue"
+    ],
+    "passes": false
+  },
+  {
+    "category": "integration",
+    "description": "Plausible Analytics script loads and tracks page views",
+    "steps": [
+      "Step 1: Navigate to any page",
+      "Step 2: Open browser developer tools Network tab",
+      "Step 3: Verify plausible.io script is loaded",
+      "Step 4: Verify page view event is sent to Plausible",
+      "Step 5: Navigate to another page",
+      "Step 6: Verify another page view event is tracked"
+    ],
+    "passes": false
+  },
+  {
+    "category": "integration",
+    "description": "Custom analytics events are tracked correctly",
+    "steps": [
+      "Step 1: Navigate to a blog post",
+      "Step 2: Open Network tab and filter for Plausible requests",
+      "Step 3: Verify 'Blog Post View' event is tracked with slug and category",
+      "Step 4: Click LinkedIn share button",
+      "Step 5: Verify 'LinkedIn Click' event is tracked",
+      "Step 6: Navigate to /research and click PDF download",
+      "Step 7: Verify 'Research PDF Download' event is tracked"
+    ],
+    "passes": false
+  },
+  {
+    "category": "integration",
+    "description": "Cloudflare Worker analytics proxy returns Plausible data",
+    "steps": [
+      "Step 1: Login to admin",
+      "Step 2: Navigate to /admin/analytics",
+      "Step 3: Verify API call to /api/analytics is made",
+      "Step 4: Verify response includes visitors, pageviews, bounce rate",
+      "Step 5: Verify timeseries data is included",
+      "Step 6: Change period and verify new API call is made"
+    ],
+    "passes": false
+  },
+  {
+    "category": "integration",
+    "description": "GitHub Actions deploy workflow builds and deploys correctly",
+    "steps": [
+      "Step 1: Push a commit to main branch",
+      "Step 2: Navigate to GitHub Actions tab",
+      "Step 3: Verify 'Deploy to GitHub Pages' workflow starts",
+      "Step 4: Verify pnpm install step completes",
+      "Step 5: Verify build step completes without errors",
+      "Step 6: Verify deploy step completes",
+      "Step 7: Navigate to live site and verify changes are deployed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "integration",
+    "description": "Contentlayer generates typed content at build time",
+    "steps": [
+      "Step 1: Run npm run build",
+      "Step 2: Verify .contentlayer directory is created",
+      "Step 3: Verify generated/index.js exports allPosts",
+      "Step 4: Verify TypeScript types are generated for Post",
+      "Step 5: Import allPosts in a page and verify type safety"
+    ],
+    "passes": false
+  },
+  {
+    "category": "integration",
+    "description": "Static export generates all required pages",
+    "steps": [
+      "Step 1: Run npm run build",
+      "Step 2: Verify /out directory is created",
+      "Step 3: Verify index.html exists for homepage",
+      "Step 4: Verify blog/index.html exists",
+      "Step 5: Verify individual blog post HTML files exist",
+      "Step 6: Verify research/index.html exists",
+      "Step 7: Verify admin pages are generated",
+      "Step 8: Verify 404.html is generated"
+    ],
+    "passes": false
+  },
+  {
+    "category": "integration",
+    "description": "API routes work with static export (or use appropriate alternatives)",
+    "steps": [
+      "Step 1: Verify /api/admin/login route exists",
+      "Step 2: Test login API endpoint",
+      "Step 3: Verify /api/admin/linkedin/update-status route exists",
+      "Step 4: Test status update endpoint",
+      "Step 5: Verify external API calls go to Cloudflare Worker"
+    ],
+    "passes": false
+  },
+  {
+    "category": "integration",
+    "description": "Newsletter API integrates with Mailchimp or Formspree",
+    "steps": [
+      "Step 1: Verify NEXT_PUBLIC_NEWSLETTER_ENDPOINT is configured",
+      "Step 2: Submit newsletter form with valid email",
+      "Step 3: Verify API call is made to endpoint",
+      "Step 4: Verify success response is handled",
+      "Step 5: Verify email appears in Mailchimp list (if configured)"
+    ],
+    "passes": false
+  },
+  {
+    "category": "integration",
+    "description": "LinkedIn post with image uploads successfully",
+    "steps": [
+      "Step 1: Navigate to /admin/linkedin/[id] with image",
+      "Step 2: Trigger auto-post",
+      "Step 3: Verify image is uploaded to LinkedIn assets API",
+      "Step 4: Verify post is created with image attachment",
+      "Step 5: Verify LinkedIn post URL shows image correctly"
+    ],
+    "passes": false
+  },
+  {
+    "category": "security",
+    "description": "Admin routes are protected by authentication middleware",
+    "steps": [
+      "Step 1: Clear all cookies",
+      "Step 2: Attempt GET request to /admin without auth",
+      "Step 3: Verify 302 redirect to /admin/login",
+      "Step 4: Attempt GET request to /admin/posts without auth",
+      "Step 5: Verify redirect to login",
+      "Step 6: Attempt GET request to /admin/linkedin without auth",
+      "Step 7: Verify redirect to login",
+      "Step 8: Verify /admin/login is accessible without auth"
+    ],
+    "passes": false
+  },
+  {
+    "category": "security",
+    "description": "Admin token cookie is httpOnly and secure",
+    "steps": [
+      "Step 1: Login to admin successfully",
+      "Step 2: Inspect cookies in browser developer tools",
+      "Step 3: Verify admin_token cookie exists",
+      "Step 4: Verify httpOnly flag is set",
+      "Step 5: Verify secure flag is set in production",
+      "Step 6: Verify sameSite is set to strict",
+      "Step 7: Attempt to access cookie via JavaScript and verify it fails"
+    ],
+    "passes": false
+  },
+  {
+    "category": "security",
+    "description": "Admin password is validated correctly",
+    "steps": [
+      "Step 1: Navigate to /admin/login",
+      "Step 2: Submit empty password",
+      "Step 3: Verify login is rejected",
+      "Step 4: Submit incorrect password",
+      "Step 5: Verify login is rejected with error message",
+      "Step 6: Submit correct password",
+      "Step 7: Verify login succeeds"
+    ],
+    "passes": false
+  },
+  {
+    "category": "security",
+    "description": "Cloudflare Worker validates admin token for protected endpoints",
+    "steps": [
+      "Step 1: Send POST to /api/linkedin/post without Authorization header",
+      "Step 2: Verify 401 Unauthorized response",
+      "Step 3: Send POST with invalid Bearer token",
+      "Step 4: Verify 401 Unauthorized response",
+      "Step 5: Send POST with valid Bearer token",
+      "Step 6: Verify request is processed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "security",
+    "description": "CORS is configured to allow only fernandotorres.io",
+    "steps": [
+      "Step 1: Send request to Cloudflare Worker from allowed origin",
+      "Step 2: Verify Access-Control-Allow-Origin header is fernandotorres.io",
+      "Step 3: Send OPTIONS preflight request",
+      "Step 4: Verify correct CORS headers in response",
+      "Step 5: Attempt request from different origin",
+      "Step 6: Verify CORS blocks the request"
+    ],
+    "passes": false
+  },
+  {
+    "category": "security",
+    "description": "API keys are never exposed to client-side code",
+    "steps": [
+      "Step 1: View page source of any page",
+      "Step 2: Search for LINKEDIN_CLIENT_SECRET",
+      "Step 3: Verify it does not appear",
+      "Step 4: Search for PLAUSIBLE_API_KEY",
+      "Step 5: Verify it does not appear",
+      "Step 6: Search for ADMIN_TOKEN",
+      "Step 7: Verify it does not appear in client code",
+      "Step 8: Inspect Network requests and verify no secrets in responses"
+    ],
+    "passes": false
+  },
+  {
+    "category": "security",
+    "description": "LinkedIn access token is stored encrypted in KV",
+    "steps": [
+      "Step 1: Complete LinkedIn OAuth flow",
+      "Step 2: Verify token is stored in Cloudflare KV",
+      "Step 3: Verify token is not stored in plain text in client storage",
+      "Step 4: Verify token is not exposed in any API responses"
+    ],
+    "passes": false
+  },
+  {
+    "category": "security",
+    "description": "Input validation prevents XSS in admin forms",
+    "steps": [
+      "Step 1: Navigate to admin login",
+      "Step 2: Enter script tag in password field: <script>alert('xss')</script>",
+      "Step 3: Submit and verify script is not executed",
+      "Step 4: Verify input is sanitized or escaped",
+      "Step 5: Test other form inputs for XSS vulnerabilities"
+    ],
+    "passes": false
+  },
+  {
+    "category": "security",
+    "description": "Rate limiting prevents brute force login attempts",
+    "steps": [
+      "Step 1: Attempt multiple failed logins in quick succession",
+      "Step 2: Verify rate limiting kicks in after threshold",
+      "Step 3: Verify appropriate error message is shown",
+      "Step 4: Wait for rate limit window to pass",
+      "Step 5: Verify login attempts work again"
+    ],
+    "passes": false
+  },
+  {
+    "category": "security",
+    "description": "Admin session expires after 24 hours",
+    "steps": [
+      "Step 1: Login to admin",
+      "Step 2: Verify admin_token cookie maxAge is 86400 (24 hours)",
+      "Step 3: Simulate time passage beyond 24 hours",
+      "Step 4: Attempt to access admin page",
+      "Step 5: Verify redirect to login due to expired session"
+    ],
+    "passes": false
+  },
+  {
+    "category": "security",
+    "description": "Sensitive routes return 404 for non-existent resources",
+    "steps": [
+      "Step 1: Login to admin",
+      "Step 2: Navigate to /admin/posts/non-existent-slug",
+      "Step 3: Verify 404 page is shown, not detailed error",
+      "Step 4: Navigate to /admin/linkedin/non-existent-id",
+      "Step 5: Verify 404 page is shown"
+    ],
+    "passes": false
+  },
+  {
+    "category": "security",
+    "description": "No sensitive data in error messages",
+    "steps": [
+      "Step 1: Trigger various errors (404, 500, validation)",
+      "Step 2: Verify error messages don't expose stack traces",
+      "Step 3: Verify error messages don't expose file paths",
+      "Step 4: Verify error messages don't expose database details"
+    ],
+    "passes": false
+  },
+  {
+    "category": "performance",
+    "description": "Homepage loads in under 3 seconds on 3G network",
+    "steps": [
+      "Step 1: Open Chrome DevTools and enable Network throttling (Slow 3G)",
+      "Step 2: Navigate to homepage",
+      "Step 3: Measure total load time",
+      "Step 4: Verify load time is under 3 seconds",
+      "Step 5: Verify Largest Contentful Paint (LCP) is under 2.5s"
+    ],
+    "passes": false
+  },
+  {
+    "category": "performance",
+    "description": "Blog listing page loads efficiently with lazy loading",
+    "steps": [
+      "Step 1: Navigate to /blog",
+      "Step 2: Verify initial render shows above-fold content",
+      "Step 3: Scroll down and verify images lazy load",
+      "Step 4: Check Network tab for deferred image requests",
+      "Step 5: Verify no layout shift during image loading"
+    ],
+    "passes": false
+  },
+  {
+    "category": "performance",
+    "description": "Images are optimized with WebP format and appropriate sizing",
+    "steps": [
+      "Step 1: Navigate to blog post with images",
+      "Step 2: Inspect image requests in Network tab",
+      "Step 3: Verify images are served in WebP format (where supported)",
+      "Step 4: Verify image dimensions match display size",
+      "Step 5: Verify images are under 200KB each",
+      "Step 6: Verify srcset is used for responsive images"
+    ],
+    "passes": false
+  },
+  {
+    "category": "performance",
+    "description": "Code splitting loads only necessary JavaScript per route",
+    "steps": [
+      "Step 1: Navigate to homepage",
+      "Step 2: Inspect loaded JavaScript bundles",
+      "Step 3: Navigate to /blog",
+      "Step 4: Verify additional chunks are loaded as needed",
+      "Step 5: Verify admin-related code is not loaded on public pages"
+    ],
+    "passes": false
+  },
+  {
+    "category": "performance",
+    "description": "Static pages are properly cached by browser",
+    "steps": [
+      "Step 1: Navigate to homepage",
+      "Step 2: Check Response headers for Cache-Control",
+      "Step 3: Refresh page",
+      "Step 4: Verify assets are served from cache (304 or disk cache)",
+      "Step 5: Verify cache headers are appropriate for static content"
+    ],
+    "passes": false
+  },
+  {
+    "category": "performance",
+    "description": "Admin dashboard loads analytics data efficiently",
+    "steps": [
+      "Step 1: Login and navigate to /admin/analytics",
+      "Step 2: Measure time to first meaningful paint",
+      "Step 3: Verify loading state appears quickly",
+      "Step 4: Verify data loads within reasonable time (< 2s)",
+      "Step 5: Verify no unnecessary re-renders when changing periods"
+    ],
+    "passes": false
+  },
+  {
+    "category": "performance",
+    "description": "Lighthouse score is 95+ for all pages",
+    "steps": [
+      "Step 1: Run Lighthouse audit on homepage",
+      "Step 2: Verify Performance score is 95+",
+      "Step 3: Verify Accessibility score is 95+",
+      "Step 4: Verify Best Practices score is 95+",
+      "Step 5: Verify SEO score is 95+",
+      "Step 6: Run audit on /blog and verify similar scores",
+      "Step 7: Run audit on /research and verify similar scores"
+    ],
+    "passes": false
+  },
+  {
+    "category": "performance",
+    "description": "Core Web Vitals meet 'Good' thresholds",
+    "steps": [
+      "Step 1: Run Web Vitals measurement on homepage",
+      "Step 2: Verify LCP (Largest Contentful Paint) < 2.5s",
+      "Step 3: Verify FID (First Input Delay) < 100ms",
+      "Step 4: Verify CLS (Cumulative Layout Shift) < 0.1",
+      "Step 5: Test on multiple pages and verify consistency"
+    ],
+    "passes": false
+  },
+  {
+    "category": "performance",
+    "description": "No render-blocking resources in critical path",
+    "steps": [
+      "Step 1: Run Lighthouse audit",
+      "Step 2: Check for 'Eliminate render-blocking resources' warning",
+      "Step 3: Verify critical CSS is inlined or preloaded",
+      "Step 4: Verify non-critical JS is deferred or async",
+      "Step 5: Verify fonts are loaded efficiently"
+    ],
+    "passes": false
+  },
+  {
+    "category": "performance",
+    "description": "Total bundle size is optimized",
+    "steps": [
+      "Step 1: Run npm run build",
+      "Step 2: Check build output for bundle sizes",
+      "Step 3: Verify main JavaScript bundle is under 200KB gzipped",
+      "Step 4: Verify no duplicate dependencies are bundled",
+      "Step 5: Verify tree-shaking is working for unused code"
+    ],
+    "passes": false
+  },
+  {
+    "category": "performance",
+    "description": "API responses are fast (< 500ms)",
+    "steps": [
+      "Step 1: Time /api/admin/login response",
+      "Step 2: Verify response time < 500ms",
+      "Step 3: Time Cloudflare Worker /api/analytics response",
+      "Step 4: Verify response time < 500ms",
+      "Step 5: Time /api/linkedin/post response",
+      "Step 6: Verify response time < 1s (accounting for LinkedIn API)"
+    ],
+    "passes": false
+  },
+  {
+    "category": "accessibility",
+    "description": "All pages have appropriate heading hierarchy",
+    "steps": [
+      "Step 1: Navigate to homepage",
+      "Step 2: Verify only one h1 element exists",
+      "Step 3: Verify headings follow logical order (h1 > h2 > h3)",
+      "Step 4: Navigate to blog listing and verify heading structure",
+      "Step 5: Navigate to blog post and verify heading structure",
+      "Step 6: Navigate to /research and verify heading structure"
+    ],
+    "passes": false
+  },
+  {
+    "category": "accessibility",
+    "description": "All images have alt text",
+    "steps": [
+      "Step 1: Navigate to blog listing",
+      "Step 2: Inspect all images for alt attributes",
+      "Step 3: Verify alt text is descriptive and meaningful",
+      "Step 4: Navigate to blog post with images",
+      "Step 5: Verify all images have alt text",
+      "Step 6: Verify decorative images have empty alt=''"
+    ],
+    "passes": false
+  },
+  {
+    "category": "accessibility",
+    "description": "Color contrast meets WCAG AA standards",
+    "steps": [
+      "Step 1: Run axe accessibility audit",
+      "Step 2: Check for color contrast warnings",
+      "Step 3: Verify text on background meets 4.5:1 ratio for normal text",
+      "Step 4: Verify text on background meets 3:1 ratio for large text",
+      "Step 5: Test in dark mode for contrast compliance",
+      "Step 6: Check button and link colors for sufficient contrast"
+    ],
+    "passes": false
+  },
+  {
+    "category": "accessibility",
+    "description": "Keyboard navigation works throughout the site",
+    "steps": [
+      "Step 1: Navigate to homepage using only keyboard",
+      "Step 2: Verify Tab key moves focus through interactive elements",
+      "Step 3: Verify focus is visible on all focused elements",
+      "Step 4: Verify Enter/Space activates buttons and links",
+      "Step 5: Navigate to /blog and test keyboard navigation",
+      "Step 6: Verify dropdown menus are keyboard accessible",
+      "Step 7: Test admin pages for keyboard accessibility"
+    ],
+    "passes": false
+  },
+  {
+    "category": "accessibility",
+    "description": "Skip link allows bypassing navigation",
+    "steps": [
+      "Step 1: Navigate to homepage",
+      "Step 2: Press Tab key first",
+      "Step 3: Verify 'Skip to content' link appears",
+      "Step 4: Activate skip link",
+      "Step 5: Verify focus moves to main content area",
+      "Step 6: Test on other pages for consistency"
+    ],
+    "passes": false
+  },
+  {
+    "category": "accessibility",
+    "description": "Form inputs have associated labels",
+    "steps": [
+      "Step 1: Navigate to /admin/login",
+      "Step 2: Verify password input has associated label",
+      "Step 3: Navigate to newsletter form",
+      "Step 4: Verify email input has associated label",
+      "Step 5: Verify labels are visible or use aria-label",
+      "Step 6: Test with screen reader to verify label announcement"
+    ],
+    "passes": false
+  },
+  {
+    "category": "accessibility",
+    "description": "Error messages are announced to screen readers",
+    "steps": [
+      "Step 1: Navigate to /admin/login with screen reader",
+      "Step 2: Submit with incorrect password",
+      "Step 3: Verify error message is announced",
+      "Step 4: Verify aria-live or role='alert' is used",
+      "Step 5: Test validation errors on newsletter form"
+    ],
+    "passes": false
+  },
+  {
+    "category": "accessibility",
+    "description": "Focus trap works in modal dialogs",
+    "steps": [
+      "Step 1: Open a modal dialog (e.g., confirmation dialog)",
+      "Step 2: Tab through elements in modal",
+      "Step 3: Verify focus stays within modal",
+      "Step 4: Verify Escape key closes modal",
+      "Step 5: Verify focus returns to triggering element"
+    ],
+    "passes": false
+  },
+  {
+    "category": "accessibility",
+    "description": "ARIA attributes are used correctly",
+    "steps": [
+      "Step 1: Run accessibility audit for ARIA issues",
+      "Step 2: Verify no invalid ARIA attribute values",
+      "Step 3: Verify aria-expanded is used on collapsible elements",
+      "Step 4: Verify aria-selected is used on tabs/options",
+      "Step 5: Verify aria-current is used on navigation"
+    ],
+    "passes": false
+  },
+  {
+    "category": "accessibility",
+    "description": "Page content is readable at 200% zoom",
+    "steps": [
+      "Step 1: Navigate to blog post",
+      "Step 2: Zoom browser to 200%",
+      "Step 3: Verify text is still readable",
+      "Step 4: Verify no horizontal scrolling is required",
+      "Step 5: Verify interactive elements are still usable"
+    ],
+    "passes": false
+  },
+  {
+    "category": "accessibility",
+    "description": "Animations respect reduced motion preference",
+    "steps": [
+      "Step 1: Enable 'Reduce motion' in system preferences",
+      "Step 2: Navigate through the site",
+      "Step 3: Verify animations are reduced or disabled",
+      "Step 4: Verify prefers-reduced-motion media query is used",
+      "Step 5: Verify essential motion is still functional"
+    ],
+    "passes": false
+  },
+  {
+    "category": "accessibility",
+    "description": "Touch targets are at least 44x44 pixels on mobile",
+    "steps": [
+      "Step 1: View site on mobile device or emulator",
+      "Step 2: Measure touch targets for buttons",
+      "Step 3: Verify buttons are at least 44x44px",
+      "Step 4: Verify links have adequate touch area",
+      "Step 5: Verify spacing between touch targets prevents mis-taps"
+    ],
+    "passes": false
+  },
+  {
+    "category": "seo",
+    "description": "Homepage has complete meta tags",
+    "steps": [
+      "Step 1: View page source of homepage",
+      "Step 2: Verify title tag is present and descriptive",
+      "Step 3: Verify meta description is present (< 160 chars)",
+      "Step 4: Verify canonical URL is set",
+      "Step 5: Verify robots meta tag allows indexing"
+    ],
+    "passes": false
+  },
+  {
+    "category": "seo",
+    "description": "Blog posts have unique meta tags",
+    "steps": [
+      "Step 1: Navigate to a blog post",
+      "Step 2: Verify title tag includes post title",
+      "Step 3: Verify meta description uses post summary",
+      "Step 4: Navigate to different blog post",
+      "Step 5: Verify meta tags are unique to that post"
+    ],
+    "passes": false
+  },
+  {
+    "category": "seo",
+    "description": "Open Graph tags are present for social sharing",
+    "steps": [
+      "Step 1: View page source of blog post",
+      "Step 2: Verify og:title is present",
+      "Step 3: Verify og:description is present",
+      "Step 4: Verify og:image is present with absolute URL",
+      "Step 5: Verify og:url is present",
+      "Step 6: Verify og:type is 'article' for blog posts",
+      "Step 7: Test with Facebook Sharing Debugger"
+    ],
+    "passes": false
+  },
+  {
+    "category": "seo",
+    "description": "Twitter Card tags are present",
+    "steps": [
+      "Step 1: View page source of blog post",
+      "Step 2: Verify twitter:card is 'summary_large_image'",
+      "Step 3: Verify twitter:title is present",
+      "Step 4: Verify twitter:description is present",
+      "Step 5: Verify twitter:image is present",
+      "Step 6: Test with Twitter Card Validator"
+    ],
+    "passes": false
+  },
+  {
+    "category": "seo",
+    "description": "Structured data (JSON-LD) is present for blog posts",
+    "steps": [
+      "Step 1: View page source of blog post",
+      "Step 2: Find script type='application/ld+json'",
+      "Step 3: Verify @type is 'Article' or 'BlogPosting'",
+      "Step 4: Verify headline, author, datePublished are present",
+      "Step 5: Test with Google Rich Results Test"
+    ],
+    "passes": false
+  },
+  {
+    "category": "seo",
+    "description": "Research page has appropriate structured data",
+    "steps": [
+      "Step 1: Navigate to /research",
+      "Step 2: View page source",
+      "Step 3: Verify JSON-LD structured data is present",
+      "Step 4: Verify @type is 'Report' or 'ScholarlyArticle'",
+      "Step 5: Verify authors are listed correctly"
+    ],
+    "passes": false
+  },
+  {
+    "category": "seo",
+    "description": "Sitemap is valid and complete",
+    "steps": [
+      "Step 1: Navigate to /sitemap.xml",
+      "Step 2: Verify XML is valid",
+      "Step 3: Verify all public pages are listed",
+      "Step 4: Verify admin pages are NOT listed",
+      "Step 5: Verify URLs use correct domain",
+      "Step 6: Verify lastmod dates are present"
+    ],
+    "passes": false
+  },
+  {
+    "category": "seo",
+    "description": "Robots.txt is configured correctly",
+    "steps": [
+      "Step 1: Navigate to /robots.txt",
+      "Step 2: Verify User-agent: * allows crawling",
+      "Step 3: Verify admin paths are disallowed",
+      "Step 4: Verify sitemap URL is referenced",
+      "Step 5: Verify no important pages are blocked"
+    ],
+    "passes": false
+  },
+  {
+    "category": "seo",
+    "description": "URLs are SEO-friendly",
+    "steps": [
+      "Step 1: Navigate to blog posts",
+      "Step 2: Verify URLs use slugs, not IDs",
+      "Step 3: Verify URLs use hyphens, not underscores",
+      "Step 4: Verify URLs are lowercase",
+      "Step 5: Verify URLs are descriptive and readable"
+    ],
+    "passes": false
+  },
+  {
+    "category": "seo",
+    "description": "Internal linking structure is effective",
+    "steps": [
+      "Step 1: Navigate to anchor blog post",
+      "Step 2: Verify it links to subsequent posts in series",
+      "Step 3: Navigate to a theme post",
+      "Step 4: Verify series navigation links exist",
+      "Step 5: Verify /research links to relevant blog posts"
+    ],
+    "passes": false
+  },
+  {
+    "category": "seo",
+    "description": "RSS feed is discoverable",
+    "steps": [
+      "Step 1: View page source of homepage",
+      "Step 2: Verify link rel='alternate' type='application/rss+xml' exists",
+      "Step 3: Verify href points to valid feed URL",
+      "Step 4: Navigate to feed URL and verify content"
+    ],
+    "passes": false
+  },
+  {
+    "category": "seo",
+    "description": "Canonical URLs prevent duplicate content",
+    "steps": [
+      "Step 1: Navigate to blog post",
+      "Step 2: Verify link rel='canonical' is present",
+      "Step 3: Verify canonical URL matches current URL",
+      "Step 4: Add query params to URL",
+      "Step 5: Verify canonical still points to clean URL"
+    ],
+    "passes": false
+  },
+  {
+    "category": "responsive",
+    "description": "Homepage is fully responsive from mobile to desktop",
+    "steps": [
+      "Step 1: View homepage at 320px width (mobile)",
+      "Step 2: Verify all content is visible and readable",
+      "Step 3: Verify navigation is mobile-friendly (hamburger menu)",
+      "Step 4: View at 768px width (tablet)",
+      "Step 5: Verify layout adapts appropriately",
+      "Step 6: View at 1024px width (desktop)",
+      "Step 7: Verify full desktop layout",
+      "Step 8: View at 1440px width (large desktop)",
+      "Step 9: Verify content is centered/constrained appropriately"
+    ],
+    "passes": false
+  },
+  {
+    "category": "responsive",
+    "description": "Blog listing adapts grid layout for different screen sizes",
+    "steps": [
+      "Step 1: View /blog at 320px width",
+      "Step 2: Verify single column layout",
+      "Step 3: View at 768px width",
+      "Step 4: Verify 2-column grid layout",
+      "Step 5: View at 1024px width",
+      "Step 6: Verify 3-column grid layout",
+      "Step 7: Verify card content doesn't overflow"
+    ],
+    "passes": false
+  },
+  {
+    "category": "responsive",
+    "description": "Blog post content is readable on mobile",
+    "steps": [
+      "Step 1: View a blog post at 320px width",
+      "Step 2: Verify text is readable without horizontal scroll",
+      "Step 3: Verify images scale appropriately",
+      "Step 4: Verify code blocks have horizontal scroll if needed",
+      "Step 5: Verify series navigation is usable on mobile"
+    ],
+    "passes": false
+  },
+  {
+    "category": "responsive",
+    "description": "Admin dashboard is usable on tablet",
+    "steps": [
+      "Step 1: Login to admin on tablet device (768px)",
+      "Step 2: Verify dashboard stats are visible",
+      "Step 3: Verify navigation is accessible",
+      "Step 4: Navigate to posts management",
+      "Step 5: Verify table is scrollable or adapts layout",
+      "Step 6: Navigate to LinkedIn management",
+      "Step 7: Verify post cards are visible and usable"
+    ],
+    "passes": false
+  },
+  {
+    "category": "responsive",
+    "description": "Research page adapts layout for different screens",
+    "steps": [
+      "Step 1: View /research at 320px width",
+      "Step 2: Verify hero section is readable",
+      "Step 3: Verify stats grid stacks vertically",
+      "Step 4: Verify TOC appears above content (not sidebar)",
+      "Step 5: View at 1024px width",
+      "Step 6: Verify TOC appears in sidebar"
+    ],
+    "passes": false
+  },
+  {
+    "category": "responsive",
+    "description": "Navigation menu works on mobile",
+    "steps": [
+      "Step 1: View site at 320px width",
+      "Step 2: Verify hamburger menu icon is visible",
+      "Step 3: Click/tap hamburger icon",
+      "Step 4: Verify mobile menu opens",
+      "Step 5: Verify all navigation links are visible",
+      "Step 6: Verify dark mode toggle is accessible",
+      "Step 7: Click a link and verify navigation works",
+      "Step 8: Verify menu closes after navigation"
+    ],
+    "passes": false
+  },
+  {
+    "category": "responsive",
+    "description": "Images are responsive and don't overflow",
+    "steps": [
+      "Step 1: View blog post with large image at 320px width",
+      "Step 2: Verify image scales to fit viewport",
+      "Step 3: Verify no horizontal overflow",
+      "Step 4: Resize viewport gradually",
+      "Step 5: Verify image scales smoothly"
+    ],
+    "passes": false
+  },
+  {
+    "category": "responsive",
+    "description": "Tables are horizontally scrollable on mobile",
+    "steps": [
+      "Step 1: Navigate to /admin/posts on mobile width",
+      "Step 2: Verify table is contained in scrollable container",
+      "Step 3: Scroll horizontally to view all columns",
+      "Step 4: Verify table data is readable",
+      "Step 5: Verify sticky first column if implemented"
+    ],
+    "passes": false
+  },
+  {
+    "category": "responsive",
+    "description": "Footer adapts layout for mobile",
+    "steps": [
+      "Step 1: View footer at 320px width",
+      "Step 2: Verify footer content stacks vertically",
+      "Step 3: Verify social links are accessible",
+      "Step 4: Verify text is readable",
+      "Step 5: View at 768px and verify multi-column layout"
+    ],
+    "passes": false
+  },
+  {
+    "category": "responsive",
+    "description": "LinkedIn post preview is usable on mobile admin",
+    "steps": [
+      "Step 1: Login to admin on mobile (320px)",
+      "Step 2: Navigate to /admin/linkedin/[id]",
+      "Step 3: Verify post preview is visible",
+      "Step 4: Verify copy button is accessible",
+      "Step 5: Verify image preview is visible (may be stacked)",
+      "Step 6: Verify checkbox and auto-post button are usable"
+    ],
+    "passes": false
+  },
+  {
+    "category": "content",
+    "description": "All 25 blog posts have required frontmatter fields",
+    "steps": [
+      "Step 1: Read all files in content/blog/",
+      "Step 2: For each file, verify 'title' field is present and non-empty",
+      "Step 3: Verify 'summary' field is present (1-2 sentences)",
+      "Step 4: Verify 'publishedAt' field is valid date",
+      "Step 5: Verify 'seriesOrder' field is number 1-25",
+      "Step 6: Verify 'category' field matches valid enum",
+      "Step 7: Verify 'tags' array includes 'AI Agents'",
+      "Step 8: Verify 'author' is 'Fernando Torres'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "content",
+    "description": "Blog post titles follow consistent format",
+    "steps": [
+      "Step 1: Load all blog posts",
+      "Step 2: Verify titles are descriptive (5-15 words)",
+      "Step 3: Verify titles use title case or sentence case consistently",
+      "Step 4: Verify no duplicate titles exist",
+      "Step 5: Verify anchor post title is appropriately broad"
+    ],
+    "passes": false
+  },
+  {
+    "category": "content",
+    "description": "Blog post summaries are appropriate length",
+    "steps": [
+      "Step 1: Load all blog posts",
+      "Step 2: For each post, check summary length",
+      "Step 3: Verify summaries are 100-200 characters",
+      "Step 4: Verify summaries don't end mid-sentence",
+      "Step 5: Verify summaries are compelling/descriptive"
+    ],
+    "passes": false
+  },
+  {
+    "category": "content",
+    "description": "Blog posts are within word count range (1500-2600)",
+    "steps": [
+      "Step 1: Load all blog posts",
+      "Step 2: For each post, count words in body",
+      "Step 3: Verify word count is >= 1500",
+      "Step 4: Verify word count is <= 2600",
+      "Step 5: Flag any outliers for review"
+    ],
+    "passes": false
+  },
+  {
+    "category": "content",
+    "description": "Blog posts include minimum 2-3 attributed quotes",
+    "steps": [
+      "Step 1: Load each blog post content",
+      "Step 2: Search for quote patterns (blockquotes, quotation marks)",
+      "Step 3: Verify at least 2 quotes are present",
+      "Step 4: Verify quotes have attribution",
+      "Step 5: Verify confidential sources are anonymized"
+    ],
+    "passes": false
+  },
+  {
+    "category": "content",
+    "description": "Statistics in posts match source documentation",
+    "steps": [
+      "Step 1: Find all statistics mentioned in blog posts",
+      "Step 2: Verify '92%' system integration stat is accurate",
+      "Step 3: Verify '90%' pilot failure rate is accurate",
+      "Step 4: Verify '80-90%' framework abandonment is accurate",
+      "Step 5: Verify '30-40%' model contribution is accurate",
+      "Step 6: Verify '40%' context utilization rule is accurate",
+      "Step 7: Verify '25 tools' MCP accuracy cliff is accurate"
+    ],
+    "passes": false
+  },
+  {
+    "category": "content",
+    "description": "Practitioner posts have attribution permissions",
+    "steps": [
+      "Step 1: Identify practitioner perspective posts (14-18)",
+      "Step 2: Verify requiresPermission: true in frontmatter",
+      "Step 3: Verify permissionGranted: true if post is publishable",
+      "Step 4: Verify company names are only used with permission",
+      "Step 5: Verify interviewee names are only used with permission"
+    ],
+    "passes": false
+  },
+  {
+    "category": "content",
+    "description": "Confidential interviews are properly anonymized",
+    "steps": [
+      "Step 1: Search for company names across all posts",
+      "Step 2: Verify 19 confidential sources are anonymized",
+      "Step 3: Verify phrases like 'Multiple interviewees noted...' are used",
+      "Step 4: Verify no identifying information is leaked"
+    ],
+    "passes": false
+  },
+  {
+    "category": "content",
+    "description": "Cover images exist for all blog posts",
+    "steps": [
+      "Step 1: List all blog posts",
+      "Step 2: For each post, check 'image' frontmatter field",
+      "Step 3: Verify image file exists in public/images/blog/",
+      "Step 4: Verify image is optimized (< 200KB)",
+      "Step 5: Verify image dimensions are appropriate"
+    ],
+    "passes": false
+  },
+  {
+    "category": "content",
+    "description": "LinkedIn posts content is under 3000 characters",
+    "steps": [
+      "Step 1: Load linkedin-posts.json",
+      "Step 2: For each post, calculate content length",
+      "Step 3: Add hashtag length to content length",
+      "Step 4: Verify total is under 3000 characters",
+      "Step 5: Flag any posts exceeding limit"
+    ],
+    "passes": false
+  },
+  {
+    "category": "content",
+    "description": "LinkedIn posts follow required structure",
+    "steps": [
+      "Step 1: Load linkedin-posts.json",
+      "Step 2: Verify each post has compelling hook (first line)",
+      "Step 3: Verify context section exists",
+      "Step 4: Verify key insights/bullets are present",
+      "Step 5: Verify CTA (call to action) is included",
+      "Step 6: Verify engagement question is present",
+      "Step 7: Verify hashtags include #AIAgents #EnterpriseAI"
+    ],
+    "passes": false
+  },
+  {
+    "category": "content",
+    "description": "LinkedIn scheduled times are optimal (9-11am PST)",
+    "steps": [
+      "Step 1: Load linkedin-posts.json",
+      "Step 2: Verify scheduledTime is '09:00' or similar",
+      "Step 3: Verify timezone is 'America/Los_Angeles'",
+      "Step 4: Verify scheduled dates match blog post dates"
+    ],
+    "passes": false
+  },
+  {
+    "category": "content",
+    "description": "Final Report MDX renders without errors",
+    "steps": [
+      "Step 1: Navigate to /research",
+      "Step 2: Verify no rendering errors in console",
+      "Step 3: Verify all sections are displayed",
+      "Step 4: Verify code blocks render correctly",
+      "Step 5: Verify tables render correctly",
+      "Step 6: Verify images in report display correctly"
+    ],
+    "passes": false
+  },
+  {
+    "category": "content",
+    "description": "Series posts link correctly to next/previous",
+    "steps": [
+      "Step 1: Navigate to post #1 (anchor)",
+      "Step 2: Verify 'Next' points to post #2",
+      "Step 3: Navigate to post #13",
+      "Step 4: Verify 'Previous' points to post #12",
+      "Step 5: Verify 'Next' points to post #14",
+      "Step 6: Navigate through all 25 posts",
+      "Step 7: Verify chain is complete with no broken links"
+    ],
+    "passes": false
+  },
+  {
+    "category": "content",
+    "description": "Categories are correctly assigned to posts",
+    "steps": [
+      "Step 1: Verify post #1 has category 'anchor'",
+      "Step 2: Verify posts #2-7 have category 'theme'",
+      "Step 3: Verify posts #8-13 have category 'emergent'",
+      "Step 4: Verify posts #14-18 have category 'practitioner'",
+      "Step 5: Verify posts #19-21 have category 'prototype'",
+      "Step 6: Verify posts #22-24 have category 'conference'",
+      "Step 7: Verify post #25 has category 'methodology'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "content",
+    "description": "Post footer includes series reference and contact",
+    "steps": [
+      "Step 1: Navigate to any AI Agents series blog post",
+      "Step 2: Scroll to bottom of post",
+      "Step 3: Verify series reference text is present",
+      "Step 4: Verify author contact information is displayed",
+      "Step 5: Verify LinkedIn profile link is present"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Analytics tracks reading engagement (scroll depth, time)",
+    "steps": [
+      "Step 1: Navigate to a blog post",
+      "Step 2: Scroll slowly through the entire post",
+      "Step 3: Spend > 5 minutes on the page",
+      "Step 4: Verify 'Read Complete' event is tracked",
+      "Step 5: Verify read time is included in event properties"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin activity feed shows recent actions",
+    "steps": [
+      "Step 1: Login to admin",
+      "Step 2: Navigate to dashboard",
+      "Step 3: Verify 'Recent Activity' section is present",
+      "Step 4: Perform an action (e.g., toggle LinkedIn scheduled)",
+      "Step 5: Verify activity appears in feed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Publication calendar shows visual status for each post",
+    "steps": [
+      "Step 1: Navigate to /admin/calendar",
+      "Step 2: Verify published posts have green/completed indicator",
+      "Step 3: Verify scheduled (future) posts have blue/pending indicator",
+      "Step 4: Verify today's post (if any) is highlighted",
+      "Step 5: Verify week themes are displayed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Error boundary catches and displays errors gracefully",
+    "steps": [
+      "Step 1: Simulate an error in a component",
+      "Step 2: Verify error boundary catches the error",
+      "Step 3: Verify friendly error message is displayed",
+      "Step 4: Verify user can navigate away from error state",
+      "Step 5: Verify error is logged for debugging"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "404 page is displayed for non-existent routes",
+    "steps": [
+      "Step 1: Navigate to /non-existent-page",
+      "Step 2: Verify 404 page is displayed",
+      "Step 3: Verify 404 page has helpful message",
+      "Step 4: Verify navigation links are available",
+      "Step 5: Navigate to /blog/non-existent-post",
+      "Step 6: Verify 404 page is displayed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Search functionality allows finding posts (if implemented)",
+    "steps": [
+      "Step 1: Locate search input on /blog",
+      "Step 2: Enter search term (e.g., 'integration')",
+      "Step 3: Verify results show relevant posts",
+      "Step 4: Clear search and verify all posts return",
+      "Step 5: Search for term with no matches",
+      "Step 6: Verify 'no results' message is displayed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Related posts suggestions are relevant",
+    "steps": [
+      "Step 1: Navigate to a theme deep dive post",
+      "Step 2: Scroll to 'Related Posts' or 'Read Next' section",
+      "Step 3: Verify suggested posts are from same category or series",
+      "Step 4: Verify suggested posts are published",
+      "Step 5: Click a suggestion and verify navigation works"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Social share buttons work correctly",
+    "steps": [
+      "Step 1: Navigate to a blog post",
+      "Step 2: Click LinkedIn share button",
+      "Step 3: Verify LinkedIn share dialog opens with correct URL",
+      "Step 4: Click Twitter share button",
+      "Step 5: Verify Twitter compose opens with post title and URL",
+      "Step 6: Verify share URL includes correct domain"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Author card links to about page and social profiles",
+    "steps": [
+      "Step 1: Navigate to a blog post",
+      "Step 2: Find author card/bio section",
+      "Step 3: Verify author name links to /about",
+      "Step 4: Verify LinkedIn icon links to correct profile",
+      "Step 5: Verify Twitter icon links to correct profile"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Transitions and animations are smooth (60fps)",
+    "steps": [
+      "Step 1: Open Chrome DevTools Performance tab",
+      "Step 2: Record navigation and animations",
+      "Step 3: Verify frame rate stays close to 60fps",
+      "Step 4: Verify no jank or stuttering",
+      "Step 5: Test hover transitions on cards",
+      "Step 6: Test mobile menu open/close animation"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Print styles format content appropriately",
+    "steps": [
+      "Step 1: Navigate to a blog post",
+      "Step 2: Open print preview (Cmd+P / Ctrl+P)",
+      "Step 3: Verify navigation is hidden",
+      "Step 4: Verify content is formatted for print",
+      "Step 5: Verify links show URLs for print",
+      "Step 6: Navigate to /research and test print preview"
+    ],
+    "passes": false
+  },
+  {
+    "category": "integration",
+    "description": "GitHub webhook triggers deployment on push",
+    "steps": [
+      "Step 1: Make a code change",
+      "Step 2: Push to main branch",
+      "Step 3: Verify GitHub Actions workflow triggers",
+      "Step 4: Wait for workflow to complete",
+      "Step 5: Verify changes are live on production site"
+    ],
+    "passes": false
+  },
+  {
+    "category": "integration",
+    "description": "Environment variables are correctly loaded in production",
+    "steps": [
+      "Step 1: Verify GitHub Secrets are configured",
+      "Step 2: Deploy to production",
+      "Step 3: Verify admin login works (ADMIN_PASSWORD)",
+      "Step 4: Verify analytics tracking works",
+      "Step 5: Verify LinkedIn API works (if configured)"
+    ],
+    "passes": false
+  },
+  {
+    "category": "security",
+    "description": "HTTPS is enforced on all pages",
+    "steps": [
+      "Step 1: Attempt to access http://fernandotorres.io",
+      "Step 2: Verify redirect to https://",
+      "Step 3: Verify SSL certificate is valid",
+      "Step 4: Verify no mixed content warnings"
+    ],
+    "passes": false
+  },
+  {
+    "category": "security",
+    "description": "Content Security Policy headers are set",
+    "steps": [
+      "Step 1: Inspect response headers",
+      "Step 2: Verify Content-Security-Policy header is present",
+      "Step 3: Verify script-src allows necessary sources",
+      "Step 4: Verify style-src allows necessary sources",
+      "Step 5: Verify no inline scripts violate CSP"
+    ],
+    "passes": false
+  },
+  {
+    "category": "performance",
+    "description": "Service worker enables offline functionality (if implemented)",
+    "steps": [
+      "Step 1: Navigate to homepage",
+      "Step 2: Open DevTools Application tab",
+      "Step 3: Check if service worker is registered",
+      "Step 4: Go offline (toggle Network offline)",
+      "Step 5: Refresh page and verify cached content loads",
+      "Step 6: Navigate to blog post and verify it loads"
+    ],
+    "passes": false
+  },
+  {
+    "category": "performance",
+    "description": "Font loading doesn't cause layout shift",
+    "steps": [
+      "Step 1: Throttle network to Slow 3G",
+      "Step 2: Navigate to homepage",
+      "Step 3: Observe text rendering during load",
+      "Step 4: Verify font-display: swap is used",
+      "Step 5: Verify minimal layout shift when font loads"
+    ],
+    "passes": false
+  },
+  {
+    "category": "accessibility",
+    "description": "Screen reader can navigate all content",
+    "steps": [
+      "Step 1: Enable VoiceOver (Mac) or NVDA (Windows)",
+      "Step 2: Navigate to homepage using screen reader",
+      "Step 3: Verify all content is announced",
+      "Step 4: Navigate to blog post",
+      "Step 5: Verify headings navigation works",
+      "Step 6: Verify links are announced correctly",
+      "Step 7: Navigate through admin with screen reader"
+    ],
+    "passes": false
+  },
+  {
+    "category": "accessibility",
+    "description": "Language attribute is set correctly",
+    "steps": [
+      "Step 1: View page source",
+      "Step 2: Verify html tag has lang='en'",
+      "Step 3: Verify no language mismatches in content"
+    ],
+    "passes": false
+  },
+  {
+    "category": "seo",
+    "description": "Breadcrumb structured data is present (if implemented)",
+    "steps": [
+      "Step 1: Navigate to a blog post",
+      "Step 2: View page source",
+      "Step 3: Look for BreadcrumbList structured data",
+      "Step 4: Verify breadcrumbs are accurate",
+      "Step 5: Test with Google Rich Results Test"
+    ],
+    "passes": false
+  },
+  {
+    "category": "seo",
+    "description": "hreflang tags are set for multi-language (if applicable)",
+    "steps": [
+      "Step 1: View page source",
+      "Step 2: Check for hreflang tags",
+      "Step 3: Verify default language is set",
+      "Step 4: Verify x-default is set if multiple languages"
+    ],
+    "passes": false
+  },
+  {
+    "category": "responsive",
+    "description": "Orientation change handles correctly",
+    "steps": [
+      "Step 1: View site on mobile device",
+      "Step 2: View in portrait mode",
+      "Step 3: Rotate to landscape mode",
+      "Step 4: Verify layout adapts without breaking",
+      "Step 5: Rotate back to portrait",
+      "Step 6: Verify content is still correct"
+    ],
+    "passes": false
+  },
+  {
+    "category": "content",
+    "description": "No broken internal links exist",
+    "steps": [
+      "Step 1: Crawl all pages starting from homepage",
+      "Step 2: Extract all internal links",
+      "Step 3: Visit each internal link",
+      "Step 4: Verify no 404 errors",
+      "Step 5: Verify no redirect loops"
+    ],
+    "passes": false
+  },
+  {
+    "category": "content",
+    "description": "External links open in new tab",
+    "steps": [
+      "Step 1: Find external links in blog posts",
+      "Step 2: Verify target='_blank' is set",
+      "Step 3: Verify rel='noopener noreferrer' is set for security",
+      "Step 4: Click external link and verify new tab opens"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Build process completes without errors",
+    "steps": [
+      "Step 1: Run npm run build",
+      "Step 2: Verify no TypeScript errors",
+      "Step 3: Verify no ESLint errors",
+      "Step 4: Verify Contentlayer generates successfully",
+      "Step 5: Verify static export completes",
+      "Step 6: Verify all 25 blog posts are generated"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Development server runs without errors",
+    "steps": [
+      "Step 1: Run npm run dev",
+      "Step 2: Verify server starts on localhost:3000",
+      "Step 3: Verify no errors in console",
+      "Step 4: Navigate to various pages",
+      "Step 5: Verify hot reload works when editing files"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Focus indicators are visible on all interactive elements",
+    "steps": [
+      "Step 1: Tab through the page",
+      "Step 2: Verify focus ring is visible on buttons",
+      "Step 3: Verify focus ring is visible on links",
+      "Step 4: Verify focus ring is visible on inputs",
+      "Step 5: Verify focus ring has sufficient contrast"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Empty states have helpful messages",
+    "steps": [
+      "Step 1: Navigate to blog with filter that returns no results",
+      "Step 2: Verify empty state message is displayed",
+      "Step 3: Verify message is helpful (suggests clearing filters)",
+      "Step 4: Check admin LinkedIn for empty filtered state",
+      "Step 5: Verify consistent empty state styling"
+    ],
+    "passes": false
+  },
+  {
+    "category": "integration",
+    "description": "LinkedIn connection status persists across sessions",
+    "steps": [
+      "Step 1: Complete LinkedIn OAuth flow",
+      "Step 2: Verify connection status shows 'Connected'",
+      "Step 3: Close browser and reopen",
+      "Step 4: Login to admin",
+      "Step 5: Verify LinkedIn still shows 'Connected'",
+      "Step 6: Verify access token is retrieved from KV storage"
+    ],
+    "passes": false
+  },
+  {
+    "category": "security",
+    "description": "Admin pages don't leak in search engine results",
+    "steps": [
+      "Step 1: Verify /admin routes have noindex meta tag",
+      "Step 2: Verify robots.txt disallows /admin",
+      "Step 3: Verify sitemap.xml doesn't include /admin routes",
+      "Step 4: Verify no admin links on public pages"
+    ],
+    "passes": false
+  },
+  {
+    "category": "performance",
+    "description": "Prefetching improves navigation speed",
+    "steps": [
+      "Step 1: Navigate to blog listing",
+      "Step 2: Hover over a blog post link",
+      "Step 3: Verify prefetch request is made",
+      "Step 4: Click the link",
+      "Step 5: Verify navigation is nearly instant"
+    ],
+    "passes": false
+  },
+  {
+    "category": "accessibility",
+    "description": "Time-based media has captions (if applicable)",
+    "steps": [
+      "Step 1: Check if site contains video content",
+      "Step 2: Verify videos have captions/subtitles",
+      "Step 3: Verify captions can be toggled on/off",
+      "Step 4: Verify caption text is accurate"
+    ],
+    "passes": false
+  },
+  {
+    "category": "seo",
+    "description": "Meta viewport is set correctly for mobile",
+    "steps": [
+      "Step 1: View page source",
+      "Step 2: Verify meta viewport tag exists",
+      "Step 3: Verify width=device-width is set",
+      "Step 4: Verify initial-scale=1 is set",
+      "Step 5: Verify no maximum-scale that prevents zooming"
+    ],
+    "passes": false
+  },
+  {
+    "category": "responsive",
+    "description": "Form elements are usable on touch devices",
+    "steps": [
+      "Step 1: View /admin/login on touch device",
+      "Step 2: Tap password input",
+      "Step 3: Verify keyboard appears",
+      "Step 4: Verify input is focused and visible",
+      "Step 5: Enter password and submit",
+      "Step 6: Verify button responds to tap"
+    ],
+    "passes": false
+  },
+  {
+    "category": "content",
+    "description": "Code samples in blog posts are syntax highlighted",
+    "steps": [
+      "Step 1: Navigate to a blog post with code",
+      "Step 2: Verify code blocks have syntax highlighting",
+      "Step 3: Verify language is detected correctly",
+      "Step 4: Verify color scheme matches dark/light mode",
+      "Step 5: Verify code is copyable"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Scheduled posts publish exactly on their date",
+    "steps": [
+      "Step 1: Set a post's publishedAt to a specific future date",
+      "Step 2: Wait for that date to arrive",
+      "Step 3: Trigger scheduled build (or wait for automatic)",
+      "Step 4: Verify post appears on /blog",
+      "Step 5: Verify post is accessible at its URL"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Multiple admin sessions work correctly",
+    "steps": [
+      "Step 1: Login to admin in browser A",
+      "Step 2: Login to admin in browser B",
+      "Step 3: Perform action in browser A",
+      "Step 4: Verify change is visible in browser B after refresh",
+      "Step 5: Logout in browser A",
+      "Step 6: Verify browser B session is still valid"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Scrollbar styling is consistent (if customized)",
+    "steps": [
+      "Step 1: Navigate to a long page",
+      "Step 2: Verify scrollbar appearance matches design",
+      "Step 3: Test in dark mode",
+      "Step 4: Verify scrollbar adapts to theme",
+      "Step 5: Test on different browsers"
+    ],
+    "passes": false
+  },
+  {
+    "category": "integration",
+    "description": "Google Analytics events are tracked (if GA is used alongside Plausible)",
+    "steps": [
+      "Step 1: Check if GA is configured",
+      "Step 2: Navigate to a page",
+      "Step 3: Open GA Realtime view",
+      "Step 4: Verify page view is tracked",
+      "Step 5: Trigger custom event",
+      "Step 6: Verify event appears in GA"
+    ],
+    "passes": false
+  },
+  {
+    "category": "security",
+    "description": "Form submissions are protected against CSRF",
+    "steps": [
+      "Step 1: Inspect admin login form",
+      "Step 2: Verify CSRF protection mechanism exists",
+      "Step 3: Attempt form submission without CSRF token",
+      "Step 4: Verify submission is rejected",
+      "Step 5: Test other forms for CSRF protection"
+    ],
+    "passes": false
+  },
+  {
+    "category": "performance",
+    "description": "Third-party scripts don't block rendering",
+    "steps": [
+      "Step 1: Run Lighthouse audit",
+      "Step 2: Check for 'Reduce impact of third-party code'",
+      "Step 3: Verify analytics scripts use async/defer",
+      "Step 4: Verify no render-blocking third-party scripts",
+      "Step 5: Verify third-party scripts load after main content"
+    ],
+    "passes": false
+  },
+  {
+    "category": "accessibility",
+    "description": "Data tables have proper headers and scope",
+    "steps": [
+      "Step 1: Navigate to /admin/posts",
+      "Step 2: Inspect table HTML",
+      "Step 3: Verify th elements are used for headers",
+      "Step 4: Verify scope='col' is set on column headers",
+      "Step 5: Verify table has accessible name (caption or aria-label)"
+    ],
+    "passes": false
+  },
+  {
+    "category": "seo",
+    "description": "Page titles are under 60 characters",
+    "steps": [
+      "Step 1: Get all page title tags",
+      "Step 2: Verify each title is <= 60 characters",
+      "Step 3: Verify titles are descriptive",
+      "Step 4: Verify brand name is included appropriately"
+    ],
+    "passes": false
+  },
+  {
+    "category": "responsive",
+    "description": "No content is cut off at any viewport width",
+    "steps": [
+      "Step 1: Start at 320px width",
+      "Step 2: Slowly increase width to 1920px",
+      "Step 3: Watch for any content overflow",
+      "Step 4: Watch for any text truncation issues",
+      "Step 5: Verify no horizontal scrollbar appears unexpectedly"
+    ],
+    "passes": false
+  },
+  {
+    "category": "content",
+    "description": "Publication dates follow consistent format",
+    "steps": [
+      "Step 1: Check all publishedAt dates in frontmatter",
+      "Step 2: Verify format is YYYY-MM-DD",
+      "Step 3: Verify dates are displayed consistently on pages",
+      "Step 4: Verify date locale formatting is correct"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin can preview unpublished posts",
+    "steps": [
+      "Step 1: Login to admin",
+      "Step 2: Navigate to a scheduled (unpublished) post",
+      "Step 3: Click 'Preview' or view post link",
+      "Step 4: Verify post content is viewable to admin",
+      "Step 5: Verify preview banner indicates unpublished status"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin research page allows management of Final Report",
+    "steps": [
+      "Step 1: Login to admin",
+      "Step 2: Navigate to /admin/research",
+      "Step 3: Verify Final Report metadata is displayed",
+      "Step 4: Verify PDF download count is shown (if tracked)",
+      "Step 5: Verify link to public /research page works",
+      "Step 6: Verify ability to update report metadata if implemented"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Analytics dashboard has export capability",
+    "steps": [
+      "Step 1: Login and navigate to /admin/analytics",
+      "Step 2: Verify 'Export' button is present",
+      "Step 3: Click export button",
+      "Step 4: Verify CSV or JSON file downloads",
+      "Step 5: Verify exported data matches displayed data",
+      "Step 6: Verify date range is included in export"
+    ],
+    "passes": false
+  },
+  {
+    "category": "integration",
+    "description": "LinkedIn access token refresh works when expired",
+    "steps": [
+      "Step 1: Simulate expired LinkedIn access token in KV",
+      "Step 2: Attempt to post to LinkedIn",
+      "Step 3: Verify system detects expired token",
+      "Step 4: Verify refresh token flow is triggered (if available)",
+      "Step 5: Verify user is prompted to re-authenticate if refresh fails",
+      "Step 6: Verify appropriate error message is displayed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "integration",
+    "description": "Cloudflare KV stores and retrieves LinkedIn post status correctly",
+    "steps": [
+      "Step 1: Post to LinkedIn via auto-post",
+      "Step 2: Verify status is written to Cloudflare KV",
+      "Step 3: Refresh admin LinkedIn page",
+      "Step 4: Verify status is retrieved from KV",
+      "Step 5: Toggle 'manually scheduled' checkbox",
+      "Step 6: Verify KV is updated with new status"
+    ],
+    "passes": false
+  },
+  {
+    "category": "content",
+    "description": "Series order is consecutive from 1 to 25 with no gaps",
+    "steps": [
+      "Step 1: Load all blog posts",
+      "Step 2: Extract seriesOrder from each post",
+      "Step 3: Sort seriesOrder values",
+      "Step 4: Verify sequence is exactly 1, 2, 3, ..., 25",
+      "Step 5: Verify no duplicate seriesOrder values exist",
+      "Step 6: Verify no gaps in sequence"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Practitioner posts require permission verification before publishing",
+    "steps": [
+      "Step 1: Identify practitioner posts (seriesOrder 14-18)",
+      "Step 2: Verify requiresPermission: true in frontmatter",
+      "Step 3: For posts with permissionGranted: false, verify they show warning in admin",
+      "Step 4: Verify admin can mark permission as granted",
+      "Step 5: Verify posts without permission show disclaimer or are restricted"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Publication calendar displays week themes correctly",
+    "steps": [
+      "Step 1: Navigate to /admin/calendar",
+      "Step 2: Verify Week 1 shows theme 'Launch Week'",
+      "Step 3: Verify each week has a distinct theme label",
+      "Step 4: Verify theme matches publication-calendar.json",
+      "Step 5: Verify 10 weeks are displayed with correct themes"
+    ],
+    "passes": false
+  },
+  {
+    "category": "integration",
+    "description": "LinkedIn API handles rate limiting gracefully",
+    "steps": [
+      "Step 1: Trigger multiple rapid LinkedIn posts",
+      "Step 2: Verify rate limit response is detected",
+      "Step 3: Verify user-friendly error message is displayed",
+      "Step 4: Verify retry-after information is shown if available",
+      "Step 5: Verify system doesn't crash on rate limit"
+    ],
+    "passes": false
+  },
+  {
+    "category": "integration",
+    "description": "LinkedIn API handles network failures gracefully",
+    "steps": [
+      "Step 1: Simulate network failure to LinkedIn API",
+      "Step 2: Attempt to post to LinkedIn",
+      "Step 3: Verify timeout error is handled",
+      "Step 4: Verify user-friendly error message is displayed",
+      "Step 5: Verify post status is not incorrectly marked as 'posted'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "integration",
+    "description": "Data consistency between linkedin-posts.json and publication-calendar.json",
+    "steps": [
+      "Step 1: Load both JSON files",
+      "Step 2: Verify each calendar entry has matching LinkedIn post",
+      "Step 3: Verify scheduledDate in LinkedIn matches date in calendar",
+      "Step 4: Verify seriesOrder matches between both files",
+      "Step 5: Verify total post count is 25 in both files"
+    ],
+    "passes": false
+  },
+  {
+    "category": "integration",
+    "description": "Data consistency between blog posts and linkedin-posts.json",
+    "steps": [
+      "Step 1: Load all blog posts and linkedin-posts.json",
+      "Step 2: For each LinkedIn post, verify blogPostSlug exists as a blog post",
+      "Step 3: Verify titles are consistent or appropriately shortened",
+      "Step 4: Verify scheduled dates match publishedAt dates",
+      "Step 5: Verify all 25 blog posts have corresponding LinkedIn posts"
+    ],
+    "passes": false
+  },
+  {
+    "category": "responsive",
+    "description": "Site works correctly in Safari browser",
+    "steps": [
+      "Step 1: Open site in Safari",
+      "Step 2: Navigate through all main pages",
+      "Step 3: Verify styling is consistent with Chrome",
+      "Step 4: Test admin functionality",
+      "Step 5: Verify flexbox/grid layouts render correctly",
+      "Step 6: Test form inputs and buttons"
+    ],
+    "passes": false
+  },
+  {
+    "category": "responsive",
+    "description": "Site works correctly in Firefox browser",
+    "steps": [
+      "Step 1: Open site in Firefox",
+      "Step 2: Navigate through all main pages",
+      "Step 3: Verify styling is consistent with Chrome",
+      "Step 4: Test admin functionality",
+      "Step 5: Verify animations and transitions work",
+      "Step 6: Test form inputs and buttons"
+    ],
+    "passes": false
+  },
+  {
+    "category": "content",
+    "description": "LinkedIn posts content plus hashtags stay under 3000 characters",
+    "steps": [
+      "Step 1: Load linkedin-posts.json",
+      "Step 2: For each post, calculate: content.length + hashtags.join(' ').length",
+      "Step 3: Verify each total is under 3000 characters",
+      "Step 4: Log any posts approaching the limit (>2500)",
+      "Step 5: Verify emoji count doesn't affect character calculation"
+    ],
+    "passes": false
+  },
+  {
+    "category": "integration",
+    "description": "GitHub Actions workflow uses correct environment variables",
+    "steps": [
+      "Step 1: Inspect .github/workflows/deploy.yml",
+      "Step 2: Verify ADMIN_TOKEN secret is referenced",
+      "Step 3: Trigger a deployment",
+      "Step 4: Verify build completes with env vars",
+      "Step 5: Verify deployed site has working admin functionality"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Contentlayer computed fields calculate correctly",
+    "steps": [
+      "Step 1: Run contentlayer build",
+      "Step 2: Verify isPublished is true for past dates, false for future",
+      "Step 3: Verify daysUntilPublish is negative for published, positive for scheduled",
+      "Step 4: Verify readingTime matches word count / 200-250",
+      "Step 5: Verify slugAsParams removes directory prefix"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin logout clears cookies and session",
+    "steps": [
+      "Step 1: Login to admin successfully",
+      "Step 2: Verify access to /admin pages",
+      "Step 3: Click logout button (if exists) or clear admin_token cookie",
+      "Step 4: Verify admin_token cookie is removed",
+      "Step 5: Attempt to access /admin",
+      "Step 6: Verify redirect to /admin/login"
+    ],
+    "passes": false
+  },
+  {
+    "category": "security",
+    "description": "LinkedIn secrets are only in Cloudflare Worker",
+    "steps": [
+      "Step 1: Search main codebase for LINKEDIN_CLIENT_SECRET",
+      "Step 2: Verify it only appears in cloudflare-worker directory",
+      "Step 3: Verify no LinkedIn secrets in .env.local.example",
+      "Step 4: Verify no LinkedIn secrets in GitHub workflow files",
+      "Step 5: Verify client-side code doesn't reference LinkedIn secrets"
+    ],
+    "passes": false
+  },
+  {
+    "category": "integration",
+    "description": "Cloudflare Worker CORS allows requests from production domain",
+    "steps": [
+      "Step 1: Deploy worker to production",
+      "Step 2: Make request from fernandotorres.io",
+      "Step 3: Verify Access-Control-Allow-Origin is set correctly",
+      "Step 4: Make request from localhost (dev)",
+      "Step 5: Verify development origin is handled (if configured)"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Blog post shows LinkedIn post link when available",
+    "steps": [
+      "Step 1: Navigate to a published blog post",
+      "Step 2: Verify LinkedIn icon/link is displayed",
+      "Step 3: For posts with linkedinPostUrl, verify link is clickable",
+      "Step 4: For posts without LinkedIn post, verify appropriate state",
+      "Step 5: Click LinkedIn link and verify it opens correct LinkedIn post"
+    ],
+    "passes": false
+  },
+  {
+    "category": "content",
+    "description": "All images referenced in posts exist in public folder",
+    "steps": [
+      "Step 1: Parse all blog post MDX content",
+      "Step 2: Extract all image paths (from frontmatter and content)",
+      "Step 3: For each image path, verify file exists in public/images/",
+      "Step 4: Verify LinkedIn post imageFile paths exist",
+      "Step 5: Log any missing images"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Research page publication series cards link correctly",
+    "steps": [
+      "Step 1: Navigate to /research",
+      "Step 2: Scroll to 'Explore the Publication Series' section",
+      "Step 3: Click 'Theme Deep Dives' card",
+      "Step 4: Verify navigation to /blog?category=theme",
+      "Step 5: Click 'Emergent Insights' card",
+      "Step 6: Verify navigation to /blog?category=emergent",
+      "Step 7: Click 'Practitioner Perspectives' card",
+      "Step 8: Verify navigation to /blog?category=practitioner"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin dashboard quick actions navigate correctly",
+    "steps": [
+      "Step 1: Login and navigate to /admin",
+      "Step 2: Click 'Next Publication' quick action",
+      "Step 3: Verify navigation to correct post admin page",
+      "Step 4: Return to dashboard",
+      "Step 5: Click 'Next LinkedIn Post' quick action",
+      "Step 6: Verify navigation to /admin/linkedin page or specific post",
+      "Step 7: Click 'Analytics Summary' quick action",
+      "Step 8: Verify navigation to /admin/analytics"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "LinkedIn management status badges have distinct colors",
+    "steps": [
+      "Step 1: Navigate to /admin/linkedin",
+      "Step 2: Verify 'pending' status shows yellow badge",
+      "Step 3: Verify 'manually scheduled' shows blue badge",
+      "Step 4: Verify 'posted' status shows green badge with checkmark",
+      "Step 5: Verify 'failed' status (if any) shows red badge",
+      "Step 6: Verify colors are consistent on individual post pages"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "GitHub scheduled workflow checks for posts before deploying",
+    "steps": [
+      "Step 1: Review scheduled-deploy.yml workflow",
+      "Step 2: Verify grep command checks for today's publishedAt dates",
+      "Step 3: Verify workflow only triggers deploy if posts exist",
+      "Step 4: Verify workflow skips deploy if no new posts today"
+    ],
+    "passes": false
+  },
+  {
+    "category": "integration",
+    "description": "Plausible Analytics respects Do Not Track browser setting",
+    "steps": [
+      "Step 1: Enable Do Not Track in browser",
+      "Step 2: Navigate to the site",
+      "Step 3: Check Network tab for Plausible requests",
+      "Step 4: Verify Plausible respects DNT if configured",
+      "Step 5: Disable DNT and verify tracking resumes"
+    ],
+    "passes": false
+  },
+  {
+    "category": "content",
+    "description": "All blog posts have at least one tag",
+    "steps": [
+      "Step 1: Load all blog posts",
+      "Step 2: For each post, verify tags array is not empty",
+      "Step 3: Verify 'AI Agents' tag is present on all series posts",
+      "Step 4: Verify tags are lowercase or consistently formatted"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Image download button works on LinkedIn admin page",
+    "steps": [
+      "Step 1: Navigate to /admin/linkedin/[id]",
+      "Step 2: Locate 'Download Image' link",
+      "Step 3: Click download link",
+      "Step 4: Verify image file downloads",
+      "Step 5: Verify downloaded image matches preview",
+      "Step 6: Verify filename is appropriate"
+    ],
+    "passes": false
+  },
+  {
+    "category": "seo",
+    "description": "Each category page has unique meta description",
+    "steps": [
+      "Step 1: Navigate to /blog?category=theme",
+      "Step 2: Verify meta description is unique to theme category",
+      "Step 3: Navigate to /blog?category=emergent",
+      "Step 4: Verify meta description is unique to emergent category",
+      "Step 5: Verify each category filter updates meta description"
+    ],
+    "passes": false
+  },
+  {
+    "category": "accessibility",
+    "description": "Admin calendar is navigable with keyboard",
+    "steps": [
+      "Step 1: Navigate to /admin/calendar with keyboard",
+      "Step 2: Tab through calendar entries",
+      "Step 3: Verify focus is visible on each entry",
+      "Step 4: Verify Enter activates calendar items",
+      "Step 5: Verify week headers are accessible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "performance",
+    "description": "LinkedIn management page loads 25 posts efficiently",
+    "steps": [
+      "Step 1: Navigate to /admin/linkedin",
+      "Step 2: Measure time to render all 25 post cards",
+      "Step 3: Verify rendering completes in < 2 seconds",
+      "Step 4: Verify no layout shift during load",
+      "Step 5: Verify images lazy load if many are present"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Publication calendar shows correct post counts per week",
+    "steps": [
+      "Step 1: Navigate to /admin/calendar",
+      "Step 2: Verify Week 1 shows 3 posts (Mon, Wed, Fri)",
+      "Step 3: Verify Weeks 2-9 show 2-3 posts as per schedule",
+      "Step 4: Verify Week 10 shows 2 posts (Tue, Thu)",
+      "Step 5: Verify total across all weeks is 25"
+    ],
+    "passes": false
+  },
+  {
+    "category": "content",
+    "description": "Research page authors section displays correctly",
+    "steps": [
+      "Step 1: Navigate to /research",
+      "Step 2: Scroll to Authors section",
+      "Step 3: Verify Fernando Torres is displayed with correct title",
+      "Step 4: Verify Shekhar Bhende is displayed with correct title",
+      "Step 5: Verify LinkedIn links work for both authors",
+      "Step 6: Verify Faculty Sponsor (Prof. Scott J. Brady) is credited"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Blog listing pagination works if implemented",
+    "steps": [
+      "Step 1: Navigate to /blog with many published posts",
+      "Step 2: If pagination exists, verify page numbers are displayed",
+      "Step 3: Click next page",
+      "Step 4: Verify different posts are displayed",
+      "Step 5: Verify URL updates with page parameter",
+      "Step 6: If no pagination, verify all posts load efficiently"
+    ],
+    "passes": false
+  },
+  {
+    "category": "security",
+    "description": "Admin preview mode doesn't expose unpublished content publicly",
+    "steps": [
+      "Step 1: Get URL of unpublished post preview from admin",
+      "Step 2: Log out of admin",
+      "Step 3: Attempt to access preview URL as unauthenticated user",
+      "Step 4: Verify preview is not accessible without auth",
+      "Step 5: Verify redirect to login or 404 is shown"
+    ],
+    "passes": false
+  },
+  {
+    "category": "integration",
+    "description": "LinkedIn image upload follows 2-step process (asset upload then post creation)",
+    "steps": [
+      "Step 1: Trigger auto-post for a post with image",
+      "Step 2: Monitor network requests to LinkedIn API",
+      "Step 3: Verify first request uploads image to /v2/assets endpoint",
+      "Step 4: Verify asset URN is returned from upload",
+      "Step 5: Verify second request creates post with media asset attached",
+      "Step 6: Verify post appears on LinkedIn with image displayed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Scheduled posts respect America/Los_Angeles timezone",
+    "steps": [
+      "Step 1: Check publication-calendar.json timezone setting",
+      "Step 2: Verify timezone is 'America/Los_Angeles'",
+      "Step 3: For a post scheduled at 09:00 PST, verify build timing",
+      "Step 4: Verify GitHub Actions cron '0 14 * * *' corresponds to 6 AM PST",
+      "Step 5: Verify client-side date comparisons account for timezone",
+      "Step 6: Test with post scheduled for edge of day boundary"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin UI state persists in localStorage",
+    "steps": [
+      "Step 1: Login to admin",
+      "Step 2: Apply filters on /admin/posts (e.g., category filter)",
+      "Step 3: Navigate away to /admin/linkedin",
+      "Step 4: Return to /admin/posts",
+      "Step 5: Verify filter state is preserved (if implemented)",
+      "Step 6: Check localStorage for admin state keys",
+      "Step 7: Clear localStorage and verify default state loads"
+    ],
+    "passes": false
+  },
+  {
+    "category": "integration",
+    "description": "Cloudflare Worker wrangler.toml configuration is valid",
+    "steps": [
+      "Step 1: Read cloudflare-worker/wrangler.toml",
+      "Step 2: Verify worker name is set correctly",
+      "Step 3: Verify KV namespace binding 'KV_STORAGE' is configured",
+      "Step 4: Verify compatibility_date is recent",
+      "Step 5: Verify environment variables are referenced",
+      "Step 6: Run wrangler deploy --dry-run to validate config"
+    ],
+    "passes": false
+  },
+  {
+    "category": "integration",
+    "description": "LinkedIn posts are created with PUBLIC visibility",
+    "steps": [
+      "Step 1: Review Cloudflare Worker LinkedIn post code",
+      "Step 2: Verify visibility is set to 'com.linkedin.ugc.MemberNetworkVisibility': 'PUBLIC'",
+      "Step 3: Trigger auto-post for a test post",
+      "Step 4: View the created LinkedIn post",
+      "Step 5: Verify post is visible to public (not just connections)",
+      "Step 6: Verify post appears in public profile activity"
+    ],
+    "passes": false
+  },
+  {
+    "category": "content",
+    "description": "Blog post category field only accepts valid enum values",
+    "steps": [
+      "Step 1: Review contentlayer.config.js category enum definition",
+      "Step 2: Verify enum includes: anchor, theme, emergent, practitioner, prototype, conference, methodology",
+      "Step 3: Create test post with invalid category value",
+      "Step 4: Run contentlayer build",
+      "Step 5: Verify build fails or warns on invalid category",
+      "Step 6: Verify all 25 posts use only valid category values"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Page-level error boundaries catch and display route errors",
+    "steps": [
+      "Step 1: Verify error.tsx exists in app directory",
+      "Step 2: Verify error.tsx exists in app/blog/[slug] directory",
+      "Step 3: Verify error.tsx exists in app/admin directory",
+      "Step 4: Simulate error in blog post page",
+      "Step 5: Verify error boundary catches and displays friendly message",
+      "Step 6: Verify 'Try again' or 'Go home' action is available",
+      "Step 7: Verify error is logged for debugging"
+    ],
+    "passes": false
+  },
+  {
+    "category": "content",
+    "description": "Exactly 35 images exist in public/images/blog/ directory",
+    "steps": [
+      "Step 1: List all files in public/images/blog/ recursively",
+      "Step 2: Filter for image files (png, jpg, jpeg, webp, svg)",
+      "Step 3: Count total image files",
+      "Step 4: Verify count equals 35 as per spec",
+      "Step 5: Verify images are organized in subdirectories (anchor/, theme-covers/, etc.)",
+      "Step 6: Log any missing or extra images"
+    ],
+    "passes": false
+  },
+  {
+    "category": "content",
+    "description": "PDF file exists at correct download path",
+    "steps": [
+      "Step 1: Check if /public/downloads/ directory exists",
+      "Step 2: Verify ai-agents-research-final-report.pdf exists in directory",
+      "Step 3: Verify PDF file is readable and not corrupted",
+      "Step 4: Verify PDF file size is reasonable (not 0 bytes)",
+      "Step 5: Navigate to /research and click download",
+      "Step 6: Verify downloaded file matches source file"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Double-click prevention on LinkedIn auto-post button",
+    "steps": [
+      "Step 1: Navigate to /admin/linkedin/[id] for a pending post",
+      "Step 2: Click 'Post to LinkedIn Now' button",
+      "Step 3: Immediately click button again before first request completes",
+      "Step 4: Verify button is disabled after first click",
+      "Step 5: Verify only one API request is sent",
+      "Step 6: Verify no duplicate posts are created on LinkedIn"
+    ],
+    "passes": false
+  },
+  {
+    "category": "integration",
+    "description": "Analytics gracefully degrades when Plausible is blocked",
+    "steps": [
+      "Step 1: Install ad blocker extension that blocks Plausible",
+      "Step 2: Navigate to the site",
+      "Step 3: Verify page loads without JavaScript errors",
+      "Step 4: Verify all functionality works normally",
+      "Step 5: Check console for graceful error handling",
+      "Step 6: Verify analytics code doesn't break page interaction"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Handle missing or malformed linkedin-posts.json gracefully",
+    "steps": [
+      "Step 1: Temporarily rename/remove linkedin-posts.json",
+      "Step 2: Run build process",
+      "Step 3: Verify build fails with clear error message",
+      "Step 4: Restore file with malformed JSON syntax",
+      "Step 5: Verify build fails with JSON parse error",
+      "Step 6: Restore valid file and verify build succeeds"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Handle missing or malformed publication-calendar.json gracefully",
+    "steps": [
+      "Step 1: Temporarily rename/remove publication-calendar.json",
+      "Step 2: Run build process",
+      "Step 3: Verify build fails with clear error message",
+      "Step 4: Restore file with malformed JSON syntax",
+      "Step 5: Verify build fails with JSON parse error",
+      "Step 6: Restore valid file and verify build succeeds"
+    ],
+    "passes": false
+  },
+  {
+    "category": "integration",
+    "description": "LinkedIn API malformed response is handled gracefully",
+    "steps": [
+      "Step 1: Mock LinkedIn API to return malformed JSON",
+      "Step 2: Trigger auto-post",
+      "Step 3: Verify error is caught and logged",
+      "Step 4: Verify user-friendly error message is displayed",
+      "Step 5: Verify post status is not incorrectly updated",
+      "Step 6: Mock API to return unexpected status code",
+      "Step 7: Verify appropriate error handling"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin works when localStorage is unavailable",
+    "steps": [
+      "Step 1: Open browser in private/incognito mode with localStorage disabled",
+      "Step 2: Navigate to /admin/login",
+      "Step 3: Verify login still works (uses cookies, not localStorage)",
+      "Step 4: Navigate through admin pages",
+      "Step 5: Verify core functionality works without localStorage",
+      "Step 6: Verify appropriate fallback for any localStorage-dependent features"
+    ],
+    "passes": false
+  },
+  {
+    "category": "content",
+    "description": "Blog post slugs with special characters are URL-encoded correctly",
+    "steps": [
+      "Step 1: Review all blog post slugs",
+      "Step 2: Verify slugs use only URL-safe characters (a-z, 0-9, hyphens)",
+      "Step 3: Verify no spaces, underscores, or special characters",
+      "Step 4: Test navigation to posts with numbers in slug (e.g., '92-percent')",
+      "Step 5: Verify canonical URLs match slug format"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Long post titles truncate gracefully in listing cards",
+    "steps": [
+      "Step 1: Navigate to /blog",
+      "Step 2: Find posts with longer titles",
+      "Step 3: Verify titles are truncated with ellipsis if too long",
+      "Step 4: Verify truncation doesn't break mid-word",
+      "Step 5: Verify full title is available on hover (title attribute) or on click",
+      "Step 6: Test on mobile width to verify responsive truncation"
+    ],
+    "passes": false
+  },
+  {
+    "category": "accessibility",
+    "description": "Admin dashboard is fully navigable via screen reader",
+    "steps": [
+      "Step 1: Enable screen reader (VoiceOver/NVDA)",
+      "Step 2: Navigate to /admin after logging in",
+      "Step 3: Verify all stat cards are announced with proper labels",
+      "Step 4: Navigate to /admin/posts",
+      "Step 5: Verify table headers are announced correctly",
+      "Step 6: Verify post status badges have accessible text",
+      "Step 7: Navigate to /admin/linkedin",
+      "Step 8: Verify LinkedIn post cards are navigable",
+      "Step 9: Verify copy buttons have accessible names",
+      "Step 10: Test auto-post button accessibility",
+      "Step 11: Verify form controls have proper labels"
+    ],
+    "passes": false
+  },
+  {
+    "category": "security",
+    "description": "CSRF protection implemented on all state-changing operations",
+    "steps": [
+      "Step 1: Inspect admin login form for CSRF token",
+      "Step 2: Verify CSRF token is validated on form submission",
+      "Step 3: Test LinkedIn update-status endpoint for CSRF protection",
+      "Step 4: Attempt cross-origin POST request to admin API",
+      "Step 5: Verify request is rejected without valid token",
+      "Step 6: Verify CORS headers are properly configured"
+    ],
+    "passes": false
+  },
+  {
+    "category": "performance",
+    "description": "All blog post images use lazy loading with proper placeholders",
+    "steps": [
+      "Step 1: Navigate to /blog",
+      "Step 2: Check image elements have loading='lazy' attribute",
+      "Step 3: Verify placeholder/blur-up effect during image load",
+      "Step 4: Scroll down the page and verify images load on scroll",
+      "Step 5: Navigate to individual blog post",
+      "Step 6: Verify cover image has lazy loading",
+      "Step 7: Verify in-content images use lazy loading",
+      "Step 8: Check Network tab to verify images only load when visible",
+      "Step 9: Verify no layout shift when images load (aspect ratio preserved)",
+      "Step 10: Test on slow 3G connection simulation"
+    ],
+    "passes": false
+  },
+  {
+    "category": "seo",
+    "description": "Sitemap.xml includes all published posts with correct lastmod dates",
+    "steps": [
+      "Step 1: Navigate to /sitemap.xml",
+      "Step 2: Verify XML is valid and well-formed",
+      "Step 3: Count blog post entries in sitemap",
+      "Step 4: Verify count matches published posts count",
+      "Step 5: Verify no future-dated posts are in sitemap",
+      "Step 6: Verify lastmod dates match post publishedAt dates",
+      "Step 7: Verify /research page is included",
+      "Step 8: Verify admin routes are NOT included in sitemap",
+      "Step 9: Verify all URLs use canonical domain (fernandotorres.io)",
+      "Step 10: Submit sitemap to Google Search Console (manual verification)"
+    ],
+    "passes": false
+  },
+  {
+    "category": "content",
+    "description": "Author information is consistent across all blog posts and pages",
+    "steps": [
+      "Step 1: Review all 25 blog post MDX files",
+      "Step 2: Verify author field is 'Fernando Torres' in all posts",
+      "Step 3: Navigate to /about page",
+      "Step 4: Verify author bio matches blog post attribution",
+      "Step 5: Navigate to /research page",
+      "Step 6: Verify author card information matches",
+      "Step 7: Check LinkedIn posts have correct attribution",
+      "Step 8: Verify footer contact info is consistent",
+      "Step 9: Check meta author tag in page source",
+      "Step 10: Verify JSON-LD structured data has correct author",
+      "Step 11: Check Open Graph author tags"
+    ],
+    "passes": false
+  },
+  {
+    "category": "responsive",
+    "description": "Tablet breakpoint (768px-1024px) displays correctly across all pages",
+    "steps": [
+      "Step 1: Set viewport to 768px width (iPad portrait)",
+      "Step 2: Navigate to homepage and verify layout",
+      "Step 3: Navigate to /blog and verify grid layout (2 columns)",
+      "Step 4: Navigate to individual blog post and verify reading width",
+      "Step 5: Navigate to /research and verify two-column layout",
+      "Step 6: Navigate to /admin dashboard and verify grid layout",
+      "Step 7: Set viewport to 1024px width (iPad landscape)",
+      "Step 8: Repeat checks for all pages",
+      "Step 9: Verify navigation menu displays correctly",
+      "Step 10: Verify no horizontal overflow on any page"
+    ],
+    "passes": false
+  },
+  {
+    "category": "integration",
+    "description": "RSS feed is generated with all published posts",
+    "steps": [
+      "Step 1: Navigate to /feed.xml or /rss.xml",
+      "Step 2: Verify valid RSS 2.0 or Atom format",
+      "Step 3: Verify feed title matches site title",
+      "Step 4: Verify feed description matches site description",
+      "Step 5: Count items in feed",
+      "Step 6: Verify count matches published posts",
+      "Step 7: Verify no future-dated posts in feed",
+      "Step 8: Verify each item has title, link, description, pubDate",
+      "Step 9: Verify links use canonical domain",
+      "Step 10: Add feed to RSS reader and verify it works"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Series navigation is fully accessible via keyboard only",
+    "steps": [
+      "Step 1: Navigate to an AI Agents series post (middle of series)",
+      "Step 2: Tab to 'Previous in Series' link",
+      "Step 3: Verify focus indicator is visible",
+      "Step 4: Press Enter to navigate to previous post",
+      "Step 5: Verify navigation works correctly",
+      "Step 6: Tab to 'Next in Series' link",
+      "Step 7: Press Enter to navigate to next post",
+      "Step 8: Navigate to first post in series",
+      "Step 9: Verify Previous link is disabled/not focusable",
+      "Step 10: Navigate to last post in series",
+      "Step 11: Verify Next link is disabled/not focusable"
+    ],
+    "passes": false
+  }
+]

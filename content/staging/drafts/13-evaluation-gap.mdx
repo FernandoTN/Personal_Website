@@ -1,0 +1,186 @@
+---
+title: 'The Evaluation Gap: Why 7 YC Companies Building Eval Tools Have Zero Adoption'
+summary: 'Despite massive market need for AI agent evaluation tools, 7+ YC companies building them have achieved near-zero adoption. The disconnect reveals a fundamental misunderstanding: teams are measuring process metrics when outcomes matter.'
+publishedAt: '2025-12-13'
+tags: ['AI Agents', 'Evaluation', 'Startups', 'Market Opportunity']
+image: '/images/blog/evaluation-gap-cover.png'
+author: 'Fernando Torres'
+featured: false
+---
+
+Seven Y Combinator companies in recent batches are building AI agent evaluation tools. Zero of them have achieved meaningful adoption—even among YC's own founder network. When the tight-knit YC mafia refuses to use tools built by their own cohort members, something fundamental is broken about how we approach agent evaluation. This represents one of the clearest "massive need, no solution" signals in AI infrastructure—and a potential $10B+ market opportunity for whoever solves it correctly.
+
+## The Discovery
+
+Across 36 expert interviews for this research project, evaluation emerged as a universal pain point. Every practitioner acknowledged needing better evals. Every team described struggling with quality assessment. Yet when we looked at actual tool adoption, we encountered a paradox: despite seven or more YC companies building dedicated evaluation solutions, adoption remained near-zero.
+
+Stephen Li, a sales executive at GMI (a GPU infrastructure company) and former Stanford GSB researcher who had studied AI agents, offered a unique vantage point. His daily interactions with agentic AI startups and YC founders revealed a troubling pattern. When asked why founders weren't using evaluation tools built by their peers, he discovered something unexpected:
+
+> "I asked the same question to those founder why don't you use [eval tools from YC cohorts]? And the answer I got is that they are not confident about how good those eval result is. So for me I don't see a clear path that even for the YC mafia to adopt their cohorts product let alone those enterprise users who be way more conservative than those YC founders."
+> — Stephen Li, GMI
+
+If YC founders—early adopters by definition—won't trust these tools, enterprise adoption is years away. This signals something deeper than a go-to-market problem. The fundamental approach to AI agent evaluation may be wrong.
+
+## What We Found
+
+### Why Current Solutions Fail
+
+The evaluation tool market faces three interconnected failures that explain the adoption gap.
+
+**The Confidence Crisis**
+
+First, founders lack confidence in evaluation results themselves. This creates a paradox: you need evaluation tools to measure quality, but you don't trust the tools to measure accurately. When the output of an eval cannot be trusted, running it provides no value—and potentially negative value if it creates false confidence or wastes engineering time.
+
+The YC non-adoption is particularly significant because these founders have every incentive to support cohort members. They share networks, they want each other to succeed, and they understand the space better than most. When they still refuse to adopt, it's a powerful negative signal about current approaches.
+
+Stephen Li predicts substantial evaluation tool revenue remains 3-4 years away—an eternity in AI development cycles. This isn't a minor delay; it suggests current tools are solving the wrong problem entirely.
+
+**LLM-as-Judge Limitations**
+
+The dominant approach to AI evaluation—using one LLM to judge another's output—faces fundamental constraints that limit its effectiveness.
+
+> "Having GPT5 as the judge of Sonnet 4.5 well it might be slightly better for GPT5 but not that much. And the other challenge is it could be extremely expensive if you are using two the most advanced models in parallel to judge the output."
+> — Stephen Li, GMI
+
+Consider the analogy: effective evaluation requires the evaluator to be substantially more capable than what's being evaluated. A PhD professor can accurately assess elementary school work because the capability gap is enormous. But when GPT-5 evaluates Claude 4.5 outputs, the capability gap is minimal.
+
+Beyond capability gaps, cost becomes prohibitive. Running two frontier models in parallel doubles inference costs. For companies processing billions of tokens daily, this is unsustainable.
+
+Third, no quantified metrics exist for multimodal outputs. Video evaluation for models like Sora remains "purely based on PhD thesis." Academic papers appear on arXiv but never translate into industrialized solutions.
+
+**The Academic-Industrial Disconnect**
+
+Current evaluation tools optimize for metrics that don't correlate with business value. Academic benchmarks measure prompt quality, retrieval relevance, and token efficiency. But enterprises need to know: did the agent complete the task without human intervention?
+
+This disconnect explains why an AI autonomous agent company abandoned industry benchmarks entirely—standard metrics weren't "even close to real user's requirements." They had to build custom evaluation from real-world usage data, a path that doesn't scale across the ecosystem.
+
+### Outcome vs Process Metrics: The Fundamental Misunderstanding
+
+The core problem with current evaluation tools is a measurement mismatch. They measure process when outcomes matter.
+
+**Process Metrics**: Current tools focus on intermediate technical measurements—did the prompt follow best practices? Was retrieval relevant? How many tokens were consumed? Were hallucinations detected?
+
+**Outcome Metrics**: Business value comes from final results—were meetings scheduled? Was the task completed? Did the customer issue get resolved without escalation?
+
+a practitioner, an investor and AI practitioner, captured this precisely:
+
+> "Agent evals are very hard to measure because what you want to evaluate is actually a final outcome... Your eval for that agent's success is not 'did it do it for $5 or $6? Did it write the correct email?' Your eval for that success is, did I get 10 meetings with these people?"
+> — a practitioner
+
+An SDR agent that writes grammatically perfect emails using minimal tokens but books zero meetings is a failure. An agent that writes mediocre emails but books ten meetings is a success. Current evaluation tools cannot distinguish between these scenarios because they measure the wrong layer.
+
+**Handoff Rate as the North Star**
+
+The "Why 95% Fail" conference introduced a metric that cuts through the confusion: handoff rate. This measures the percentage of tasks an agent passes back to humans rather than completing autonomously.
+
+> "The question is no longer is the agent smart the real question is does it actually reduce the handoff to humans we call this handoff rate. Of the percentage of tasks that it passes back to human and in most companies this number is still very high."
+> — Cece, Co-founder & CEO of an AI infrastructure company, "Why 95% Fail" conference
+
+Handoff rate directly measures automation value. If you deploy an agent and your team still handles 80% of tasks manually, the agent hasn't transformed your business—regardless of its benchmark scores. This single metric provides more signal than elaborate evaluation frameworks measuring intermediate steps.
+
+Most companies deploying agents still have "very high" handoff rates. They've invested in AI but haven't achieved meaningful automation. Measuring handoff rate would reveal this reality; measuring process metrics obscures it.
+
+**Component-Level vs End-to-End Testing**
+
+Beyond outcome focus, successful teams have discovered that component-level evaluation dramatically outperforms end-to-end testing for probabilistic systems.
+
+the AI lead from an AI sales intelligence company, a sales AI company, articulated this counterintuitive approach:
+
+> "Almost never do we evaluate something end to end because it is pointless. So if you can evaluate a system at a time, and that is how you grow better... we built it blind after step one... the only thing that we continuously tested for is that it gets the first step right. The first step typically ends up being retrieval."
+> — the AI lead, an AI sales intelligence company
+
+Why does this work? The first step—typically retrieval—is deterministic and improvable. If retrieval returns the wrong data, everything downstream fails predictably. But if retrieval is accurate, the foundation model's generation capabilities are "good enough" for most downstream tasks.
+
+End-to-end evaluation of multi-step agents faces compounding uncertainty. Each probabilistic step multiplies variance. By the end of a ten-step workflow, the noise overwhelms the signal. Component-level testing isolates variables and enables systematic improvement.
+
+Current evaluation tools attempt end-to-end assessment of entire probabilistic pipelines—a fundamentally harder problem than testing deterministic components. They're building the wrong abstraction layer.
+
+### The Winning Approach: What Successful Evaluation Looks Like
+
+Combining insights from 36 interviews and 5 conferences, a pattern emerges for effective AI agent evaluation.
+
+**Focus on Specific, Verifiable Tasks**
+
+General "agent quality" scoring is intractable. Successful evaluation focuses on narrow, measurable objectives: Did the agent extract the correct fields from this document? Did the email include required compliance language? Was the API called with valid parameters?
+
+Roblox's approach exemplifies this: they require evaluation scorecards from all AI vendors. These scorecards define specific success criteria rather than vague quality measures. Before scaling automated evaluation, they manually evaluate approximately 1,000 data points to establish ground truth.
+
+**Build from Real Usage, Not Benchmarks**
+
+Industry benchmarks—academic or otherwise—fail to predict production performance. Successful teams build evaluation datasets from actual user interactions, capturing the edge cases and failure modes specific to their domain.
+
+This requires investment: manual labeling, human review, and continuous dataset expansion. But it produces evaluation that correlates with real-world success rather than benchmark gaming.
+
+**Implement Agreement Thresholds**
+
+When using LLM-as-judge (despite its limitations), successful teams implement tiered decision rules:
+
+- **80%+ model agreement**: Accept the result without escalation
+- **50-80% agreement**: Flag for human review
+- **Below 50% agreement**: Route to expensive arbitration or human judgment
+
+This acknowledges LLM-as-judge limitations while extracting value where confidence is high. The 80% threshold reflects the capability gap problem—when models agree strongly, the judgment is more likely reliable.
+
+**Integrate Evaluation into CI/CD**
+
+Evaluation cannot be a quarterly audit. Successful teams integrate evaluation into continuous integration pipelines, treating evals as regression tests. Every model update, prompt change, or architecture modification triggers evaluation suites.
+
+This prevents the "doom loop" described by a founder at an AI infrastructure company at an AI infrastructure company: fixing one scenario while breaking three others. Continuous evaluation maintains baselines while enabling iteration.
+
+**Expect Human-in-Loop Indefinitely**
+
+Stephen Li expects human-in-loop evaluation to continue "continuously" as automated evaluation challenges remain unsolved. The best eval, as one Harvey executive noted, remains "a human looks at the end result."
+
+This isn't defeatism—it's realism. Building evaluation systems that gracefully incorporate human judgment, rather than attempting full automation prematurely, produces better outcomes.
+
+## Why This Matters: A $10B+ Market Opportunity
+
+The evaluation gap represents more than a technical challenge. It's a massive market opportunity hiding in plain sight.
+
+The AI agent market is projected to reach $100B+ by 2030. If evaluation represents 10% of that spend (consistent with testing infrastructure in traditional software), we're looking at a $10B+ market for whoever solves agent evaluation correctly. Current players are capturing near-zero of this opportunity.
+
+**For Founders Building Eval Tools**: The current approach of building general-purpose evaluation platforms is failing. The opportunity lies in vertical-specific evaluation (measuring meetings booked, not prompt quality), outcome tracking integration, and component-level testing frameworks. The first company to build evaluation that founders actually trust will capture a substantial market.
+
+**For Investors**: The 3-4 year timeline to substantial revenue means patient capital is required. Look for evaluation companies focused on outcome metrics, specific verticals, component-level testing, and CI/CD integration rather than general platforms with point-in-time assessment.
+
+**For Enterprises**: The best evaluation currently available is human review of final results. Rather than adopting tools that provide false confidence, invest in building internal evaluation datasets from production usage and requiring evaluation scorecards from AI vendors with specific, measurable criteria.
+
+## What You Can Do
+
+**For Teams Building Agents**
+
+- **Prioritize first-step evaluation**: Focus testing on retrieval accuracy and tool selection—the deterministic components that cascade into downstream success
+- **Track handoff rate**: Measure what percentage of tasks route back to humans
+- **Build from production data**: Create evaluation datasets from real user interactions, not synthetic benchmarks
+- **Integrate evals into CI/CD**: Treat evaluation as regression testing that runs with every change
+
+**For Teams Evaluating Agents**
+
+- **Define outcome metrics first**: Establish what business outcomes constitute success before measuring anything
+- **Use component-level testing**: Evaluate deterministic steps rather than end-to-end probabilistic flows
+- **Implement agreement thresholds**: When using LLM-as-judge, only trust high-agreement results (80%+)
+
+**For Eval Tool Builders**
+
+- **Solve measurement first**: Understand what metrics correlate with business value before building infrastructure
+- **Target specific verticals**: General-purpose evaluation is intractable; vertical-specific solutions are achievable
+- **Enable CI/CD integration**: Make evaluation continuous, not periodic
+
+**For Enterprises Evaluating Vendors**
+
+- **Require evaluation scorecards**: Demand specific, measurable success criteria before procurement
+- **Ask about handoff rate**: "What percentage of tasks complete without human intervention?" reveals more than benchmark scores
+
+## The Bottom Line
+
+The evaluation gap isn't about lacking tools—it's about lacking the right metrics. Seven YC companies building evaluation tools with zero adoption among their own network signals a fundamental approach problem. Current tools measure process metrics (prompt quality, token efficiency, retrieval relevance) when outcomes matter (tasks completed, handoffs reduced, meetings booked).
+
+The winning solution will flip this paradigm: measuring final outcomes rather than intermediate steps, testing deterministic components rather than probabilistic pipelines, and integrating evaluation into continuous deployment rather than treating it as periodic audit.
+
+A $10B+ market opportunity awaits whoever solves this correctly. The first step isn't building better infrastructure—it's understanding what to measure.
+
+---
+
+_This post is part of my research series on AI Agent deployment, based on 36 expert interviews, 5 industry conferences, and 3 functional prototypes. [Read the full research overview](/blog/ai-agents-research)._
+
+_Have thoughts on AI agent deployment? Connect with me on [LinkedIn](https://www.linkedin.com/in/fernandotn/) or [email me](mailto:fertorresnavarrete@gmail.com)._
