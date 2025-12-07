@@ -1,9 +1,164 @@
 import { PrismaClient, PostStatus, PostCategory } from '@prisma/client'
+import * as fs from 'fs'
+import * as path from 'path'
+import { marked } from 'marked'
 
 const prisma = new PrismaClient()
 
+// Configure marked to add IDs to headings for table of contents
+const renderer = new marked.Renderer()
+renderer.heading = function({ text, depth }) {
+  const slug = text.toLowerCase().replace(/[^\w]+/g, '-')
+  return `<h${depth} id="${slug}">${text}</h${depth}>\n`
+}
+marked.setOptions({ renderer })
+
+// ============================================
+// MDX Content Loading Infrastructure
+// ============================================
+
+// MDX filename to database slug mapping
+const SLUG_TO_MDX_MAP: Record<string, string> = {
+  'what-is-needed-to-unlock-ai-agents': '2025-12-ai-agents-research-overview',
+  'llm-cognitive-engine': '2025-12-coding-agent-exception',
+  'context-memory-foundations': '2025-12-40-percent-context-rule',
+  'system-integration-challenges': '2025-12-system-integration-92-percent',
+  'authentication-identity': '2025-12-okta-interview',
+  'trust-governance-guardrails': '2025-12-enterprise-business-case',
+  'emergent-behaviors': '2025-12-demo-production-chasm',
+  'cost-management-strategies': '2025-12-model-myth',
+  'agent-evaluations': '2025-12-evaluation-gap',
+  'monitoring-telemetry': '2025-12-mcp-tool-cliff',
+  'practitioner-pharma-insights': '2025-12-handoff-rate-metric',
+  'practitioner-supply-chain': '2025-12-component-evaluation',
+  'emergent-reasoning-patterns': '2025-12-dual-memory-architecture',
+  'practitioner-customer-service': '2025-12-qurrent-interview',
+  'practitioner-code-assistants': '2025-12-sybill-interview',
+  'prototype-rag-agent': '2025-12-crewai-interview',
+  'prototype-multi-agent': '2025-12-autonomy-interview',
+  'emergent-tool-use': '2025-12-framework-abandonment',
+  'prototype-voice-agent': '2025-12-shopping-agent',
+  'practitioner-data-analysis': '2025-12-repo-patcher',
+  'conference-neurips-insights': '2025-12-good-agents',
+  'conference-icml-trends': '2025-12-manus-fireside',
+  'conference-stanford-ai': '2025-12-why-95-fail',
+  'methodology-eight-pillars': '2025-12-production-summit',
+  'series-conclusion': '2025-12-research-methodology',
+}
+
+interface MDXFrontmatter {
+  title: string
+  summary: string
+  publishedAt: string
+  tags: string[]
+  featured?: boolean
+  author: string
+  image?: string
+}
+
+interface ParsedMDX {
+  frontmatter: MDXFrontmatter
+  content: string
+}
+
+function parseMDXFile(filePath: string): ParsedMDX | null {
+  try {
+    const fileContent = fs.readFileSync(filePath, 'utf-8')
+    const frontmatterRegex = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/
+    const match = fileContent.match(frontmatterRegex)
+
+    if (!match) {
+      console.warn(`No frontmatter found in ${filePath}`)
+      return null
+    }
+
+    const frontmatterStr = match[1]
+    const content = match[2].trim()
+
+    // Simple YAML-like parsing
+    const frontmatter: Record<string, unknown> = {}
+    const lines = frontmatterStr.split('\n')
+
+    for (const line of lines) {
+      const colonIndex = line.indexOf(':')
+      if (colonIndex === -1) continue
+
+      const key = line.slice(0, colonIndex).trim()
+      let value: string | string[] | boolean = line.slice(colonIndex + 1).trim()
+
+      // Handle quoted strings
+      if (value.startsWith("'") && value.endsWith("'")) {
+        value = value.slice(1, -1)
+      } else if (value.startsWith('"') && value.endsWith('"')) {
+        value = value.slice(1, -1)
+      }
+      // Handle arrays
+      else if (value.startsWith('[') && value.endsWith(']')) {
+        const arrayContent = value.slice(1, -1)
+        value = arrayContent.split(',').map(item => {
+          const trimmed = item.trim()
+          if (trimmed.startsWith("'") && trimmed.endsWith("'")) {
+            return trimmed.slice(1, -1)
+          }
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) {
+            return trimmed.slice(1, -1)
+          }
+          return trimmed
+        })
+      }
+      // Handle booleans
+      else if (value === 'true') {
+        value = true
+      } else if (value === 'false') {
+        value = false
+      }
+
+      frontmatter[key] = value
+    }
+
+    return {
+      frontmatter: {
+        title: frontmatter.title as string,
+        summary: frontmatter.summary as string,
+        publishedAt: frontmatter.publishedAt as string,
+        tags: frontmatter.tags as string[],
+        featured: frontmatter.featured as boolean | undefined,
+        author: frontmatter.author as string,
+        image: frontmatter.image as string | undefined,
+      },
+      content,
+    }
+  } catch (error) {
+    console.error(`Error parsing ${filePath}:`, error)
+    return null
+  }
+}
+
+function loadMDXContent(slug: string): ParsedMDX | null {
+  const mdxFilename = SLUG_TO_MDX_MAP[slug]
+  if (!mdxFilename) {
+    console.warn(`No MDX mapping found for slug: ${slug}`)
+    return null
+  }
+
+  const mdxDir = path.join(__dirname, '../content/deliverables/blog-posts')
+  const filePath = path.join(mdxDir, `${mdxFilename}.mdx`)
+
+  if (!fs.existsSync(filePath)) {
+    console.warn(`MDX file not found: ${filePath}`)
+    return null
+  }
+
+  return parseMDXFile(filePath)
+}
+
+// ============================================
+// Main Seed Function
+// ============================================
+
 async function main() {
   console.log('Starting seed...')
+  console.log('Loading MDX content from files...')
 
   // Create the AI Agents series first
   const aiAgentsSeries = await prisma.series.upsert({
@@ -324,19 +479,54 @@ async function main() {
   ]
 
   for (const post of posts) {
+    // Load MDX content for this post
+    const mdxContent = loadMDXContent(post.slug)
+
+    // Calculate reading time based on content length (average 200 words per minute)
+    let readingTimeMinutes = 5
+    let finalContent = post.content
+    let finalTitle = post.title
+    let finalExcerpt = post.excerpt
+
+    if (mdxContent) {
+      // Convert Markdown to HTML using marked
+      const markdownContent = mdxContent.content
+      finalContent = marked.parse(markdownContent) as string
+      // Use MDX title if available
+      if (mdxContent.frontmatter.title) {
+        finalTitle = mdxContent.frontmatter.title
+      }
+      // Use MDX summary as excerpt if available
+      if (mdxContent.frontmatter.summary) {
+        finalExcerpt = mdxContent.frontmatter.summary
+      }
+      // Calculate reading time from markdown content (before HTML conversion)
+      const wordCount = markdownContent.split(/\s+/).length
+      readingTimeMinutes = Math.max(1, Math.round(wordCount / 200))
+      console.log(`  Loaded MDX: ${mdxContent.frontmatter.title} (${markdownContent.length} md chars -> ${finalContent.length} html chars, ${wordCount} words, ${readingTimeMinutes} min read)`)
+    } else {
+      console.warn(`  No MDX content for ${post.slug}, using placeholder`)
+    }
+
     const created = await prisma.post.upsert({
       where: { slug: post.slug },
       update: {
         ...post,
+        title: finalTitle,
+        excerpt: finalExcerpt,
+        content: finalContent,
         seriesId: aiAgentsSeries.id,
         author: 'Fernando Torres',
-        readingTimeMinutes: Math.floor(Math.random() * 5) + 5,
+        readingTimeMinutes,
       },
       create: {
         ...post,
+        title: finalTitle,
+        excerpt: finalExcerpt,
+        content: finalContent,
         seriesId: aiAgentsSeries.id,
         author: 'Fernando Torres',
-        readingTimeMinutes: Math.floor(Math.random() * 5) + 5,
+        readingTimeMinutes,
       },
     })
     console.log(`Created/Updated post: ${created.title} (${created.status})`)
