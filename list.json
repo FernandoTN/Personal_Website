@@ -1555,7 +1555,7 @@
       "Step 11: Verify Conference category has 3 posts",
       "Step 12: Verify Methodology category has 1 post"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",

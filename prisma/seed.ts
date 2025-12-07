@@ -300,7 +300,7 @@ async function main() {
       excerpt: 'Looking ahead at what the future holds for AI agents.',
       content: '# The Future of AI Agents\n\nAs we conclude this series, we look to the future...',
       status: 'DRAFT' as PostStatus,
-      category: 'ANCHOR' as PostCategory,
+      category: 'THEME' as PostCategory,
       seriesOrder: 25,
     },
   ]
