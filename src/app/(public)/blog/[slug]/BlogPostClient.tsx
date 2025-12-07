@@ -92,7 +92,7 @@ export const mockBlogPostsContent: Record<string, BlogPostContent> = {
       name: 'Fernando Torres',
       title: 'MSx \'26, Stanford GSB',
     },
-    featuredImage: '/images/blog/ai-agents-anchor.svg',
+    featuredImage: '/images/blog/ai-agents-research-cover.png',
     featuredImageAlt: 'AI Agents Research: Eight Pillars Framework - Visualization showing interconnected pillars of enterprise AI agent success',
     series: {
       name: 'AI Agents Research',
@@ -189,7 +189,7 @@ export const mockBlogPostsContent: Record<string, BlogPostContent> = {
       name: 'Fernando Torres',
       title: 'MSx \'26, Stanford GSB',
     },
-    featuredImage: '/images/blog/llm-cognitive-engine.svg',
+    featuredImage: '/images/blog/coding-agent-exception-cover.png',
     featuredImageAlt: 'The LLM as Cognitive Engine - Neural network visualization showing language model architecture',
     series: {
       name: 'AI Agents Research',
@@ -245,7 +245,7 @@ export const mockBlogPostsContent: Record<string, BlogPostContent> = {
       name: 'Fernando Torres',
       title: 'MSx \'26, Stanford GSB',
     },
-    featuredImage: '/images/blog/context-memory.svg',
+    featuredImage: '/images/blog/context-management-cover.png',
     featuredImageAlt: 'Context and Memory Management - Visualization of agent memory architecture',
     series: {
       name: 'AI Agents Research',
@@ -313,7 +313,7 @@ export const mockBlogPostsContent: Record<string, BlogPostContent> = {
       name: 'Fernando Torres',
       title: 'MSx \'26, Stanford GSB',
     },
-    featuredImage: '/images/blog/system-integration.svg',
+    featuredImage: '/images/blog/system-integration-92-percent.png',
     featuredImageAlt: 'System Integration Challenges - Enterprise integration architecture diagram',
     series: {
       name: 'AI Agents Research',
@@ -365,7 +365,7 @@ export const mockBlogPostsContent: Record<string, BlogPostContent> = {
       name: 'Fernando Torres',
       title: 'MSx \'26, Stanford GSB',
     },
-    featuredImage: '/images/blog/auth-identity.svg',
+    featuredImage: '/images/blog/framework-abandonment-cover.png',
     featuredImageAlt: 'Authentication and Identity for AI Agents - Security and identity management visualization',
     series: {
       name: 'AI Agents Research',
@@ -418,7 +418,7 @@ export const defaultPostContent: BlogPostContent = {
     name: 'Fernando Torres',
     title: 'MSx \'26, Stanford GSB',
   },
-  featuredImage: '/images/blog/default-featured.svg',
+  featuredImage: '/images/blog/ai-agents-research-cover.png',
   featuredImageAlt: 'AI Agents Research Series - Featured blog post illustration',
   headings: [
     { id: 'introduction', text: 'Introduction', level: 2 },

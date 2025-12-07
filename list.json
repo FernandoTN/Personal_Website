@@ -1428,7 +1428,7 @@
       "Step 6: Verify no major performance issues flagged",
       "Step 7: Document specific metrics (LCP, FID, CLS)"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "performance",
@@ -1442,7 +1442,7 @@
       "Step 6: Verify images are optimized (Next.js Image)",
       "Step 7: Verify code blocks don't block rendering"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "performance",
@@ -1458,7 +1458,7 @@
       "Step 8: Test blog post page",
       "Step 9: Verify Core Web Vitals pass"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "performance",

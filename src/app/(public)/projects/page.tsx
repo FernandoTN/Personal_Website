@@ -14,7 +14,7 @@ const PROJECTS: Project[] = [
     title: 'AI Agents Research',
     description:
       'Stanford GSB research exploring what is needed to unlock the full potential of AI agents in enterprise environments. Identifies the Eight Pillars framework for production-ready AI.',
-    image: '/images/projects/ai-research.jpg',
+    image: '/images/projects/ai-agents-placeholder.svg',
     techStack: ['Python', 'LLM', 'Research', 'Stanford GSB'],
     category: 'research',
     featured: true,
@@ -24,7 +24,7 @@ const PROJECTS: Project[] = [
     title: 'Pharmaceutical Supply Chain Optimization',
     description:
       'End-to-end supply chain optimization platform for pharmaceutical manufacturing, reducing lead times by 35% and improving inventory turnover.',
-    image: '/images/projects/pharma-supply.jpg',
+    image: '/images/projects/healthcare-placeholder.svg',
     techStack: ['SAP', 'Python', 'Analytics', 'Supply Chain'],
     category: 'pharma',
     featured: true,
@@ -34,7 +34,7 @@ const PROJECTS: Project[] = [
     title: 'Drug Serialization & Track-and-Trace',
     description:
       'Implemented FDA-compliant drug serialization system for pharmaceutical products, ensuring complete traceability across the supply chain.',
-    image: '/images/projects/serialization.jpg',
+    image: '/images/projects/healthcare-placeholder.svg',
     techStack: ['SAP ATTP', 'GS1', 'Compliance', 'IoT'],
     category: 'pharma',
   },
@@ -43,7 +43,7 @@ const PROJECTS: Project[] = [
     title: 'Personal Website & Blog',
     description:
       'This website! Built with Next.js 14, TypeScript, Tailwind CSS, and Framer Motion. Features a blog with MDX support and an admin dashboard.',
-    image: '/images/projects/website.jpg',
+    image: '/images/projects/website-placeholder.svg',
     techStack: ['Next.js', 'TypeScript', 'Tailwind', 'Prisma'],
     category: 'coding',
     featured: true,
@@ -53,7 +53,7 @@ const PROJECTS: Project[] = [
     title: 'Inventory Optimization Engine',
     description:
       'Machine learning-based inventory optimization system for pharmaceutical distribution, reducing stockouts by 42% while minimizing holding costs.',
-    image: '/images/projects/inventory.jpg',
+    image: '/images/projects/healthcare-placeholder.svg',
     techStack: ['Python', 'ML', 'Forecasting', 'Analytics'],
     category: 'pharma',
   },
@@ -62,7 +62,7 @@ const PROJECTS: Project[] = [
     title: 'Eight Pillars AI Framework',
     description:
       'Comprehensive framework for evaluating and implementing AI agents in enterprise settings, covering LLM selection to monitoring and telemetry.',
-    image: '/images/projects/eight-pillars.jpg',
+    image: '/images/projects/ai-agents-placeholder.svg',
     techStack: ['AI Architecture', 'Framework', 'Research'],
     category: 'research',
   },
@@ -71,7 +71,7 @@ const PROJECTS: Project[] = [
     title: 'React Component Library',
     description:
       'Reusable React component library with TypeScript, Storybook documentation, and comprehensive test coverage for enterprise applications.',
-    image: '/images/projects/components.jpg',
+    image: '/images/projects/website-placeholder.svg',
     techStack: ['React', 'TypeScript', 'Storybook', 'Testing'],
     category: 'coding',
   },
@@ -80,7 +80,7 @@ const PROJECTS: Project[] = [
     title: 'API Integration Platform',
     description:
       'Microservices-based platform for integrating pharmaceutical ERP systems with external partners, handling 100K+ transactions daily.',
-    image: '/images/projects/api-platform.jpg',
+    image: '/images/projects/website-placeholder.svg',
     techStack: ['Node.js', 'REST', 'GraphQL', 'Docker'],
     category: 'coding',
   },
@@ -89,7 +89,7 @@ const PROJECTS: Project[] = [
     title: 'Clinical Trial Analytics Dashboard',
     description:
       'Real-time analytics dashboard for clinical trial data, providing insights into patient enrollment, site performance, and study progress.',
-    image: '/images/projects/clinical.jpg',
+    image: '/images/projects/healthcare-placeholder.svg',
     techStack: ['React', 'D3.js', 'Python', 'Healthcare'],
     category: 'pharma',
   },

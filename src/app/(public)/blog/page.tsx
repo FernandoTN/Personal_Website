@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, useCallback, Suspense, useRef } from 'react'
+import { useState, useMemo, useCallback, Suspense, useRef, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
 import { ChevronLeft, ChevronRight, BookOpen, X, Tag, Search } from 'lucide-react'
@@ -469,87 +469,154 @@ function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) 
 }
 
 /**
- * Tag Cloud component for filtering posts by tags
+ * Tag Filter Dropdown component for filtering posts by tags
  */
-interface TagCloudProps {
+interface TagFilterProps {
   allTags: string[]
   selectedTag: string | null
   onTagSelect: (tag: string | null) => void
 }
 
-function TagCloud({ allTags, selectedTag, onTagSelect }: TagCloudProps) {
+function TagFilter({ allTags, selectedTag, onTagSelect }: TagFilterProps) {
+  const [isOpen, setIsOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false)
+      }
+    }
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+      return () => document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isOpen])
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: 0.3 }}
-      className="mb-8"
+      className="mb-8 flex justify-center"
     >
-      <div className="flex items-center gap-2 mb-4">
-        <Tag className="h-4 w-4 text-accent-primary" aria-hidden="true" />
-        <h2 className="text-sm font-semibold text-text-primary dark:text-text-dark-primary">
-          Filter by Tag
-        </h2>
-        {selectedTag && (
+      <div className="relative inline-block" ref={dropdownRef}>
+        <div className="flex items-center gap-2">
+          {/* Dropdown Button */}
           <button
-            onClick={() => onTagSelect(null)}
-            className="
-              ml-2 flex items-center gap-1 px-2 py-0.5 rounded-full
-              text-xs font-medium
-              bg-accent-primary/10 text-accent-primary
-              hover:bg-accent-primary/20
-              transition-colors duration-200
+            onClick={() => setIsOpen(!isOpen)}
+            className={`
+              inline-flex items-center gap-2 px-4 py-2.5 rounded-lg
+              text-sm font-medium
+              border transition-all duration-200
               focus-visible:outline-none focus-visible:ring-2
               focus-visible:ring-accent-primary focus-visible:ring-offset-2
-            "
-            aria-label="Clear tag filter"
+              ${selectedTag
+                ? 'bg-accent-primary text-white border-accent-primary'
+                : 'bg-light-neutral-grey dark:bg-dark-panel text-text-secondary dark:text-text-dark-secondary border-border-light dark:border-border-dark hover:bg-light-icy-blue dark:hover:bg-dark-deep-blue hover:text-accent-primary'
+              }
+            `}
+            aria-expanded={isOpen}
+            aria-haspopup="listbox"
+            aria-label={selectedTag ? `Filtered by tag: ${selectedTag}` : 'Filter by tag'}
           >
-            <X className="h-3 w-3" aria-hidden="true" />
-            Clear filter
+            <Tag className="h-4 w-4" aria-hidden="true" />
+            {selectedTag ? selectedTag : 'Filter by Tag'}
+            <svg
+              className={`h-4 w-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
           </button>
-        )}
-      </div>
-      <div
-        className="flex flex-wrap gap-2"
-        role="group"
-        aria-label="Filter blog posts by tag"
-      >
-        {allTags.map((tag) => {
-          const isSelected = selectedTag === tag
-          const count = getTagCount(tag)
-          return (
+
+          {/* Clear Button */}
+          {selectedTag && (
             <button
-              key={tag}
-              onClick={() => onTagSelect(isSelected ? null : tag)}
-              className={`
-                inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full
-                text-xs font-medium
-                transition-all duration-200
+              onClick={() => onTagSelect(null)}
+              className="
+                flex items-center gap-1 px-3 py-2.5 rounded-lg
+                text-sm font-medium
+                bg-accent-primary/10 text-accent-primary
+                hover:bg-accent-primary/20
+                transition-colors duration-200
                 focus-visible:outline-none focus-visible:ring-2
                 focus-visible:ring-accent-primary focus-visible:ring-offset-2
-                ${isSelected
-                  ? 'bg-accent-primary text-white shadow-sm'
-                  : 'bg-light-neutral-grey dark:bg-dark-panel text-text-secondary dark:text-text-dark-secondary border border-border-light dark:border-border-dark hover:bg-light-icy-blue dark:hover:bg-dark-deep-blue hover:text-accent-primary hover:border-accent-primary/30'
-                }
-              `}
-              aria-pressed={isSelected}
-              aria-label={`Filter by ${tag} tag (${count} posts)${isSelected ? ' - currently selected' : ''}`}
+              "
+              aria-label="Clear tag filter"
             >
-              {tag}
-              <span
-                className={`
-                  px-1.5 py-0.5 rounded-full text-[10px]
-                  ${isSelected
-                    ? 'bg-white/20 text-white'
-                    : 'bg-light-base dark:bg-dark-deep-blue text-text-muted dark:text-text-dark-muted'
-                  }
-                `}
-              >
-                {count}
-              </span>
+              <X className="h-4 w-4" aria-hidden="true" />
+              Clear
             </button>
-          )
-        })}
+          )}
+        </div>
+
+        {/* Dropdown Menu */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.95 }}
+              transition={{ duration: 0.15 }}
+              className="
+                absolute z-50 mt-2 left-0 min-w-[220px] max-h-[300px] overflow-auto
+                bg-white dark:bg-dark-panel
+                border border-border-light dark:border-border-dark
+                rounded-xl shadow-lg
+                scrollbar-thin
+              "
+              role="listbox"
+              aria-label="Select a tag to filter"
+            >
+              <div className="p-2">
+                {allTags.map((tag) => {
+                  const isSelected = selectedTag === tag
+                  const count = getTagCount(tag)
+                  return (
+                    <button
+                      key={tag}
+                      onClick={() => {
+                        onTagSelect(isSelected ? null : tag)
+                        setIsOpen(false)
+                      }}
+                      className={`
+                        w-full flex items-center justify-between px-3 py-2 rounded-lg
+                        text-sm text-left
+                        transition-colors duration-150
+                        focus-visible:outline-none focus-visible:ring-2
+                        focus-visible:ring-accent-primary focus-visible:ring-inset
+                        ${isSelected
+                          ? 'bg-accent-primary text-white'
+                          : 'text-text-primary dark:text-text-dark-primary hover:bg-light-neutral-grey dark:hover:bg-dark-deep-blue'
+                        }
+                      `}
+                      role="option"
+                      aria-selected={isSelected}
+                    >
+                      <span>{tag}</span>
+                      <span
+                        className={`
+                          px-2 py-0.5 rounded-full text-xs
+                          ${isSelected
+                            ? 'bg-white/20 text-white'
+                            : 'bg-light-neutral-grey dark:bg-dark-deep-blue text-text-muted dark:text-text-dark-muted'
+                          }
+                        `}
+                      >
+                        {count}
+                      </span>
+                    </button>
+                  )
+                })}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </motion.div>
   )
@@ -827,8 +894,8 @@ function BlogPageContent() {
             })}
           </motion.div>
 
-          {/* Tag Cloud Filter */}
-          <TagCloud
+          {/* Tag Filter Dropdown */}
+          <TagFilter
             allTags={allTags}
             selectedTag={selectedTag}
             onTagSelect={handleTagSelect}

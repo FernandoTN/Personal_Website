@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, FormEvent } from 'react'
+import { useState, useEffect, FormEvent, Suspense } from 'react'
 import { signIn, useSession } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
@@ -23,7 +23,25 @@ interface FormErrors {
   general?: string
 }
 
+// Loading fallback for Suspense boundary
+function LoginLoading() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-light-icy-blue dark:bg-dark-base">
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent-primary" />
+    </div>
+  )
+}
+
+// Main page component that wraps LoginContent in Suspense
 export default function AdminLoginPage() {
+  return (
+    <Suspense fallback={<LoginLoading />}>
+      <LoginContent />
+    </Suspense>
+  )
+}
+
+function LoginContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { status } = useSession()

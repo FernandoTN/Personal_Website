@@ -1,9 +1,62 @@
 'use client'
 
+import dynamic from 'next/dynamic'
 import Hero from '@/components/sections/Hero'
-import { ResearchHighlight, LatestPosts, FeaturedProjects } from '@/components/home'
-import { ScrollReveal, ScrollRevealItem } from '@/components/ui/ScrollReveal'
 import Link from 'next/link'
+
+// Lazy load below-fold components to improve initial page load
+const FeaturedProjects = dynamic(
+  () => import('@/components/home/FeaturedProjects').then(mod => mod.FeaturedProjects),
+  {
+    loading: () => <SectionSkeleton />,
+    ssr: true
+  }
+)
+
+const LatestPosts = dynamic(
+  () => import('@/components/home/LatestPosts').then(mod => mod.LatestPosts),
+  {
+    loading: () => <SectionSkeleton />,
+    ssr: true
+  }
+)
+
+const ResearchHighlight = dynamic(
+  () => import('@/components/home/ResearchHighlight').then(mod => mod.ResearchHighlight),
+  {
+    loading: () => <SectionSkeleton />,
+    ssr: true
+  }
+)
+
+// Lazy load ScrollReveal components as they're only needed for animations
+const ScrollReveal = dynamic(
+  () => import('@/components/ui/ScrollReveal').then(mod => mod.ScrollReveal),
+  { ssr: true }
+)
+
+const ScrollRevealItem = dynamic(
+  () => import('@/components/ui/ScrollReveal').then(mod => mod.ScrollRevealItem),
+  { ssr: true }
+)
+
+// Lightweight skeleton for loading states
+function SectionSkeleton() {
+  return (
+    <div className="py-16 md:py-24">
+      <div className="container-wide">
+        <div className="animate-pulse">
+          <div className="h-8 bg-light-neutral-grey dark:bg-dark-panel rounded w-1/4 mx-auto mb-8" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-64 bg-light-neutral-grey dark:bg-dark-panel rounded-lg" />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 /**
  * Homepage with scroll-triggered animations

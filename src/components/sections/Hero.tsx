@@ -1,65 +1,4 @@
-'use client'
-
-import { motion } from 'framer-motion'
 import Link from 'next/link'
-
-// Animation variants for staggered entrance
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.1,
-    },
-  },
-}
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: [0.25, 0.46, 0.45, 0.94], // Custom easing for smooth animation
-    },
-  },
-}
-
-// GPU acceleration style hints for smoother animations
-// Using transform: translateZ(0) or translate3d(0,0,0) forces GPU layer creation
-// will-change hints to browser for optimization
-// backfaceVisibility: hidden creates composite layer for smoother animations
-const gpuAcceleratedStyle = {
-  willChange: 'transform, opacity',
-  backfaceVisibility: 'hidden' as const,
-  perspective: 1000,
-  transform: 'translateZ(0)', // Force GPU layer creation
-}
-
-const buttonContainerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.6,
-    },
-  },
-}
-
-const buttonVariants = {
-  hidden: { opacity: 0, y: 15 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.5,
-      ease: 'easeOut',
-    },
-  },
-}
 
 /**
  * Hero Section Component
@@ -70,7 +9,7 @@ const buttonVariants = {
  * - Tagline about technology/healthcare/AI
  * - Two CTA buttons with staggered animations
  *
- * Uses Framer Motion for entrance animations with fade-in and slide-up effects.
+ * Uses CSS animations for better performance (no JS needed for animations).
  * Fully responsive and accessible.
  */
 export default function Hero() {
@@ -88,34 +27,28 @@ export default function Hero() {
         <div className="absolute -bottom-40 left-0 h-[400px] w-[400px] rounded-full bg-accent-secondary/5 blur-3xl dark:bg-accent-secondary/10" />
       </div>
 
-      <motion.div
-        className="relative z-10 mx-auto max-w-4xl text-center"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        style={gpuAcceleratedStyle}
-      >
+      <div className="relative z-10 mx-auto max-w-4xl text-center">
         {/* Main Heading - Author Name */}
-        <motion.h1
+        <h1
           id="hero-heading"
-          className="font-heading text-4xl font-bold tracking-tight text-text-primary dark:text-text-dark-primary sm:text-5xl md:text-6xl lg:text-7xl"
-          variants={itemVariants}
+          className="font-heading text-4xl font-bold tracking-tight text-text-primary dark:text-text-dark-primary sm:text-5xl md:text-6xl lg:text-7xl animate-fade-in-up"
+          style={{ animationDelay: '0ms' }}
         >
           Fernando Torres
-        </motion.h1>
+        </h1>
 
         {/* Subtitle - Education */}
-        <motion.p
-          className="mt-4 text-xl font-medium text-accent-primary sm:text-2xl"
-          variants={itemVariants}
+        <p
+          className="mt-4 text-xl font-medium text-accent-primary sm:text-2xl animate-fade-in-up"
+          style={{ animationDelay: '150ms' }}
         >
           MSx &apos;26, Stanford GSB
-        </motion.p>
+        </p>
 
         {/* Tagline - Focus Areas */}
-        <motion.p
-          className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-text-secondary dark:text-text-dark-secondary sm:text-xl"
-          variants={itemVariants}
+        <p
+          className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-text-secondary dark:text-text-dark-secondary sm:text-xl animate-fade-in-up"
+          style={{ animationDelay: '300ms' }}
         >
           Building at the intersection of{' '}
           <span className="font-semibold text-text-primary dark:text-text-dark-primary">
@@ -128,17 +61,14 @@ export default function Hero() {
           . Exploring{' '}
           <span className="text-gradient font-semibold">AI agents</span> and
           their potential to transform enterprise workflows.
-        </motion.p>
+        </p>
 
         {/* CTA Buttons */}
-        <motion.div
-          className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
-          variants={buttonContainerVariants}
-          initial="hidden"
-          animate="visible"
-          style={gpuAcceleratedStyle}
-        >
-          <motion.div variants={buttonVariants} style={gpuAcceleratedStyle}>
+        <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <div
+            className="animate-fade-in-up"
+            style={{ animationDelay: '450ms' }}
+          >
             <Link
               href="/projects"
               className="btn-primary inline-flex items-center gap-2 px-8 py-3 text-base font-semibold shadow-lg transition-all duration-300 hover:shadow-glow sm:text-lg"
@@ -159,9 +89,12 @@ export default function Hero() {
               </svg>
               View Projects
             </Link>
-          </motion.div>
+          </div>
 
-          <motion.div variants={buttonVariants} style={gpuAcceleratedStyle}>
+          <div
+            className="animate-fade-in-up"
+            style={{ animationDelay: '550ms' }}
+          >
             <Link
               href="/research"
               className="btn-outline inline-flex items-center gap-2 px-8 py-3 text-base font-semibold transition-all duration-300 sm:text-lg"
@@ -182,41 +115,10 @@ export default function Hero() {
               </svg>
               Read Research
             </Link>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
-        {/* Scroll indicator */}
-        <motion.div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.2, duration: 0.6 }}
-          style={gpuAcceleratedStyle}
-        >
-          <motion.div
-            className="flex flex-col items-center gap-2 text-text-muted dark:text-text-dark-muted"
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-            style={gpuAcceleratedStyle}
-          >
-            <span className="text-xs uppercase tracking-widest">Scroll</span>
-            <svg
-              className="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 14l-7 7m0 0l-7-7m7 7V3"
-              />
-            </svg>
-          </motion.div>
-        </motion.div>
-      </motion.div>
+      </div>
     </section>
   )
 }

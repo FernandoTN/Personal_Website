@@ -26,6 +26,13 @@ export type { AccordionProps, AccordionItemProps } from './Accordion'
 export { Chart } from './Chart'
 export type { ChartProps, ChartType, ChartDataPoint } from './Chart'
 
+// Import components for the mdxComponents map
+import { Callout as CalloutComponent } from './Callout'
+import { CodeBlock as CodeBlockComponent } from './CodeBlock'
+import { Quote as QuoteComponent } from './Quote'
+import { Accordion as AccordionComponent, AccordionItem as AccordionItemComponent } from './Accordion'
+import { Chart as ChartComponent } from './Chart'
+
 /**
  * MDX Components Map
  *
@@ -39,12 +46,12 @@ export type { ChartProps, ChartType, ChartDataPoint } from './Chart'
  * ```
  */
 export const mdxComponents = {
-  Callout: require('./Callout').Callout,
-  CodeBlock: require('./CodeBlock').CodeBlock,
-  Quote: require('./Quote').Quote,
-  Accordion: require('./Accordion').Accordion,
-  AccordionItem: require('./Accordion').AccordionItem,
-  Chart: require('./Chart').Chart,
+  Callout: CalloutComponent,
+  CodeBlock: CodeBlockComponent,
+  Quote: QuoteComponent,
+  Accordion: AccordionComponent,
+  AccordionItem: AccordionItemComponent,
+  Chart: ChartComponent,
 }
 
 export default mdxComponents

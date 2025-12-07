@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useMemo, useCallback } from 'react'
+import { useState, useEffect, useMemo, useCallback, Suspense } from 'react'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -315,9 +315,38 @@ function BlogListTable({ posts, onDelete }: BlogListTableProps) {
 }
 
 // ------------------------------------------------------------------
-// AdminBlogListPage Component
+// Loading fallback for Suspense boundary
+// ------------------------------------------------------------------
+function BlogListLoading() {
+  return (
+    <div className="p-8">
+      <div className="animate-pulse">
+        <div className="h-8 bg-light-neutral-grey dark:bg-dark-panel rounded w-1/4 mb-8" />
+        <div className="space-y-4">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="h-16 bg-light-neutral-grey dark:bg-dark-panel rounded" />
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ------------------------------------------------------------------
+// AdminBlogListPage Component (wrapper with Suspense)
 // ------------------------------------------------------------------
 export default function AdminBlogListPage() {
+  return (
+    <Suspense fallback={<BlogListLoading />}>
+      <AdminBlogListContent />
+    </Suspense>
+  )
+}
+
+// ------------------------------------------------------------------
+// AdminBlogListContent Component (actual content)
+// ------------------------------------------------------------------
+function AdminBlogListContent() {
   const { status: sessionStatus } = useSession()
   const router = useRouter()
   const searchParams = useSearchParams()

@@ -1,6 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // Performance optimizations
+  compiler: {
+    // Remove console.log in production
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+  // Optimize images
   images: {
     remotePatterns: [
       {
@@ -8,6 +14,19 @@ const nextConfig = {
         hostname: '*.vercel.app',
       },
     ],
+    // Enable modern image formats
+    formats: ['image/avif', 'image/webp'],
+    // Device sizes for responsive images
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
+    // Image sizes for layout optimization
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    // Minimize layout shift
+    minimumCacheTTL: 60,
+  },
+  // Enable experimental features for performance
+  experimental: {
+    // Optimize package imports to reduce bundle size
+    optimizePackageImports: ['lucide-react', 'framer-motion', 'date-fns', 'recharts'],
   },
   // Security headers
   async headers() {

@@ -1,6 +1,5 @@
 'use client'
 
-import { use } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
@@ -32,7 +31,7 @@ const projectsData: Record<string, ProjectDetail> = {
     slug: 'ai-agents-research',
     title: 'AI Agents Research',
     description:
-      'Stanford GSB research exploring how enterprise AI agents can transform business workflows.',
+      'Stanford GSB research exploring what is needed to unlock the full potential of AI agents in enterprise environments.',
     fullDescription: `This research project, conducted at Stanford Graduate School of Business, investigates the emerging field of enterprise AI agents and their potential to revolutionize business operations.
 
 The study explores several key areas:
@@ -48,16 +47,67 @@ The study explores several key areas:
 The research synthesizes insights from over 50 practitioner interviews, analysis of 100+ enterprise AI implementations, and collaboration with leading technology companies.`,
     image: '/images/projects/ai-agents-placeholder.svg',
     imageAlt: 'AI Agents Research visualization showing neural network patterns',
-    techStack: ['Python', 'LangChain', 'GPT-4', 'Research Methods', 'Data Analysis'],
+    techStack: ['Python', 'LLM', 'Research', 'Stanford GSB'],
     category: 'research',
     liveUrl: '/research',
     featured: true,
   },
+  'pharma-supply-chain': {
+    slug: 'pharma-supply-chain',
+    title: 'Pharmaceutical Supply Chain Optimization',
+    description:
+      'End-to-end supply chain optimization platform for pharmaceutical manufacturing, reducing lead times by 35% and improving inventory turnover.',
+    fullDescription: `A comprehensive supply chain optimization platform designed specifically for pharmaceutical manufacturing operations.
+
+Key achievements and features:
+
+- **Lead Time Reduction**: Achieved 35% reduction in manufacturing lead times through process optimization and predictive planning.
+
+- **Inventory Optimization**: Improved inventory turnover by implementing demand forecasting and safety stock optimization algorithms.
+
+- **End-to-End Visibility**: Real-time tracking of materials, work-in-progress, and finished goods across multiple manufacturing sites.
+
+- **Supplier Integration**: Automated supplier collaboration portal for order management, quality documentation, and delivery scheduling.
+
+- **Compliance Management**: Built-in GMP compliance tracking and audit trail functionality for regulatory requirements.
+
+The platform handles complex pharmaceutical manufacturing workflows while maintaining strict quality and regulatory compliance.`,
+    image: '/images/projects/healthcare-placeholder.svg',
+    imageAlt: 'Pharmaceutical supply chain optimization dashboard',
+    techStack: ['SAP', 'Python', 'Analytics', 'Supply Chain'],
+    category: 'pharma',
+    featured: true,
+  },
+  'drug-serialization': {
+    slug: 'drug-serialization',
+    title: 'Drug Serialization & Track-and-Trace',
+    description:
+      'Implemented FDA-compliant drug serialization system for pharmaceutical products, ensuring complete traceability across the supply chain.',
+    fullDescription: `A comprehensive drug serialization and track-and-trace system ensuring FDA DSCSA compliance and complete supply chain traceability.
+
+System capabilities include:
+
+- **Unique Identification**: Serial number generation and assignment at unit, case, and pallet levels following GS1 standards.
+
+- **Aggregation Management**: Parent-child relationship tracking through packaging hierarchy for complete chain of custody.
+
+- **Verification Services**: Real-time product verification and authentication to prevent counterfeit products from entering the supply chain.
+
+- **Regulatory Compliance**: Full compliance with FDA Drug Supply Chain Security Act (DSCSA) requirements and international regulations.
+
+- **Trading Partner Integration**: Seamless data exchange with distributors, wholesalers, and dispensers through EPCIS standards.
+
+The system processes millions of serialized units annually while maintaining 99.9% uptime and sub-second response times for verification requests.`,
+    image: '/images/projects/healthcare-placeholder.svg',
+    imageAlt: 'Drug serialization system interface showing product tracking',
+    techStack: ['SAP ATTP', 'GS1', 'Compliance', 'IoT'],
+    category: 'pharma',
+  },
   'personal-website': {
     slug: 'personal-website',
-    title: 'Personal Website',
+    title: 'Personal Website & Blog',
     description:
-      'This portfolio site built with Next.js 14, featuring a modern design system and optimized performance.',
+      'This website! Built with Next.js 14, TypeScript, Tailwind CSS, and Framer Motion. Features a blog with MDX support and an admin dashboard.',
     fullDescription: `A comprehensive personal portfolio and blog platform built with modern web technologies. This project showcases best practices in frontend development, accessibility, and performance optimization.
 
 Key features include:
@@ -75,37 +125,148 @@ Key features include:
 - **Animation System**: Smooth, GPU-accelerated animations using Framer Motion that respect reduced motion preferences.`,
     image: '/images/projects/website-placeholder.svg',
     imageAlt: 'Personal website preview showing the homepage design',
-    techStack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'Prisma', 'MDX'],
+    techStack: ['Next.js', 'TypeScript', 'Tailwind', 'Prisma'],
     category: 'coding',
     githubUrl: 'https://github.com/FernandoTN/personal-website',
     liveUrl: '/',
     featured: true,
   },
-  'healthcare-analytics': {
-    slug: 'healthcare-analytics',
-    title: 'Healthcare Analytics Platform',
+  'inventory-optimization': {
+    slug: 'inventory-optimization',
+    title: 'Inventory Optimization Engine',
     description:
-      'Data-driven healthcare insights platform analyzing patient outcomes and treatment efficacy.',
-    fullDescription: `A comprehensive healthcare analytics platform designed to improve patient outcomes through data-driven insights. Built with privacy-first principles and full HIPAA compliance.
+      'Machine learning-based inventory optimization system for pharmaceutical distribution, reducing stockouts by 42% while minimizing holding costs.',
+    fullDescription: `An advanced inventory optimization engine leveraging machine learning for pharmaceutical distribution networks.
 
-The platform provides:
+Core capabilities:
 
-- **Patient Outcome Analysis**: Advanced statistical models to track and predict patient outcomes across different treatment protocols.
+- **Demand Forecasting**: Multi-variate time series forecasting using ensemble ML models for accurate demand prediction.
 
-- **Treatment Efficacy Studies**: Tools for comparing treatment effectiveness using real-world evidence and clinical trial data.
+- **Safety Stock Optimization**: Dynamic safety stock calculation based on service level targets and demand variability.
 
-- **Operational Efficiency**: Dashboards and reports to optimize hospital operations, resource allocation, and staff scheduling.
+- **Stockout Prevention**: Achieved 42% reduction in stockouts through predictive replenishment and early warning alerts.
 
-- **Predictive Analytics**: Machine learning models for early intervention, readmission risk, and resource demand forecasting.
+- **Cost Optimization**: Balanced inventory holding costs with service levels to minimize total cost of ownership.
 
-- **Privacy & Compliance**: End-to-end encryption, audit logging, and role-based access control ensuring HIPAA compliance.
+- **Network Optimization**: Multi-echelon inventory optimization across distribution centers and regional warehouses.
 
-The system processes millions of patient records while maintaining strict data governance and privacy standards.`,
+The system processes historical data from multiple sources and provides actionable recommendations for inventory managers.`,
     image: '/images/projects/healthcare-placeholder.svg',
-    imageAlt: 'Healthcare analytics dashboard showing data visualizations',
-    techStack: ['Python', 'SQL', 'Tableau', 'Machine Learning', 'AWS', 'HIPAA Compliance'],
+    imageAlt: 'Inventory optimization dashboard with analytics',
+    techStack: ['Python', 'ML', 'Forecasting', 'Analytics'],
     category: 'pharma',
-    featured: true,
+  },
+  'eight-pillars-framework': {
+    slug: 'eight-pillars-framework',
+    title: 'Eight Pillars AI Framework',
+    description:
+      'Comprehensive framework for evaluating and implementing AI agents in enterprise settings, covering LLM selection to monitoring and telemetry.',
+    fullDescription: `A comprehensive framework developed to guide enterprises through the implementation of AI agents in production environments.
+
+The Eight Pillars cover:
+
+- **LLM Selection**: Criteria and methodology for selecting the right large language model based on use case requirements.
+
+- **Architecture Design**: Patterns for building scalable and maintainable AI agent architectures.
+
+- **Safety & Alignment**: Guardrails, content filtering, and alignment techniques for safe AI deployment.
+
+- **Integration Patterns**: Best practices for integrating AI agents with existing enterprise systems.
+
+- **Evaluation & Testing**: Frameworks for evaluating AI agent performance and reliability.
+
+- **Monitoring & Telemetry**: Observability patterns for production AI systems.
+
+- **Cost Optimization**: Strategies for managing inference costs at scale.
+
+- **Governance & Compliance**: Policy frameworks for responsible AI deployment.
+
+The framework has been applied across multiple enterprise implementations and continues to evolve based on real-world learnings.`,
+    image: '/images/projects/ai-agents-placeholder.svg',
+    imageAlt: 'Eight Pillars AI Framework diagram',
+    techStack: ['AI Architecture', 'Framework', 'Research'],
+    category: 'research',
+  },
+  'react-component-library': {
+    slug: 'react-component-library',
+    title: 'React Component Library',
+    description:
+      'Reusable React component library with TypeScript, Storybook documentation, and comprehensive test coverage for enterprise applications.',
+    fullDescription: `A production-ready React component library designed for enterprise applications with a focus on accessibility and developer experience.
+
+Library features:
+
+- **TypeScript First**: Full TypeScript support with comprehensive type definitions and IntelliSense.
+
+- **Accessibility**: WCAG 2.1 AA compliant components with proper ARIA attributes and keyboard navigation.
+
+- **Storybook Documentation**: Interactive documentation with usage examples, prop tables, and design guidelines.
+
+- **Comprehensive Testing**: Unit tests, integration tests, and visual regression tests for all components.
+
+- **Theming System**: Flexible theming with CSS custom properties and design token support.
+
+- **Tree Shaking**: Optimized bundle size with proper ESM exports and tree-shaking support.
+
+The library is used across multiple internal applications and has significantly improved development velocity and UI consistency.`,
+    image: '/images/projects/website-placeholder.svg',
+    imageAlt: 'React component library showcase',
+    techStack: ['React', 'TypeScript', 'Storybook', 'Testing'],
+    category: 'coding',
+  },
+  'api-integration-platform': {
+    slug: 'api-integration-platform',
+    title: 'API Integration Platform',
+    description:
+      'Microservices-based platform for integrating pharmaceutical ERP systems with external partners, handling 100K+ transactions daily.',
+    fullDescription: `A high-performance API integration platform connecting pharmaceutical ERP systems with trading partners and external services.
+
+Platform capabilities:
+
+- **High Throughput**: Handles 100,000+ transactions daily with sub-100ms response times.
+
+- **Multi-Protocol Support**: REST, GraphQL, and SOAP endpoints for diverse partner integration needs.
+
+- **Message Transformation**: Flexible data mapping and transformation for different message formats.
+
+- **Error Handling**: Comprehensive error handling with automatic retries, dead letter queues, and alerting.
+
+- **Security**: OAuth 2.0, API key management, rate limiting, and encryption at rest and in transit.
+
+- **Observability**: Distributed tracing, metrics collection, and centralized logging for operational visibility.
+
+The platform runs on Kubernetes with auto-scaling to handle peak loads and maintains 99.95% uptime SLA.`,
+    image: '/images/projects/website-placeholder.svg',
+    imageAlt: 'API integration platform architecture diagram',
+    techStack: ['Node.js', 'REST', 'GraphQL', 'Docker'],
+    category: 'coding',
+  },
+  'clinical-trial-analytics': {
+    slug: 'clinical-trial-analytics',
+    title: 'Clinical Trial Analytics Dashboard',
+    description:
+      'Real-time analytics dashboard for clinical trial data, providing insights into patient enrollment, site performance, and study progress.',
+    fullDescription: `A comprehensive analytics dashboard providing real-time visibility into clinical trial operations and performance.
+
+Dashboard features:
+
+- **Enrollment Tracking**: Real-time patient enrollment metrics with forecasting and site comparison views.
+
+- **Site Performance**: Key performance indicators for clinical sites including screening rates, dropout rates, and protocol deviations.
+
+- **Study Timeline**: Visual timeline tracking with milestone completion and critical path analysis.
+
+- **Data Quality**: Automated data quality checks with query management and resolution tracking.
+
+- **Risk Indicators**: Early warning system for enrollment risks, data quality issues, and operational bottlenecks.
+
+- **Export & Reporting**: Scheduled reports and ad-hoc data exports for stakeholder communications.
+
+The dashboard integrates with multiple EDC systems and provides role-based access for different stakeholder groups.`,
+    image: '/images/projects/healthcare-placeholder.svg',
+    imageAlt: 'Clinical trial analytics dashboard interface',
+    techStack: ['React', 'D3.js', 'Python', 'Healthcare'],
+    category: 'pharma',
   },
 }
 
@@ -194,7 +355,7 @@ function ArrowLeftIcon({ className = 'w-5 h-5' }: { className?: string }) {
 }
 
 interface ProjectPageProps {
-  params: Promise<{ slug: string }>
+  params: { slug: string }
 }
 
 /**
@@ -213,8 +374,7 @@ interface ProjectPageProps {
  * - Respects reduced motion preferences
  */
 export default function ProjectDetailPage({ params }: ProjectPageProps) {
-  // Await the params promise (Next.js 15+ pattern)
-  const { slug } = use(params)
+  const { slug } = params
 
   const project = projectsData[slug]
 

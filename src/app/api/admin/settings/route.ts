@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import prisma from '@/lib/prisma'
+import { Prisma } from '@prisma/client'
 
 /**
  * Site Settings API
@@ -111,7 +112,7 @@ export async function PUT(request: NextRequest) {
     }
 
     // Validate and update each setting
-    const updates: { key: string; value: unknown }[] = []
+    const updates: { key: string; value: Prisma.InputJsonValue }[] = []
 
     // Validate siteTitle
     if (body.siteTitle !== undefined) {
