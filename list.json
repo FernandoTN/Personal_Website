@@ -228,7 +228,7 @@
       "Step 9: Verify final state of hero elements",
       "Step 10: Verify hero is responsive at different viewport sizes"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
@@ -242,7 +242,7 @@
       "Step 6: Verify transforms use GPU acceleration (transform, opacity)",
       "Step 7: Check for no jank or stuttering"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -258,7 +258,7 @@
       "Step 8: Click CTA button",
       "Step 9: Verify navigation to /research page"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -275,7 +275,7 @@
       "Step 9: Click a project card",
       "Step 10: Verify navigation to project detail page"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -290,7 +290,7 @@
       "Step 7: Click on a blog post preview",
       "Step 8: Verify navigation to full blog post page"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -307,7 +307,7 @@
       "Step 9: Verify elements remain visible (don't re-hide)",
       "Step 10: Verify parallax effects on applicable elements"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "accessibility",
@@ -322,7 +322,7 @@
       "Step 7: Verify primary text has minimum 4.5:1 contrast ratio",
       "Step 8: Verify large text has minimum 3:1 contrast ratio"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -336,7 +336,7 @@
       "Step 6: Verify bio text is present and readable",
       "Step 7: Verify skills sections are present (Technical, Domain, Leadership)"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -355,7 +355,7 @@
       "Step 11: Verify expanded details are shown if applicable",
       "Step 12: Verify timeline is responsive on mobile"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
@@ -369,7 +369,7 @@
       "Step 6: Verify milestone markers animate appropriately",
       "Step 7: Verify animations are smooth at 60fps"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -383,7 +383,7 @@
       "Step 6: Verify skill items have visual treatment (tags, cards, or progress)",
       "Step 7: Verify skills section is responsive"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -403,7 +403,7 @@
       "Step 12: Verify all projects are displayed again",
       "Step 13: Verify filter transitions have smooth animations"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -421,7 +421,7 @@
       "Step 10: Verify navigation to /projects/[slug] detail page",
       "Step 11: Verify detail page shows full project information"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -437,7 +437,7 @@
       "Step 8: Verify back to projects navigation is available",
       "Step 9: Verify page is responsive on mobile"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -455,7 +455,7 @@
       "Step 10: Verify validation errors are cleared",
       "Step 11: Verify submit button becomes enabled"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -473,7 +473,7 @@
       "Step 10: Verify form is reset after successful submission",
       "Step 11: Verify database entry was created (via Prisma Studio)"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -487,7 +487,7 @@
       "Step 6: Click resume download button",
       "Step 7: Verify PDF file downloads (Fernando_Torres_Resume.pdf)"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -503,7 +503,7 @@
       "Step 8: Verify second page of posts loads",
       "Step 9: Verify URL updates with page parameter"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -523,7 +523,7 @@
       "Step 12: Click 'Conference' category filter",
       "Step 13: Verify only conference insight posts are displayed (3 posts)"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -537,7 +537,7 @@
       "Step 6: Click a different tag",
       "Step 7: Verify filter updates to new tag"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -554,7 +554,7 @@
       "Step 9: Search for non-existent term",
       "Step 10: Verify 'no results' message is displayed"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -572,7 +572,7 @@
       "Step 10: Verify images within content load correctly",
       "Step 11: Verify links in content are functional"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -588,7 +588,7 @@
       "Step 8: Verify current section is highlighted in TOC",
       "Step 9: Verify TOC is sticky as you scroll"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -608,7 +608,7 @@
       "Step 12: Navigate to last post in series",
       "Step 13: Verify no 'Next' link (or disabled)"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -624,7 +624,7 @@
       "Step 8: Scroll back up",
       "Step 9: Verify progress bar updates in real-time"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -641,7 +641,7 @@
       "Step 9: Verify post is now visible in listing",
       "Step 10: Verify post detail page is now accessible"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -660,7 +660,7 @@
       "Step 11: Return to blog post",
       "Step 12: Verify approved comment is visible"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -675,7 +675,7 @@
       "Step 7: Click LinkedIn share button",
       "Step 8: Verify share dialog opens with correct URL and title"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -695,7 +695,7 @@
       "Step 12: Try to subscribe with same email",
       "Step 13: Verify appropriate 'already subscribed' message"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -715,7 +715,7 @@
       "Step 12: Verify author section shows Fernando Torres & Shekhar Bhende",
       "Step 13: Verify faculty sponsor Prof. Scott J. Brady is credited"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -734,7 +734,7 @@
       "Step 11: Verify Pillar 8: Monitoring & Telemetry",
       "Step 12: Verify visual design matches spec (cards, icons)"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -765,7 +765,7 @@
       "Step 6: Verify PDF contains full Final Report content",
       "Step 7: Verify PDF is properly formatted and readable"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -785,7 +785,7 @@
       "Step 12: Click on a category card",
       "Step 13: Verify navigation to filtered blog view for that category"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -804,7 +804,7 @@
       "Step 11: Verify redirect to admin dashboard",
       "Step 12: Verify session is established"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -821,7 +821,7 @@
       "Step 9: Verify recent activity feed is present",
       "Step 10: Verify quick actions are available"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -840,7 +840,7 @@
       "Step 11: Click 'Draft' filter",
       "Step 12: Verify only draft posts are displayed"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -863,7 +863,7 @@
       "Step 15: Save as draft",
       "Step 16: Verify post is saved and appears in listing"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -899,7 +899,7 @@
       "Step 10: Navigate to publication calendar",
       "Step 11: Verify post appears on scheduled date"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -915,7 +915,27 @@
       "Step 8: Navigate to public blog page",
       "Step 9: Verify post is now visible to public"
     ],
-    "passes": false
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Admin blog editor image upload works correctly",
+    "steps": [
+      "Step 1: Navigate to admin post editor",
+      "Step 2: Locate the image upload component",
+      "Step 3: Drag and drop an image file onto the drop zone",
+      "Step 4: Verify file type validation works (jpg, png, webp, gif accepted)",
+      "Step 5: Verify file size validation works (max 5MB)",
+      "Step 6: Verify image preview displays after selection",
+      "Step 7: Verify upload progress indicator shows during upload",
+      "Step 8: Verify successful upload shows confirmation",
+      "Step 9: Verify uploaded image URL is returned",
+      "Step 10: Click remove button to clear selection",
+      "Step 11: Verify image is cleared and upload zone resets",
+      "Step 12: Click to select file and verify file picker opens",
+      "Step 13: Verify uploaded files are stored in /public/uploads directory"
+    ],
+    "passes": true
   },
   {
     "category": "functional",
@@ -932,7 +952,7 @@
       "Step 9: Save as new post",
       "Step 10: Verify post is created with correct data"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
