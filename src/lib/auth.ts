@@ -70,7 +70,12 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: 'jwt',
-    maxAge: 24 * 60 * 60, // 24 hours
+    // Session expires after 24 hours of inactivity
+    // OWASP Reference: A07:2021 - Identification and Authentication Failures
+    // Session timeout helps mitigate session hijacking and unauthorized access
+    maxAge: 24 * 60 * 60, // 24 hours in seconds
+    // Update session expiry on each request to extend for active users
+    updateAge: 60 * 60, // Update session every 1 hour if active
   },
   secret: process.env.NEXTAUTH_SECRET,
 }

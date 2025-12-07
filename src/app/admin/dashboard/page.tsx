@@ -339,10 +339,12 @@ export default function AdminDashboardPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
 
-  // Redirect to login if not authenticated
+  // Redirect to login if not authenticated (session expired or not logged in)
   useEffect(() => {
     if (status === 'unauthenticated') {
-      router.push('/admin/login')
+      // Add expired=true parameter to show session expired message
+      // This covers cases where session has expired while on the page
+      router.push('/admin/login?expired=true')
     }
   }, [status, router])
 

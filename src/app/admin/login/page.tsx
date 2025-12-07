@@ -42,11 +42,19 @@ export default function AdminLoginPage() {
     }
   }, [status, router])
 
-  // Check for error from NextAuth callback
+  // Check for error from NextAuth callback or session expiration
   useEffect(() => {
     const error = searchParams.get('error')
+    const expired = searchParams.get('expired')
+
     if (error === 'CredentialsSignin') {
       setErrors({ general: 'Invalid email or password. Please try again.' })
+    } else if (error === 'SessionRequired') {
+      // Session was required but user is not authenticated
+      setErrors({ general: 'Your session has expired. Please sign in again.' })
+    } else if (expired === 'true') {
+      // Explicit session expiration redirect
+      setErrors({ general: 'Your session has expired. Please sign in again.' })
     }
   }, [searchParams])
 

@@ -1473,7 +1473,7 @@
       "Step 7: Navigate to a blog post with images",
       "Step 8: Verify in-content images are optimized"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "integration",
@@ -1731,7 +1731,7 @@
       "Step 7: Re-login with valid credentials",
       "Step 8: Verify session is re-established"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1751,6 +1751,6 @@
       "Step 12: Return to admin and delete the event",
       "Step 13: Verify event is removed"
     ],
-    "passes": false
+    "passes": true
   }
 ]
