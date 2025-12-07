@@ -1414,7 +1414,7 @@
       "Step 8: Verify series navigation is usable",
       "Step 9: Verify comments section is responsive"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "performance",
@@ -1490,7 +1490,7 @@
       "Step 9: Filter by tag ?tag=ai-agents",
       "Step 10: Verify only tagged posts returned"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "integration",
@@ -1506,7 +1506,7 @@
       "Step 8: Make POST with invalid email",
       "Step 9: Verify email validation error"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "integration",
