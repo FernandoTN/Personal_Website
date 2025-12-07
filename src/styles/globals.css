@@ -1,0 +1,220 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom font imports */
+@layer base {
+  :root {
+    /* Light mode CSS variables */
+    --background: 255 255 255;
+    --foreground: 15 26 42;
+    --card: 244 249 255;
+    --card-foreground: 15 26 42;
+    --primary: 59 130 246;
+    --primary-foreground: 255 255 255;
+    --secondary: 6 182 212;
+    --secondary-foreground: 255 255 255;
+    --muted: 233 239 245;
+    --muted-foreground: 141 161 181;
+    --accent: 59 130 246;
+    --accent-foreground: 255 255 255;
+    --border: 220 227 236;
+    --ring: 59 130 246;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    /* Dark mode CSS variables */
+    --background: 10 15 22;
+    --foreground: 242 246 255;
+    --card: 15 23 36;
+    --card-foreground: 242 246 255;
+    --primary: 59 130 246;
+    --primary-foreground: 255 255 255;
+    --secondary: 56 189 248;
+    --secondary-foreground: 15 26 42;
+    --muted: 27 36 51;
+    --muted-foreground: 138 150 170;
+    --accent: 59 130 246;
+    --accent-foreground: 255 255 255;
+    --border: 35 48 68;
+    --ring: 59 130 246;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border-light dark:border-border-dark;
+  }
+
+  body {
+    @apply bg-light-base text-text-primary dark:bg-dark-base dark:text-text-dark-primary;
+    @apply antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Focus styles */
+  :focus-visible {
+    @apply outline-none ring-2 ring-accent-primary ring-offset-2 ring-offset-light-base dark:ring-offset-dark-base;
+  }
+
+  /* Selection styles */
+  ::selection {
+    @apply bg-accent-primary/20 text-text-primary dark:text-text-dark-primary;
+  }
+}
+
+@layer components {
+  /* Container */
+  .container-narrow {
+    @apply mx-auto max-w-4xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .container-wide {
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Card styles */
+  .card {
+    @apply rounded-lg border border-border-light bg-light-base p-6 shadow-light;
+    @apply dark:border-border-dark dark:bg-dark-panel dark:shadow-none;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+    @apply dark:hover:shadow-glow;
+  }
+
+  /* Button base styles */
+  .btn {
+    @apply inline-flex items-center justify-center rounded-md font-medium transition-colors;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2;
+    @apply disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  .btn-primary {
+    @apply btn bg-accent-primary text-white hover:bg-accent-primary/90;
+  }
+
+  .btn-secondary {
+    @apply btn bg-light-neutral-grey text-text-primary hover:bg-light-neutral-grey/80;
+    @apply dark:bg-dark-panel dark:text-text-dark-primary dark:hover:bg-dark-deep-blue;
+  }
+
+  .btn-outline {
+    @apply btn border border-border-light bg-transparent text-text-primary;
+    @apply hover:bg-light-icy-blue;
+    @apply dark:border-border-dark dark:text-text-dark-primary dark:hover:bg-dark-panel;
+  }
+
+  /* Link styles */
+  .link {
+    @apply text-accent-primary underline-offset-4 hover:underline;
+  }
+
+  /* Input styles */
+  .input {
+    @apply flex w-full rounded-md border border-border-light bg-light-base px-3 py-2;
+    @apply text-text-primary placeholder:text-text-muted;
+    @apply focus:border-accent-primary focus:outline-none focus:ring-1 focus:ring-accent-primary;
+    @apply dark:border-border-dark dark:bg-dark-panel dark:text-text-dark-primary dark:placeholder:text-text-dark-muted;
+  }
+
+  /* Prose/MDX styles */
+  .prose-custom {
+    @apply prose prose-lg max-w-none;
+    @apply prose-headings:font-heading prose-headings:text-text-primary dark:prose-headings:text-text-dark-primary;
+    @apply prose-p:text-text-secondary dark:prose-p:text-text-dark-secondary;
+    @apply prose-a:text-accent-primary prose-a:no-underline hover:prose-a:underline;
+    @apply prose-strong:text-text-primary dark:prose-strong:text-text-dark-primary;
+    @apply prose-code:rounded prose-code:bg-light-neutral-grey prose-code:px-1.5 prose-code:py-0.5;
+    @apply dark:prose-code:bg-dark-panel;
+    @apply prose-pre:bg-dark-base prose-pre:text-text-dark-primary;
+    @apply prose-blockquote:border-accent-primary prose-blockquote:text-text-secondary;
+    @apply dark:prose-blockquote:text-text-dark-secondary;
+  }
+
+  /* Badge styles */
+  .badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+  }
+
+  .badge-primary {
+    @apply badge bg-accent-primary/10 text-accent-primary;
+  }
+
+  .badge-pharma {
+    @apply badge bg-category-pharma/10 text-category-pharma;
+  }
+
+  .badge-coding {
+    @apply badge bg-category-coding/10 text-category-coding;
+  }
+
+  .badge-research {
+    @apply badge bg-category-research/10 text-category-research;
+  }
+}
+
+@layer utilities {
+  /* Text gradient */
+  .text-gradient {
+    @apply bg-gradient-to-r from-accent-primary to-accent-secondary bg-clip-text text-transparent;
+  }
+
+  /* Background gradient */
+  .bg-gradient-radial {
+    background: radial-gradient(ellipse at center, var(--tw-gradient-from), var(--tw-gradient-to));
+  }
+
+  /* Scrollbar styles */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: theme('colors.border.light') transparent;
+  }
+
+  .dark .scrollbar-thin {
+    scrollbar-color: theme('colors.border.dark') transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply bg-border-light rounded-full dark:bg-border-dark;
+  }
+
+  /* Animation utilities */
+  .animate-in {
+    animation: fadeInUp 0.5s ease-out forwards;
+    opacity: 0;
+  }
+
+  /* Glassmorphism */
+  .glass {
+    @apply bg-light-base/80 backdrop-blur-md dark:bg-dark-base/80;
+  }
+}

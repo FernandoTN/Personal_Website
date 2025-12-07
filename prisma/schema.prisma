@@ -1,0 +1,276 @@
+// Prisma Schema for Fernando Torres Personal Website
+// Database: PostgreSQL
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Admin User (single admin)
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  name         String?
+  createdAt    DateTime @default(now()) @map("created_at")
+  lastLogin    DateTime? @map("last_login")
+
+  @@map("admin_users")
+}
+
+// Blog Series
+model Series {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String?
+  coverImage  String?  @map("cover_image")
+  color       String?
+  postCount   Int      @default(0) @map("post_count")
+  isFeatured  Boolean  @default(false) @map("is_featured")
+  startDate   DateTime? @map("start_date")
+  endDate     DateTime? @map("end_date")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  posts       Post[]
+
+  @@map("series")
+}
+
+// Blog Posts
+model Post {
+  id                String       @id @default(cuid())
+  slug              String       @unique
+  title             String
+  excerpt           String?
+  content           String       @db.Text
+  featuredImage     String?      @map("featured_image")
+  ogImage           String?      @map("og_image")
+  status            PostStatus   @default(DRAFT)
+  publishedAt       DateTime?    @map("published_at")
+  scheduledFor      DateTime?    @map("scheduled_for")
+  seriesId          String?      @map("series_id")
+  seriesOrder       Int?         @map("series_order")
+  category          PostCategory?
+  author            String       @default("Fernando Torres")
+  metaTitle         String?      @map("meta_title")
+  metaDescription   String?      @map("meta_description")
+  viewCount         Int          @default(0) @map("view_count")
+  readingTimeMinutes Int?        @map("reading_time_minutes")
+  createdAt         DateTime     @default(now()) @map("created_at")
+  updatedAt         DateTime     @updatedAt @map("updated_at")
+
+  series            Series?      @relation(fields: [seriesId], references: [id])
+  tags              PostTag[]
+  comments          Comment[]
+  linkedinPost      LinkedInPost?
+
+  @@map("posts")
+}
+
+// Post Status
+enum PostStatus {
+  DRAFT
+  SCHEDULED
+  PUBLISHED
+}
+
+// Post Category (for AI Agents series)
+enum PostCategory {
+  ANCHOR
+  THEME
+  EMERGENT
+  PRACTITIONER
+  PROTOTYPE
+  CONFERENCE
+  METHODOLOGY
+}
+
+// Tags
+model Tag {
+  id        String    @id @default(cuid())
+  slug      String    @unique
+  name      String
+  postCount Int       @default(0) @map("post_count")
+
+  posts     PostTag[]
+
+  @@map("tags")
+}
+
+// Post-Tag relationship
+model PostTag {
+  postId    String @map("post_id")
+  tagId     String @map("tag_id")
+
+  post      Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  tag       Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([postId, tagId])
+  @@map("post_tags")
+}
+
+// LinkedIn Posts
+model LinkedInPost {
+  id               String           @id @default(cuid())
+  postId           String           @unique @map("post_id")
+  content          String           @db.Text
+  hashtags         Json?
+  scheduledDate    DateTime?        @map("scheduled_date")
+  scheduledTime    String?          @map("scheduled_time")
+  imageFile        String?          @map("image_file")
+  status           LinkedInStatus   @default(PENDING)
+  manuallyScheduled Boolean         @default(false) @map("manually_scheduled")
+  linkedinPostUrl  String?          @map("linkedin_post_url")
+  postedAt         DateTime?        @map("posted_at")
+  createdAt        DateTime         @default(now()) @map("created_at")
+  updatedAt        DateTime         @updatedAt @map("updated_at")
+
+  post             Post             @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@map("linkedin_posts")
+}
+
+enum LinkedInStatus {
+  PENDING
+  MANUALLY_SCHEDULED
+  POSTED
+}
+
+// Projects
+model Project {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  title        String
+  description  String?
+  content      String?  @db.Text
+  featuredImage String?  @map("featured_image")
+  gallery      Json?
+  category     String?
+  techStack    Json?    @map("tech_stack")
+  liveUrl      String?  @map("live_url")
+  repoUrl      String?  @map("repo_url")
+  isFeatured   Boolean  @default(false) @map("is_featured")
+  displayOrder Int      @default(0) @map("display_order")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("projects")
+}
+
+// Project Categories
+model Category {
+  id          String  @id @default(cuid())
+  slug        String  @unique
+  name        String
+  description String?
+  color       String?
+  icon        String?
+
+  @@map("categories")
+}
+
+// Comments
+model Comment {
+  id          String        @id @default(cuid())
+  postId      String        @map("post_id")
+  parentId    String?       @map("parent_id")
+  authorName  String        @map("author_name")
+  authorEmail String        @map("author_email")
+  content     String        @db.Text
+  status      CommentStatus @default(PENDING)
+  createdAt   DateTime      @default(now()) @map("created_at")
+
+  post        Post          @relation(fields: [postId], references: [id], onDelete: Cascade)
+  parent      Comment?      @relation("CommentReplies", fields: [parentId], references: [id])
+  replies     Comment[]     @relation("CommentReplies")
+
+  @@map("comments")
+}
+
+enum CommentStatus {
+  PENDING
+  APPROVED
+  SPAM
+}
+
+// Newsletter Subscribers
+model Subscriber {
+  id             String           @id @default(cuid())
+  email          String           @unique
+  name           String?
+  status         SubscriberStatus @default(ACTIVE)
+  subscribedAt   DateTime         @default(now()) @map("subscribed_at")
+  unsubscribedAt DateTime?        @map("unsubscribed_at")
+  source         String?
+
+  @@map("subscribers")
+}
+
+enum SubscriberStatus {
+  ACTIVE
+  UNSUBSCRIBED
+}
+
+// Contact Form Submissions
+model ContactSubmission {
+  id        String                  @id @default(cuid())
+  name      String
+  email     String
+  subject   String?
+  message   String                  @db.Text
+  status    ContactSubmissionStatus @default(NEW)
+  createdAt DateTime                @default(now()) @map("created_at")
+
+  @@map("contact_submissions")
+}
+
+enum ContactSubmissionStatus {
+  NEW
+  READ
+  REPLIED
+}
+
+// Page Views (Analytics)
+model PageView {
+  id        String   @id @default(cuid())
+  path      String
+  referrer  String?
+  userAgent String?  @map("user_agent")
+  country   String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([path])
+  @@index([createdAt])
+  @@map("page_views")
+}
+
+// Timeline Events (Career/Education)
+model TimelineEvent {
+  id           String   @id @default(cuid())
+  title        String
+  description  String?  @db.Text
+  date         DateTime
+  endDate      DateTime? @map("end_date")
+  type         String   // education, work, achievement
+  company      String?
+  location     String?
+  icon         String?
+  color        String?
+  displayOrder Int      @default(0) @map("display_order")
+
+  @@map("timeline_events")
+}
+
+// Site Settings
+model SiteSetting {
+  key       String   @id
+  value     Json
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("site_settings")
+}

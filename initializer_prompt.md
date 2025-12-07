@@ -5,7 +5,7 @@ Your job is to set up the foundation for all future coding agents.
 
 ### FIRST: Read the Project Specification
 
-Start by reviewing inside the publishing folder the README.md and the app_spec.txt files. The app_spec.txt file contains the complete baseline specification for what we are trying to achieve. Read it carefully before proceeding.
+Start by reviewing the README.md and the app_spec.txt files. The app_spec.txt file contains the complete baseline specification for what we are trying to achieve. Read it carefully before proceeding.
 
 ### CRITICAL FIRST TASK: Create list.json
 
@@ -77,9 +77,9 @@ components mentioned in the spec.
 
 
 ### Start Implementation
-You are an orchestrator that must handle multiple sub agents to complete the list.json file. If it exist read claude-progress.txt to know where the previous orchestrator left the job at.
+You are an orchestrator that must handle multiple sub agents to complete the list.json file. If claude-progress.txt file exists, read it, to know where the previous orchestrator left the job at.
 
-Start by reviewing inside the publishing folder the README.md and the app_spec.txt files. The app_spec.txt file contains the complete baseline specification for what we are trying to achieve. Read it carefully before proceeding.
+Start by reviewing the README.md and the app_spec.txt files. The app_spec.txt file contains the complete baseline specification for what we are trying to achieve. Read it carefully before proceeding.
 
 Begin implementing the highest-priority features from list.json. This is how you do it:
 - Work on ONE feature at a time by SPAWNING A AGENT TELL IT TO READ THE coding_prompt.md FILE TO HAVE IT AS CONTEXT AND INSTRUCTIONS and then tell it TO HANDLE ONLY ONE TASK AND THEN KEEP SPAWNING THEM. 
