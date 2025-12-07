@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter, JetBrains_Mono, Plus_Jakarta_Sans } from 'next/font/google'
 import '@/styles/globals.css'
+import { Navigation, Footer } from '@/components/ui'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -116,8 +117,12 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-screen font-sans antialiased">
-        {children}
+      <body className="min-h-screen font-sans antialiased flex flex-col">
+        <Navigation />
+        <main className="pt-16 flex-1">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   )
