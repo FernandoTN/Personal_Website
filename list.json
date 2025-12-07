@@ -1600,7 +1600,7 @@
       "Step 5: Verify email sender is from EMAIL_FROM address",
       "Step 6: Verify email formatting is correct"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1613,7 +1613,7 @@
       "Step 5: Verify unsubscribe link is present",
       "Step 6: Verify email formatting and branding"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",

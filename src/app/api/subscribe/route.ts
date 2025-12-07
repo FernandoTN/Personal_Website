@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
+import { sendWelcomeEmail } from '@/lib/email'
 
 // Email validation regex pattern
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
@@ -107,6 +108,11 @@ export async function POST(request: NextRequest) {
         },
       })
 
+      // Send welcome email for reactivation (non-blocking)
+      sendWelcomeEmail({ to: email }).catch((err) => {
+        console.error('Failed to send welcome email:', err)
+      })
+
       return NextResponse.json(
         {
           success: true,
@@ -124,6 +130,11 @@ export async function POST(request: NextRequest) {
         source: formData.source || null,
         status: 'ACTIVE',
       },
+    })
+
+    // Send welcome email (non-blocking, don't fail subscription if email fails)
+    sendWelcomeEmail({ to: email }).catch((err) => {
+      console.error('Failed to send welcome email:', err)
     })
 
     // Return success response

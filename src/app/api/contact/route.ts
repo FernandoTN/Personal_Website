@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
+import { sendContactNotification } from '@/lib/email'
 
 // Email validation regex pattern
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
@@ -99,6 +100,17 @@ export async function POST(request: NextRequest) {
         subject: formData.subject?.trim() || null,
         message: formData.message.trim(),
       },
+    })
+
+    // Send email notification (non-blocking, don't fail the request if email fails)
+    sendContactNotification({
+      name: formData.name.trim(),
+      email: formData.email.trim().toLowerCase(),
+      subject: formData.subject?.trim() || null,
+      message: formData.message.trim(),
+      timestamp: submission.createdAt,
+    }).catch((error) => {
+      console.error('Failed to send contact notification email:', error)
     })
 
     // Return success response
