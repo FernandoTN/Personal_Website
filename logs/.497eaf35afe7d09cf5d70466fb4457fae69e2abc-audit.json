@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "/Users/fernandotn/Projects/PersonalWebsite/logs/.497eaf35afe7d09cf5d70466fb4457fae69e2abc-audit.json",
+    "files": [
+        {
+            "date": 1765068983781,
+            "name": "/Users/fernandotn/Projects/PersonalWebsite/logs/mcp-puppeteer-2025-12-06.log",
+            "hash": "71945c463c56acb1553d70157b8b9fd54cc5036605a416b7f08ef47d452dbf71"
+        }
+    ],
+    "hashType": "sha256"
+}
