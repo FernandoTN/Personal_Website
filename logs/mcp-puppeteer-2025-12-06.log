@@ -368,3 +368,5 @@
 {"level":"debug","message":"Executing script in browser","scriptLength":23,"service":"mcp-puppeteer","timestamp":"2025-12-06 21:13:36.286"}
 {"hasResult":false,"level":"debug","logCount":0,"message":"Script execution result","resultType":"undefined","service":"mcp-puppeteer","timestamp":"2025-12-06 21:13:36.287"}
 {"arguments":{"height":800,"name":"settings-save-button"},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-12-06 21:13:41.317","tool":"puppeteer_screenshot"}
+{"level":"info","message":"Starting MCP server","service":"mcp-puppeteer","timestamp":"2025-12-06 21:50:55.177"}
+{"level":"info","message":"MCP server started successfully","service":"mcp-puppeteer","timestamp":"2025-12-06 21:50:55.178"}
