@@ -1521,7 +1521,7 @@
       "Step 7: Make POST with invalid email",
       "Step 8: Verify validation error"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "integration",
@@ -1536,7 +1536,7 @@
       "Step 7: Verify 200 response with data",
       "Step 8: Verify admin-only data is returned"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1626,7 +1626,7 @@
       "Step 5: Verify navigation back to home is available",
       "Step 6: Verify search bar or suggestions are present"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
