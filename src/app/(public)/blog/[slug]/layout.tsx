@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import prisma from '@/lib/prisma'
+import { ArticleJsonLd } from '@/components/seo'
 
 interface BlogPostLayoutProps {
   children: React.ReactNode
@@ -102,6 +103,55 @@ export async function generateMetadata({
   }
 }
 
-export default async function BlogPostLayout({ children }: BlogPostLayoutProps) {
-  return <>{children}</>
+export default async function BlogPostLayout({ children, params }: BlogPostLayoutProps) {
+  const { slug } = await params
+
+  // Fetch post data for JSON-LD
+  let articleJsonLd = null
+  try {
+    const post = await prisma.post.findFirst({
+      where: {
+        OR: [{ slug }, { id: slug }],
+        status: 'PUBLISHED',
+      },
+      select: {
+        title: true,
+        excerpt: true,
+        featuredImage: true,
+        publishedAt: true,
+        updatedAt: true,
+        author: true,
+      },
+    })
+
+    if (post && post.publishedAt) {
+      articleJsonLd = (
+        <ArticleJsonLd
+          headline={post.title}
+          description={post.excerpt || `Read "${post.title}" by ${post.author || 'Fernando Torres'}`}
+          author={{
+            name: post.author || 'Fernando Torres',
+            url: 'https://fernandotorres.io',
+          }}
+          datePublished={post.publishedAt.toISOString()}
+          dateModified={post.updatedAt?.toISOString()}
+          image={post.featuredImage || 'https://fernandotorres.io/og-image.svg'}
+          url={`https://fernandotorres.io/blog/${slug}`}
+          publisher={{
+            name: 'Fernando Torres',
+            logo: 'https://fernandotorres.io/og-image.svg',
+          }}
+        />
+      )
+    }
+  } catch (error) {
+    console.error('Failed to fetch post for JSON-LD:', error)
+  }
+
+  return (
+    <>
+      {articleJsonLd}
+      {children}
+    </>
+  )
 }

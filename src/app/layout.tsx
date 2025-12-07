@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter, JetBrains_Mono, Plus_Jakarta_Sans } from 'next/font/google'
 import '@/styles/globals.css'
 import { Navigation, Footer } from '@/components/ui'
+import { PersonJsonLd, WebSiteJsonLd } from '@/components/seo'
 import prisma from '@/lib/prisma'
 
 const inter = Inter({
@@ -150,6 +151,31 @@ export default function RootLayout({
                 document.documentElement.classList.toggle('dark', theme === 'dark');
               })();
             `,
+          }}
+        />
+        {/* JSON-LD Structured Data for SEO */}
+        <PersonJsonLd
+          name="Fernando Torres"
+          url="https://fernandotorres.io"
+          image="https://fernandotorres.io/og-image.svg"
+          jobTitle="MSx '26"
+          worksFor={{
+            name: "Stanford Graduate School of Business",
+            url: "https://www.gsb.stanford.edu"
+          }}
+          sameAs={[
+            "https://github.com/FernandoTN",
+            "https://www.linkedin.com/in/fernandotn/"
+          ]}
+          description="Exploring AI agents, pharmaceutical innovation, and digital transformation at Stanford GSB."
+        />
+        <WebSiteJsonLd
+          name="Fernando Torres"
+          url="https://fernandotorres.io"
+          description="Personal portfolio and blog of Fernando Torres, MSx '26 at Stanford GSB. Exploring AI agents, pharmaceutical innovation, and digital transformation."
+          author={{
+            name: "Fernando Torres",
+            url: "https://fernandotorres.io"
           }}
         />
       </head>

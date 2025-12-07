@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <defs>
+    <linearGradient id="bg3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#042f2e"/>
+      <stop offset="100%" style="stop-color:#134e4a"/>
+    </linearGradient>
+    <linearGradient id="accent3" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#10B981"/>
+      <stop offset="100%" style="stop-color:#34D399"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg3)"/>
+  <path d="M 400 120 L 400 200 L 450 200 L 450 250 L 400 250 L 400 330 L 350 330 L 350 250 L 300 250 L 300 200 L 350 200 L 350 120 Z" fill="url(#accent3)" opacity="0.3"/>
+  <rect x="200" y="280" width="40" height="80" rx="2" fill="url(#accent3)" opacity="0.6"/>
+  <rect x="260" y="240" width="40" height="120" rx="2" fill="url(#accent3)" opacity="0.7"/>
+  <rect x="320" y="200" width="40" height="160" rx="2" fill="url(#accent3)" opacity="0.8"/>
+  <rect x="380" y="260" width="40" height="100" rx="2" fill="url(#accent3)" opacity="0.7"/>
+  <rect x="440" y="220" width="40" height="140" rx="2" fill="url(#accent3)" opacity="0.8"/>
+  <rect x="500" y="180" width="40" height="180" rx="2" fill="url(#accent3)" opacity="0.9"/>
+  <rect x="560" y="250" width="40" height="110" rx="2" fill="url(#accent3)" opacity="0.7"/>
+  <line x1="200" y1="360" x2="600" y2="360" stroke="#10B981" stroke-width="2" opacity="0.5"/>
+  <polyline points="200,320 260,280 320,240 380,300 440,260 500,220 560,290" fill="none" stroke="#34D399" stroke-width="2" opacity="0.8"/>
+  <text x="400" y="430" font-family="system-ui, sans-serif" font-size="24" fill="#C1CCDD" text-anchor="middle">Healthcare Analytics</text>
+</svg>
