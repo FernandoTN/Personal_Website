@@ -70,8 +70,28 @@
     }
   }
 
-  /* Focus styles */
+  /* Focus styles - comprehensive keyboard navigation support */
   :focus-visible {
+    @apply outline-none ring-2 ring-accent-primary ring-offset-2 ring-offset-light-base dark:ring-offset-dark-base;
+  }
+
+  /* Enhanced focus for links */
+  a:focus-visible {
+    @apply rounded-sm;
+  }
+
+  /* Skip link for keyboard navigation */
+  .skip-link {
+    @apply absolute -top-10 left-4 z-[100] bg-accent-primary text-white px-4 py-2 rounded-md;
+    @apply focus:top-4 transition-all;
+  }
+
+  /* Ensure interactive elements have visible focus states */
+  button:focus-visible,
+  [role="button"]:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
     @apply outline-none ring-2 ring-accent-primary ring-offset-2 ring-offset-light-base dark:ring-offset-dark-base;
   }
 

@@ -1317,7 +1317,7 @@
       "Step 10: Verify form is fully keyboard accessible",
       "Step 11: Test escape key closes modals/menus"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "accessibility",
@@ -1335,7 +1335,7 @@
       "Step 10: Verify headings hierarchy is correct",
       "Step 11: Verify links announce their destinations"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "accessibility",
@@ -1350,7 +1350,7 @@
       "Step 7: Navigate to timeline section",
       "Step 8: Verify timeline animations respect preference"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",

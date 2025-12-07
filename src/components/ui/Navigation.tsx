@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useEffect, useCallback } from 'react'
 import { ThemeToggle } from './ThemeToggle'
 
 interface NavItem {
@@ -104,6 +105,29 @@ export function Navigation({ className = '' }: NavigationProps) {
 }
 
 /**
+ * Helper function to close the mobile menu
+ */
+function closeMobileMenu() {
+  const mobileMenu = document.getElementById('mobile-menu')
+  if (mobileMenu) {
+    mobileMenu.classList.add('max-h-0', 'opacity-0')
+    mobileMenu.classList.remove('max-h-96', 'opacity-100')
+  }
+  const button = document.getElementById('mobile-menu-button')
+  if (button) {
+    button.setAttribute('aria-expanded', 'false')
+  }
+}
+
+/**
+ * Helper function to check if mobile menu is open
+ */
+function isMobileMenuOpen(): boolean {
+  const mobileMenu = document.getElementById('mobile-menu')
+  return mobileMenu?.classList.contains('max-h-96') ?? false
+}
+
+/**
  * Mobile menu button component with hamburger icon animation
  */
 function MobileMenuButton() {
@@ -124,6 +148,24 @@ function MobileMenuButton() {
       button.setAttribute('aria-expanded', String(!isExpanded))
     }
   }
+
+  // Handle Escape key to close mobile menu
+  const handleKeyDown = useCallback((event: KeyboardEvent) => {
+    if (event.key === 'Escape' && isMobileMenuOpen()) {
+      closeMobileMenu()
+      // Return focus to the menu button
+      const button = document.getElementById('mobile-menu-button')
+      button?.focus()
+    }
+  }, [])
+
+  // Add global keyboard listener for Escape key
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [handleKeyDown])
 
   return (
     <button
@@ -202,15 +244,7 @@ function MobileMenu({ navItems, isActive }: MobileMenuProps) {
             aria-current={isActive(item.href) ? 'page' : undefined}
             onClick={() => {
               // Close menu after navigation
-              const mobileMenu = document.getElementById('mobile-menu')
-              if (mobileMenu) {
-                mobileMenu.classList.add('max-h-0', 'opacity-0')
-                mobileMenu.classList.remove('max-h-96', 'opacity-100')
-              }
-              const button = document.getElementById('mobile-menu-button')
-              if (button) {
-                button.setAttribute('aria-expanded', 'false')
-              }
+              closeMobileMenu()
             }}
           >
             {item.label}
