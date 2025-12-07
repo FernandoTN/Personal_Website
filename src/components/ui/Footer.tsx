@@ -1,7 +1,8 @@
 /**
- * Footer component with social links and copyright.
+ * Footer component with social links, newsletter signup, and copyright.
  *
  * Features:
+ * - Newsletter signup form with validation
  * - GitHub and LinkedIn social links
  * - Copyright text with current year
  * - Links open in new tab with rel="noopener noreferrer" for security
@@ -15,7 +16,10 @@
  * - Uses semantic footer element with role="contentinfo"
  * - Social links have aria-labels for screen readers
  * - External links indicated with rel="noopener noreferrer"
+ * - Newsletter form has proper ARIA attributes
  */
+
+import { NewsletterSignup } from './NewsletterSignup'
 
 interface FooterProps {
   /** Additional CSS classes */
@@ -80,6 +84,13 @@ export function Footer({ className = '' }: FooterProps) {
       role="contentinfo"
     >
       <div className="container-wide py-8">
+        {/* Newsletter signup section */}
+        <div className="mb-8 border-b border-border-light pb-8 dark:border-border-dark">
+          <div className="mx-auto max-w-md">
+            <NewsletterSignup source="footer" />
+          </div>
+        </div>
+
         <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
           {/* Copyright text */}
           <p className="text-sm text-text-secondary dark:text-text-dark-secondary">

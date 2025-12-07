@@ -162,3 +162,207 @@ export function getAbsoluteUrl(path: string): string {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://fernandotorres.io'
   return `${baseUrl}${path.startsWith('/') ? path : `/${path}`}`
 }
+
+/**
+ * MDX Frontmatter interface
+ */
+export interface MDXFrontmatter {
+  title?: string
+  summary?: string
+  excerpt?: string
+  description?: string
+  tags?: string[]
+  category?: string
+  series?: string
+  seriesOrder?: number
+  author?: string
+  date?: string
+  publishedAt?: string
+  featuredImage?: string
+  image?: string
+  ogImage?: string
+  metaTitle?: string
+  metaDescription?: string
+  slug?: string
+  draft?: boolean
+  [key: string]: unknown
+}
+
+/**
+ * Parsed MDX result interface
+ */
+export interface ParsedMDX {
+  frontmatter: MDXFrontmatter
+  content: string
+  rawFrontmatter: string
+}
+
+/**
+ * Parse MDX file content and extract frontmatter and body
+ * Supports YAML frontmatter delimited by ---
+ */
+export function parseMDX(mdxContent: string): ParsedMDX {
+  const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n/
+  const match = mdxContent.match(frontmatterRegex)
+
+  if (!match) {
+    // No frontmatter found, return content as is
+    return {
+      frontmatter: {},
+      content: mdxContent.trim(),
+      rawFrontmatter: '',
+    }
+  }
+
+  const rawFrontmatter = match[1]
+  const content = mdxContent.slice(match[0].length).trim()
+  const frontmatter = parseYAMLFrontmatter(rawFrontmatter)
+
+  return {
+    frontmatter,
+    content,
+    rawFrontmatter,
+  }
+}
+
+/**
+ * Parse simple YAML frontmatter into an object
+ * Handles basic YAML syntax: strings, numbers, booleans, arrays
+ */
+function parseYAMLFrontmatter(yaml: string): MDXFrontmatter {
+  const result: MDXFrontmatter = {}
+  const lines = yaml.split('\n')
+  let currentKey: string | null = null
+  let currentArray: string[] | null = null
+
+  for (const line of lines) {
+    // Skip empty lines
+    if (!line.trim()) continue
+
+    // Check if this is an array item (starts with -)
+    if (line.match(/^\s+-\s+/)) {
+      if (currentKey && currentArray !== null) {
+        const value = line.replace(/^\s+-\s+/, '').trim()
+        // Remove quotes if present
+        const cleanValue = value.replace(/^["']|["']$/g, '')
+        currentArray.push(cleanValue)
+      }
+      continue
+    }
+
+    // Check if this is a key-value pair
+    const keyValueMatch = line.match(/^(\w+):\s*(.*)$/)
+    if (keyValueMatch) {
+      // Save previous array if exists
+      if (currentKey && currentArray !== null) {
+        result[currentKey] = currentArray
+        currentArray = null
+      }
+
+      const key = keyValueMatch[1]
+      let value = keyValueMatch[2].trim()
+
+      // Check if value is empty (might be start of array)
+      if (!value) {
+        currentKey = key
+        currentArray = []
+        continue
+      }
+
+      // Check if value is an inline array [item1, item2]
+      if (value.startsWith('[') && value.endsWith(']')) {
+        const arrayContent = value.slice(1, -1)
+        result[key] = arrayContent
+          .split(',')
+          .map(item => item.trim().replace(/^["']|["']$/g, ''))
+          .filter(Boolean)
+        currentKey = null
+        currentArray = null
+        continue
+      }
+
+      // Remove quotes from string values
+      value = value.replace(/^["']|["']$/g, '')
+
+      // Parse boolean values
+      if (value.toLowerCase() === 'true') {
+        result[key] = true
+      } else if (value.toLowerCase() === 'false') {
+        result[key] = false
+      }
+      // Parse numbers
+      else if (!isNaN(Number(value)) && value !== '') {
+        result[key] = Number(value)
+      }
+      // Keep as string
+      else {
+        result[key] = value
+      }
+
+      currentKey = key
+      currentArray = null
+    }
+  }
+
+  // Save final array if exists
+  if (currentKey && currentArray !== null && currentArray.length > 0) {
+    result[currentKey] = currentArray
+  }
+
+  return result
+}
+
+/**
+ * Convert parsed MDX frontmatter to blog post form data
+ */
+export function mdxToPostFormData(parsed: ParsedMDX): {
+  title: string
+  slug: string
+  excerpt: string
+  content: string
+  featuredImage: string
+  category: string
+  seriesId: string
+  seriesOrder: string
+  tags: string
+  metaTitle: string
+  metaDescription: string
+} {
+  const { frontmatter, content } = parsed
+
+  // Normalize category to uppercase
+  let category = frontmatter.category || ''
+  if (category) {
+    category = category.toUpperCase()
+    // Validate against known categories
+    const validCategories = ['ANCHOR', 'THEME', 'EMERGENT', 'PRACTITIONER', 'PROTOTYPE', 'CONFERENCE', 'METHODOLOGY']
+    if (!validCategories.includes(category)) {
+      category = ''
+    }
+  }
+
+  // Handle tags - can be array or comma-separated string
+  let tagsString = ''
+  if (Array.isArray(frontmatter.tags)) {
+    tagsString = frontmatter.tags.join(', ')
+  } else if (typeof frontmatter.tags === 'string') {
+    tagsString = frontmatter.tags
+  }
+
+  // Get excerpt from frontmatter or generate from content
+  const excerpt = frontmatter.summary || frontmatter.excerpt || frontmatter.description || extractExcerpt(content, 160)
+
+  return {
+    title: frontmatter.title || '',
+    slug: frontmatter.slug || (frontmatter.title ? slugify(frontmatter.title) : ''),
+    excerpt,
+    content,
+    featuredImage: frontmatter.featuredImage || frontmatter.image || '',
+    category,
+    seriesId: frontmatter.series || '',
+    seriesOrder: frontmatter.seriesOrder ? String(frontmatter.seriesOrder) : '',
+    tags: tagsString,
+    metaTitle: frontmatter.metaTitle || frontmatter.title || '',
+    metaDescription: frontmatter.metaDescription || excerpt,
+  }
+}

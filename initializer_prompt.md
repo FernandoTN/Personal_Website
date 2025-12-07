@@ -83,7 +83,7 @@ Start by reviewing the README.md and the app_spec.txt files. The app_spec.txt fi
 
 Begin implementing the highest-priority features from list.json. This is how you do it:
 - Work on ONE feature at a time by SPAWNING A AGENT TELL IT TO READ THE coding_prompt.md FILE TO HAVE IT AS CONTEXT AND INSTRUCTIONS and then tell it TO HANDLE ONLY ONE TASK AND THEN KEEP SPAWNING THEM. 
-- SPAWN 5 agents in parallel at a time. 
+- SPAWN 3 agents in parallel at a time. 
 - Test thoroughly before marking "passes": true
 - Commit your progress before session ends
 
@@ -107,3 +107,7 @@ The next agent will continue from here with a fresh context window.
 
 **Remember:** You have unlimited time across many sessions. Focus on
 quality over speed. Production-ready is the goal.
+
+Start the server yourself to prevent that not all agents try to start it in parallel
+CONSIDER THAT THE LAST TASK THAT WERE NOT COMPLETED ARE 63, 65, 68 implement this yourself, and i changed the email in the all of the .env to ADMIN_EMAIL="admin@localhost.com" and EMAIL_FROM="noreply@localhost.com" but i didnt change it anywhere else.
+

@@ -1222,7 +1222,7 @@
       "Step 12: Navigate to /research page",
       "Step 13: Verify research-specific title and description"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "seo",
@@ -1240,7 +1240,7 @@
       "Step 10: Verify og:type is 'article'",
       "Step 11: Test URL in Facebook debugger tool"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "seo",
@@ -1254,7 +1254,7 @@
       "Step 6: Verify twitter:image is present",
       "Step 7: Test URL in Twitter Card validator"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "seo",

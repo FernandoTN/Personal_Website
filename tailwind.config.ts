@@ -27,7 +27,7 @@ const config: Config = {
           // Light mode text
           primary: '#0F1A2A',
           secondary: '#4B637D',
-          muted: '#8DA1B5',
+          muted: '#5C6E80', // Darkened from #8DA1B5 for WCAG AA compliance (4.5:1 contrast on white)
           // Dark mode text
           'dark-primary': '#F2F6FF',
           'dark-secondary': '#C1CCDD',

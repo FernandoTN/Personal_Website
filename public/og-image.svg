@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0F172A"/>
+      <stop offset="100%" style="stop-color:#1E293B"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#3B82F6"/>
+      <stop offset="100%" style="stop-color:#8B5CF6"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Decorative circles -->
+  <circle cx="1000" cy="100" r="200" fill="#3B82F6" opacity="0.1"/>
+  <circle cx="200" cy="500" r="150" fill="#8B5CF6" opacity="0.1"/>
+
+  <!-- Accent line -->
+  <rect x="100" y="250" width="120" height="4" fill="url(#accent)" rx="2"/>
+
+  <!-- Name -->
+  <text x="100" y="320" font-family="system-ui, -apple-system, sans-serif" font-size="72" font-weight="700" fill="#F8FAFC">
+    Fernando Torres
+  </text>
+
+  <!-- Title -->
+  <text x="100" y="380" font-family="system-ui, -apple-system, sans-serif" font-size="32" fill="#94A3B8">
+    MSx '26 | Stanford Graduate School of Business
+  </text>
+
+  <!-- Focus areas -->
+  <text x="100" y="450" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="#64748B">
+    AI Agents | Pharmaceutical Innovation | Digital Transformation
+  </text>
+
+  <!-- Website URL -->
+  <text x="100" y="560" font-family="system-ui, -apple-system, sans-serif" font-size="20" fill="#3B82F6">
+    fernandotorres.io
+  </text>
+</svg>

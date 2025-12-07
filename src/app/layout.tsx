@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter, JetBrains_Mono, Plus_Jakarta_Sans } from 'next/font/google'
 import '@/styles/globals.css'
 import { Navigation, Footer } from '@/components/ui'
+import prisma from '@/lib/prisma'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -24,67 +25,102 @@ const headingFont = Plus_Jakarta_Sans({
   display: 'swap',
 })
 
-export const metadata: Metadata = {
-  metadataBase: new URL('https://fernandotorres.io'),
-  title: {
-    default: 'Fernando Torres | Stanford GSB MSx',
-    template: '%s | Fernando Torres',
-  },
-  description:
-    'Personal portfolio and blog of Fernando Torres, MSx \'26 at Stanford GSB. Exploring AI agents, pharmaceutical innovation, and digital transformation.',
-  keywords: [
-    'Fernando Torres',
-    'Stanford GSB',
-    'MSx',
-    'AI Agents',
-    'Pharmaceutical',
-    'Digital Transformation',
-    'Portfolio',
-    'Blog',
-  ],
-  authors: [{ name: 'Fernando Torres', url: 'https://fernandotorres.io' }],
-  creator: 'Fernando Torres',
-  openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    url: 'https://fernandotorres.io',
-    siteName: 'Fernando Torres',
-    title: 'Fernando Torres | Stanford GSB MSx',
-    description:
-      'Personal portfolio and blog of Fernando Torres, MSx \'26 at Stanford GSB.',
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Fernando Torres - Stanford GSB MSx',
-      },
+// Default values for site settings
+const DEFAULT_SITE_TITLE = 'Fernando Torres | Stanford GSB MSx'
+const DEFAULT_SITE_DESCRIPTION = "Personal portfolio and blog of Fernando Torres, MSx '26 at Stanford GSB. Exploring AI agents, pharmaceutical innovation, and digital transformation."
+
+// Fetch site settings from database
+async function getSiteSettings() {
+  try {
+    const settings = await prisma.siteSetting.findMany({
+      where: {
+        key: {
+          in: ['siteTitle', 'siteDescription']
+        }
+      }
+    })
+
+    const settingsMap: Record<string, string> = {}
+    for (const setting of settings) {
+      settingsMap[setting.key] = setting.value as string
+    }
+
+    return {
+      siteTitle: settingsMap.siteTitle || DEFAULT_SITE_TITLE,
+      siteDescription: settingsMap.siteDescription || DEFAULT_SITE_DESCRIPTION,
+    }
+  } catch (error) {
+    console.error('Failed to fetch site settings:', error)
+    return {
+      siteTitle: DEFAULT_SITE_TITLE,
+      siteDescription: DEFAULT_SITE_DESCRIPTION,
+    }
+  }
+}
+
+// Dynamic metadata generation
+export async function generateMetadata(): Promise<Metadata> {
+  const { siteTitle, siteDescription } = await getSiteSettings()
+
+  return {
+    metadataBase: new URL('https://fernandotorres.io'),
+    title: {
+      default: siteTitle,
+      template: '%s | Fernando Torres',
+    },
+    description: siteDescription,
+    keywords: [
+      'Fernando Torres',
+      'Stanford GSB',
+      'MSx',
+      'AI Agents',
+      'Pharmaceutical',
+      'Digital Transformation',
+      'Portfolio',
+      'Blog',
     ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Fernando Torres | Stanford GSB MSx',
-    description:
-      'Personal portfolio and blog of Fernando Torres, MSx \'26 at Stanford GSB.',
-    images: ['/og-image.png'],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
+    authors: [{ name: 'Fernando Torres', url: 'https://fernandotorres.io' }],
+    creator: 'Fernando Torres',
+    openGraph: {
+      type: 'website',
+      locale: 'en_US',
+      url: 'https://fernandotorres.io',
+      siteName: 'Fernando Torres',
+      title: siteTitle,
+      description: siteDescription,
+      images: [
+        {
+          url: '/og-image.svg',
+          width: 1200,
+          height: 630,
+          alt: 'Fernando Torres - Stanford GSB MSx',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: siteTitle,
+      description: siteDescription,
+      images: ['/og-image.svg'],
+    },
+    robots: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
     },
-  },
-  icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon-16x16.png',
-    apple: '/apple-touch-icon.png',
-  },
-  manifest: '/site.webmanifest',
+    icons: {
+      icon: '/favicon.ico',
+      shortcut: '/favicon-16x16.png',
+      apple: '/apple-touch-icon.png',
+    },
+    manifest: '/site.webmanifest',
+  }
 }
 
 export default function RootLayout({
