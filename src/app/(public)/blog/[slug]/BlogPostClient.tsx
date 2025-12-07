@@ -1124,22 +1124,26 @@ export default function BlogPostClient({ slug }: BlogPostClientProps) {
             >
               <div
                 className="
-                  relative aspect-[21/9] md:aspect-[21/8]
-                  max-w-5xl mx-auto
+                  relative max-w-4xl mx-auto
                   rounded-xl md:rounded-2xl overflow-hidden
-                  bg-gradient-to-br from-accent-primary/10 to-category-research/10
-                  border border-border-light dark:border-border-dark
-                  shadow-light dark:shadow-none
+                  bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950
+                  dark:from-slate-900 dark:via-slate-950 dark:to-black
+                  border border-white/10 dark:border-white/5
+                  shadow-2xl
+                  p-2 md:p-3
                 "
               >
-                <Image
-                  src={post.featuredImage}
-                  alt={post.featuredImageAlt || `${post.title} featured image`}
-                  fill
-                  sizes="(max-width: 1280px) 100vw, 1200px"
-                  className="object-cover"
-                  priority
-                />
+                <div className="relative w-full rounded-lg overflow-hidden bg-slate-950/50">
+                  <Image
+                    src={post.featuredImage}
+                    alt={post.featuredImageAlt || `${post.title} featured image`}
+                    width={1200}
+                    height={800}
+                    sizes="(max-width: 1280px) 100vw, 1024px"
+                    className="w-full h-auto"
+                    priority
+                  />
+                </div>
               </div>
             </motion.div>
           </section>
