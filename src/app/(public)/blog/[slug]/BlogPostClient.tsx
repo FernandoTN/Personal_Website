@@ -98,7 +98,7 @@ export const mockBlogPostsContent: Record<string, BlogPostContent> = {
       name: 'AI Agents Research',
       current: 1,
       total: 25,
-      nextSlug: 'llm-cognitive-engine-deep-dive',
+      nextSlug: 'llm-cognitive-engine',
     },
     headings: [
       { id: 'introduction', text: 'Introduction', level: 2 },
@@ -178,8 +178,8 @@ export const mockBlogPostsContent: Record<string, BlogPostContent> = {
       <p>In the following posts of this series, we will dive deep into each of the Eight Pillars, sharing practical guidance, case studies, and lessons learned from organizations that have successfully deployed AI agents at scale. Join us as we explore what it truly takes to unlock the full potential of AI agents.</p>
     `,
   },
-  'llm-cognitive-engine-deep-dive': {
-    slug: 'llm-cognitive-engine-deep-dive',
+  'llm-cognitive-engine': {
+    slug: 'llm-cognitive-engine',
     title: 'The LLM as Cognitive Engine: Beyond Chat Completions',
     excerpt: 'Exploring how large language models serve as the reasoning core of AI agents, and why model capability alone accounts for only 30-40% of agent success.',
     publishedAt: '2024-12-10',
@@ -196,7 +196,7 @@ export const mockBlogPostsContent: Record<string, BlogPostContent> = {
       current: 2,
       total: 25,
       prevSlug: 'what-is-needed-to-unlock-ai-agents',
-      nextSlug: 'context-memory-management',
+      nextSlug: 'context-memory-foundations',
     },
     headings: [
       { id: 'introduction', text: 'Introduction', level: 2 },
@@ -234,8 +234,8 @@ export const mockBlogPostsContent: Record<string, BlogPostContent> = {
       <p>The LLM is necessary but not sufficient for agent success. Understanding how to select, configure, and operate models in production environments is a critical skill for agent developers.</p>
     `,
   },
-  'context-memory-management': {
-    slug: 'context-memory-management',
+  'context-memory-foundations': {
+    slug: 'context-memory-foundations',
     title: "Context and Memory Management: The Agent's Working Memory",
     excerpt: 'How AI agents maintain context across long-running tasks and why the 40% context utilization rule is critical for production systems.',
     publishedAt: '2024-12-12',
@@ -251,7 +251,7 @@ export const mockBlogPostsContent: Record<string, BlogPostContent> = {
       name: 'AI Agents Research',
       current: 3,
       total: 25,
-      prevSlug: 'llm-cognitive-engine-deep-dive',
+      prevSlug: 'llm-cognitive-engine',
       nextSlug: 'system-integration-challenges',
     },
     headings: [
@@ -319,8 +319,8 @@ export const mockBlogPostsContent: Record<string, BlogPostContent> = {
       name: 'AI Agents Research',
       current: 4,
       total: 25,
-      prevSlug: 'context-memory-management',
-      nextSlug: 'authentication-identity-agents',
+      prevSlug: 'context-memory-foundations',
+      nextSlug: 'authentication-identity',
     },
     headings: [
       { id: 'introduction', text: 'Introduction', level: 2 },
@@ -354,8 +354,8 @@ export const mockBlogPostsContent: Record<string, BlogPostContent> = {
       <p>System integration is not a technical afterthought but a core competency that determines agent success. Organizations should invest heavily in integration infrastructure from the beginning of their agent journey.</p>
     `,
   },
-  'authentication-identity-agents': {
-    slug: 'authentication-identity-agents',
+  'authentication-identity': {
+    slug: 'authentication-identity',
     title: 'Authentication and Identity for AI Agents',
     excerpt: 'Exploring the unique challenges of managing credentials, permissions, and identity when AI agents act on behalf of users and systems.',
     publishedAt: '2024-12-17',
