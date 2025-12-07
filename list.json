@@ -1639,7 +1639,7 @@
       "Step 5: Verify navigation to home is available",
       "Step 6: Verify contact support option is present"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "integration",
@@ -1682,7 +1682,7 @@
       "Step 6: Verify unsubscribe/data deletion rights are explained",
       "Step 7: Verify contact information is provided"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
@@ -1698,7 +1698,7 @@
       "Step 8: Navigate to admin dashboard",
       "Step 9: Verify admin buttons follow same design system"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
@@ -1716,7 +1716,7 @@
       "Step 10: Navigate to newsletter signup",
       "Step 11: Verify consistent input styling"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
