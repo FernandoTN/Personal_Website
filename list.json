@@ -1569,7 +1569,7 @@
       "Step 6: Verify character counts are within LinkedIn limits",
       "Step 7: Verify image references are correct"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1587,7 +1587,7 @@
       "Step 10: Verify Week 9 (Feb 2-6) has 3 posts scheduled",
       "Step 11: Verify Week 10 (Feb 9-13) has 2 posts scheduled"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",

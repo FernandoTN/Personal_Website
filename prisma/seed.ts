@@ -132,7 +132,8 @@ async function main() {
       title: 'Cost Management Strategies for AI Agent Deployments',
       excerpt: 'Practical approaches to managing and optimizing AI agent costs at scale.',
       content: '# Cost Management Strategies\n\nAI agents can quickly become expensive at scale...',
-      status: 'DRAFT' as PostStatus,
+      status: 'SCHEDULED' as PostStatus,
+      scheduledFor: new Date('2025-12-26T09:00:00Z'),
       category: 'EMERGENT' as PostCategory,
       seriesOrder: 8,
     },
@@ -143,7 +144,8 @@ async function main() {
       title: 'Agent Evaluations: Measuring What Matters',
       excerpt: 'Frameworks for evaluating and benchmarking AI agent performance.',
       content: '# Agent Evaluations\n\nHow do you know if your agent is actually working well?...',
-      status: 'DRAFT' as PostStatus,
+      status: 'SCHEDULED' as PostStatus,
+      scheduledFor: new Date('2025-12-29T09:00:00Z'),
       category: 'EMERGENT' as PostCategory,
       seriesOrder: 9,
     },
@@ -152,7 +154,8 @@ async function main() {
       title: 'Monitoring & Telemetry for Production Agents',
       excerpt: 'Building observability into AI agent systems from day one.',
       content: '# Monitoring & Telemetry\n\nProduction agents need comprehensive observability...',
-      status: 'DRAFT' as PostStatus,
+      status: 'SCHEDULED' as PostStatus,
+      scheduledFor: new Date('2026-01-02T09:00:00Z'),
       category: 'EMERGENT' as PostCategory,
       seriesOrder: 10,
     },
@@ -163,7 +166,8 @@ async function main() {
       title: 'Practitioner Perspective: AI Agents in Pharma',
       excerpt: 'Lessons learned from deploying AI agents in pharmaceutical operations.',
       content: '# AI Agents in Pharma\n\nThe pharmaceutical industry has unique challenges...',
-      status: 'DRAFT' as PostStatus,
+      status: 'SCHEDULED' as PostStatus,
+      scheduledFor: new Date('2026-01-05T09:00:00Z'),
       category: 'PRACTITIONER' as PostCategory,
       seriesOrder: 11,
     },
@@ -172,7 +176,8 @@ async function main() {
       title: 'Practitioner Perspective: Supply Chain Automation',
       excerpt: 'How AI agents are transforming supply chain operations.',
       content: '# Supply Chain Automation\n\nSupply chain operations benefit greatly from AI agents...',
-      status: 'DRAFT' as PostStatus,
+      status: 'SCHEDULED' as PostStatus,
+      scheduledFor: new Date('2026-01-07T09:00:00Z'),
       category: 'PRACTITIONER' as PostCategory,
       seriesOrder: 12,
     },
@@ -181,7 +186,8 @@ async function main() {
       title: 'Emergent Reasoning Patterns in Large Language Models',
       excerpt: 'Unexpected reasoning capabilities that emerge from scale.',
       content: '# Emergent Reasoning Patterns\n\nAs LLMs scale, new reasoning abilities emerge...',
-      status: 'DRAFT' as PostStatus,
+      status: 'SCHEDULED' as PostStatus,
+      scheduledFor: new Date('2026-01-09T09:00:00Z'),
       category: 'EMERGENT' as PostCategory,
       seriesOrder: 13,
     },
@@ -192,7 +198,8 @@ async function main() {
       title: 'Practitioner Perspective: Customer Service Agents',
       excerpt: 'Building effective customer service AI agents.',
       content: '# Customer Service Agents\n\nCustomer service is a natural fit for AI agents...',
-      status: 'DRAFT' as PostStatus,
+      status: 'SCHEDULED' as PostStatus,
+      scheduledFor: new Date('2026-01-12T09:00:00Z'),
       category: 'PRACTITIONER' as PostCategory,
       seriesOrder: 14,
     },
@@ -201,7 +208,8 @@ async function main() {
       title: 'Practitioner Perspective: Code Assistant Agents',
       excerpt: 'The evolution of AI-powered code assistants.',
       content: '# Code Assistant Agents\n\nCode assistants are among the most successful AI agent applications...',
-      status: 'DRAFT' as PostStatus,
+      status: 'SCHEDULED' as PostStatus,
+      scheduledFor: new Date('2026-01-16T09:00:00Z'),
       category: 'PRACTITIONER' as PostCategory,
       seriesOrder: 15,
     },
@@ -212,7 +220,8 @@ async function main() {
       title: 'Prototype Learning: Building a RAG-Powered Agent',
       excerpt: 'Lessons from building a retrieval-augmented agent.',
       content: '# RAG-Powered Agent Prototype\n\nBuilding a RAG agent taught us valuable lessons...',
-      status: 'DRAFT' as PostStatus,
+      status: 'SCHEDULED' as PostStatus,
+      scheduledFor: new Date('2026-01-19T09:00:00Z'),
       category: 'PROTOTYPE' as PostCategory,
       seriesOrder: 16,
     },
@@ -221,7 +230,8 @@ async function main() {
       title: 'Prototype Learning: Multi-Agent Orchestration',
       excerpt: 'Coordinating multiple specialized agents.',
       content: '# Multi-Agent Orchestration\n\nCoordinating multiple agents requires careful design...',
-      status: 'DRAFT' as PostStatus,
+      status: 'SCHEDULED' as PostStatus,
+      scheduledFor: new Date('2026-01-21T09:00:00Z'),
       category: 'PROTOTYPE' as PostCategory,
       seriesOrder: 17,
     },
@@ -230,7 +240,8 @@ async function main() {
       title: 'Emergent Tool Use: How Agents Learn to Use Tools',
       excerpt: 'The surprising ways agents learn to leverage external tools.',
       content: '# Emergent Tool Use\n\nAgents often discover novel ways to use tools...',
-      status: 'DRAFT' as PostStatus,
+      status: 'SCHEDULED' as PostStatus,
+      scheduledFor: new Date('2026-01-23T09:00:00Z'),
       category: 'EMERGENT' as PostCategory,
       seriesOrder: 18,
     },
@@ -241,7 +252,8 @@ async function main() {
       title: 'Prototype Learning: Voice-Enabled Agents',
       excerpt: 'Challenges and solutions for voice-first AI agents.',
       content: '# Voice-Enabled Agents\n\nVoice interfaces add new dimensions to agent design...',
-      status: 'DRAFT' as PostStatus,
+      status: 'SCHEDULED' as PostStatus,
+      scheduledFor: new Date('2026-01-26T09:00:00Z'),
       category: 'PROTOTYPE' as PostCategory,
       seriesOrder: 19,
     },
@@ -250,7 +262,8 @@ async function main() {
       title: 'Practitioner Perspective: Data Analysis Agents',
       excerpt: 'How AI agents are changing data analysis workflows.',
       content: '# Data Analysis Agents\n\nData analysis agents can automate complex workflows...',
-      status: 'DRAFT' as PostStatus,
+      status: 'SCHEDULED' as PostStatus,
+      scheduledFor: new Date('2026-01-30T09:00:00Z'),
       category: 'PRACTITIONER' as PostCategory,
       seriesOrder: 20,
     },
@@ -261,7 +274,8 @@ async function main() {
       title: 'Conference Insights: NeurIPS 2024 Agent Research',
       excerpt: 'Key takeaways from NeurIPS on AI agent research.',
       content: '# NeurIPS 2024 Insights\n\nThe latest research from NeurIPS on AI agents...',
-      status: 'DRAFT' as PostStatus,
+      status: 'SCHEDULED' as PostStatus,
+      scheduledFor: new Date('2026-02-02T09:00:00Z'),
       category: 'CONFERENCE' as PostCategory,
       seriesOrder: 21,
     },
@@ -270,7 +284,8 @@ async function main() {
       title: 'Conference Insights: ICML Agent Architecture Trends',
       excerpt: 'Emerging architecture patterns from ICML.',
       content: '# ICML Agent Trends\n\nICML showcased new agent architecture approaches...',
-      status: 'DRAFT' as PostStatus,
+      status: 'SCHEDULED' as PostStatus,
+      scheduledFor: new Date('2026-02-04T09:00:00Z'),
       category: 'CONFERENCE' as PostCategory,
       seriesOrder: 22,
     },
@@ -279,7 +294,8 @@ async function main() {
       title: 'Conference Insights: Stanford AI Conference Highlights',
       excerpt: 'Notable presentations from the Stanford AI Conference.',
       content: '# Stanford AI Conference\n\nStanford\'s AI conference highlighted key developments...',
-      status: 'DRAFT' as PostStatus,
+      status: 'SCHEDULED' as PostStatus,
+      scheduledFor: new Date('2026-02-06T09:00:00Z'),
       category: 'CONFERENCE' as PostCategory,
       seriesOrder: 23,
     },
@@ -290,7 +306,8 @@ async function main() {
       title: 'Methodology: The Eight Pillars Framework',
       excerpt: 'A comprehensive framework for building production AI agents.',
       content: '# The Eight Pillars Framework\n\nOur research led to an eight-pillar framework...',
-      status: 'DRAFT' as PostStatus,
+      status: 'SCHEDULED' as PostStatus,
+      scheduledFor: new Date('2026-02-09T09:00:00Z'),
       category: 'METHODOLOGY' as PostCategory,
       seriesOrder: 24,
     },
@@ -299,7 +316,8 @@ async function main() {
       title: 'Series Conclusion: The Future of AI Agents',
       excerpt: 'Looking ahead at what the future holds for AI agents.',
       content: '# The Future of AI Agents\n\nAs we conclude this series, we look to the future...',
-      status: 'DRAFT' as PostStatus,
+      status: 'SCHEDULED' as PostStatus,
+      scheduledFor: new Date('2026-02-13T09:00:00Z'),
       category: 'THEME' as PostCategory,
       seriesOrder: 25,
     },
@@ -355,6 +373,277 @@ async function main() {
       create: { ...tag, postCount: 0 },
     })
     console.log(`Created/Updated tag: ${tag.name}`)
+  }
+
+  // Create LinkedIn posts for each blog post
+  console.log('Creating LinkedIn posts...')
+
+  interface LinkedInPostData {
+    postSlug: string
+    content: string
+    hashtags: string[]
+  }
+
+  const linkedInPosts: LinkedInPostData[] = [
+    {
+      postSlug: 'what-is-needed-to-unlock-ai-agents',
+      content: `Excited to share our new research from Stanford GSB on AI Agents!
+
+90% of AI pilots fail to reach production. But it's not because of the models - they contribute only 30-40% to success.
+
+The real challenges? System integration, context management, and governance.
+
+Read the full insights in our anchor post for this 25-part series.`,
+      hashtags: ['AIAgents', 'Stanford', 'EnterpriseAI', 'Research', 'Innovation']
+    },
+    {
+      postSlug: 'llm-cognitive-engine',
+      content: `Most people think of LLMs as sophisticated text predictors. But they're so much more.
+
+In this post, I explore how to leverage LLMs as true cognitive engines - reasoning systems that can plan, adapt, and solve complex problems.
+
+Key insight: The prompting strategy matters more than model selection.`,
+      hashtags: ['LLM', 'AIAgents', 'CognitiveComputing', 'MachineLearning', 'TechLeadership']
+    },
+    {
+      postSlug: 'context-memory-foundations',
+      content: `Why do AI agents forget important context mid-conversation?
+
+Context management is the foundation of intelligent agents. Without it, even the best LLM becomes unreliable.
+
+This post covers the 40% utilization rule and practical patterns for effective memory management.`,
+      hashtags: ['AIAgents', 'ContextManagement', 'Memory', 'EnterpriseAI', 'TechStrategy']
+    },
+    {
+      postSlug: 'system-integration-challenges',
+      content: `92% of AI pilots cite system integration as their biggest blocker.
+
+It's not glamorous, but integration is where enterprise AI succeeds or fails.
+
+This post breaks down the common pitfalls and how to avoid them.`,
+      hashtags: ['SystemIntegration', 'EnterpriseAI', 'AIAgents', 'DigitalTransformation', 'TechLeadership']
+    },
+    {
+      postSlug: 'authentication-identity',
+      content: `When AI agents act on your behalf, who are they?
+
+Identity and authentication in agent systems is a critical but overlooked challenge.
+
+This post explores the security implications and design patterns for agent identity.`,
+      hashtags: ['Security', 'Authentication', 'AIAgents', 'Identity', 'EnterpriseAI']
+    },
+    {
+      postSlug: 'trust-governance-guardrails',
+      content: `How do you trust an AI agent with enterprise-critical tasks?
+
+Trust isn't just about accuracy - it's about predictability, explainability, and control.
+
+This post covers the governance frameworks that make enterprise AI deployment possible.`,
+      hashtags: ['AIGovernance', 'Trust', 'Guardrails', 'EnterpriseAI', 'RiskManagement']
+    },
+    {
+      postSlug: 'emergent-behaviors',
+      content: `Something unexpected happens when agents collaborate.
+
+Multi-agent systems exhibit emergent behaviors that no single agent could achieve alone.
+
+This post explores the surprising capabilities that arise from agent cooperation.`,
+      hashtags: ['MultiAgent', 'EmergentBehavior', 'AIAgents', 'Collaboration', 'Innovation']
+    },
+    {
+      postSlug: 'cost-management-strategies',
+      content: `AI agents can get expensive fast. One poorly designed loop and your API bill explodes.
+
+But cost optimization doesn't mean compromising capability.
+
+This post shares practical strategies for managing AI agent costs at scale.`,
+      hashtags: ['CostOptimization', 'AIAgents', 'CloudCosts', 'EnterpriseAI', 'Efficiency']
+    },
+    {
+      postSlug: 'agent-evaluations',
+      content: `How do you know if your AI agent is actually working well?
+
+Traditional metrics don't capture what matters for agents.
+
+This post introduces frameworks for evaluating and benchmarking AI agent performance.`,
+      hashtags: ['AIEvaluation', 'Benchmarking', 'AIAgents', 'Metrics', 'QualityAssurance']
+    },
+    {
+      postSlug: 'monitoring-telemetry',
+      content: `Production AI agents need observability from day one.
+
+Without proper monitoring, you're flying blind when things go wrong.
+
+This post covers the telemetry patterns that make production agents maintainable.`,
+      hashtags: ['Observability', 'Monitoring', 'Telemetry', 'AIAgents', 'Production']
+    },
+    {
+      postSlug: 'practitioner-pharma-insights',
+      content: `AI agents in pharma face unique challenges: regulatory compliance, data sensitivity, validation requirements.
+
+But the opportunities are immense.
+
+This post shares lessons from deploying AI agents in pharmaceutical operations.`,
+      hashtags: ['Pharma', 'LifeSciences', 'AIAgents', 'Regulatory', 'HealthTech']
+    },
+    {
+      postSlug: 'practitioner-supply-chain',
+      content: `Supply chain operations are a natural fit for AI agents.
+
+Demand forecasting, inventory optimization, logistics coordination - agents excel at these.
+
+This post explores how AI agents are transforming supply chain management.`,
+      hashtags: ['SupplyChain', 'Logistics', 'AIAgents', 'Automation', 'Operations']
+    },
+    {
+      postSlug: 'emergent-reasoning-patterns',
+      content: `As LLMs scale, something fascinating happens: new reasoning abilities emerge.
+
+These capabilities weren't explicitly trained - they appeared spontaneously.
+
+This post explores the emergent reasoning patterns in large language models.`,
+      hashtags: ['EmergentAbilities', 'Reasoning', 'LLM', 'AIResearch', 'ScaleMatters']
+    },
+    {
+      postSlug: 'practitioner-customer-service',
+      content: `Customer service is one of the most successful AI agent applications.
+
+But building effective customer service agents requires more than just good prompts.
+
+This post covers the design patterns that separate good from great.`,
+      hashtags: ['CustomerService', 'AIAgents', 'CX', 'Automation', 'Support']
+    },
+    {
+      postSlug: 'practitioner-code-assistants',
+      content: `Code assistants are among the most successful AI agent applications.
+
+From Copilot to Cursor, developers are embracing AI-powered coding.
+
+This post examines the evolution and future of AI code assistants.`,
+      hashtags: ['CodeAssistant', 'AIAgents', 'DeveloperTools', 'Copilot', 'Programming']
+    },
+    {
+      postSlug: 'prototype-rag-agent',
+      content: `Building a RAG-powered agent taught us valuable lessons.
+
+Retrieval quality matters more than generation quality.
+
+This post shares our prototype learnings from building a retrieval-augmented agent.`,
+      hashtags: ['RAG', 'Retrieval', 'AIAgents', 'Prototype', 'VectorSearch']
+    },
+    {
+      postSlug: 'prototype-multi-agent',
+      content: `Coordinating multiple specialized agents is harder than it looks.
+
+Communication protocols, task delegation, conflict resolution - it's complex.
+
+This post shares lessons from building a multi-agent orchestration system.`,
+      hashtags: ['MultiAgent', 'Orchestration', 'AIAgents', 'Coordination', 'Architecture']
+    },
+    {
+      postSlug: 'emergent-tool-use',
+      content: `Agents often discover novel ways to use tools we never anticipated.
+
+This emergent tool use is both exciting and concerning.
+
+This post explores how agents learn to leverage external tools creatively.`,
+      hashtags: ['ToolUse', 'EmergentBehavior', 'AIAgents', 'FunctionCalling', 'Innovation']
+    },
+    {
+      postSlug: 'prototype-voice-agent',
+      content: `Voice interfaces add new dimensions to agent design.
+
+Latency tolerance, interruption handling, emotional tone - voice is different.
+
+This post shares challenges and solutions for voice-first AI agents.`,
+      hashtags: ['VoiceAI', 'SpeechRecognition', 'AIAgents', 'Conversational', 'UX']
+    },
+    {
+      postSlug: 'practitioner-data-analysis',
+      content: `Data analysis agents can automate complex analytical workflows.
+
+From SQL generation to insight synthesis, agents are changing how we work with data.
+
+This post explores the evolution of AI-powered data analysis.`,
+      hashtags: ['DataAnalysis', 'Analytics', 'AIAgents', 'BusinessIntelligence', 'Automation']
+    },
+    {
+      postSlug: 'conference-neurips-insights',
+      content: `NeurIPS 2024 had some fascinating research on AI agents.
+
+New architectures, evaluation frameworks, and safety considerations.
+
+This post summarizes the key takeaways relevant to practitioners.`,
+      hashtags: ['NeurIPS', 'AIResearch', 'Conference', 'AIAgents', 'MachineLearning']
+    },
+    {
+      postSlug: 'conference-icml-trends',
+      content: `ICML showcased new agent architecture approaches worth watching.
+
+From chain-of-thought improvements to tool learning advances.
+
+This post covers the emerging architecture trends from ICML.`,
+      hashtags: ['ICML', 'AIResearch', 'Architecture', 'AIAgents', 'DeepLearning']
+    },
+    {
+      postSlug: 'conference-stanford-ai',
+      content: `Stanford's AI Conference highlighted key developments in agent research.
+
+Academic insights that will shape commercial applications.
+
+This post summarizes the notable presentations and findings.`,
+      hashtags: ['Stanford', 'AIResearch', 'Conference', 'AIAgents', 'Academia']
+    },
+    {
+      postSlug: 'methodology-eight-pillars',
+      content: `Introducing the Eight Pillars Framework for production AI agents.
+
+A comprehensive methodology born from our research at Stanford GSB.
+
+This post presents our framework for building enterprise-ready agents.`,
+      hashtags: ['Framework', 'Methodology', 'AIAgents', 'EnterpriseAI', 'BestPractices']
+    },
+    {
+      postSlug: 'series-conclusion',
+      content: `As we conclude this 25-part series, we look to the future of AI agents.
+
+The potential is immense, but so are the challenges.
+
+Thank you for joining this journey. The future of AI agents is just beginning.`,
+      hashtags: ['AIAgents', 'Future', 'Conclusion', 'Stanford', 'Research']
+    }
+  ]
+
+  // Get all posts to link LinkedIn posts
+  const allPosts = await prisma.post.findMany({
+    where: {
+      seriesId: aiAgentsSeries.id
+    }
+  })
+
+  const postSlugToId = new Map(allPosts.map(p => [p.slug, p.id]))
+
+  for (const linkedInData of linkedInPosts) {
+    const postId = postSlugToId.get(linkedInData.postSlug)
+    if (!postId) {
+      console.log(`Warning: Could not find post with slug ${linkedInData.postSlug}`)
+      continue
+    }
+
+    await prisma.linkedInPost.upsert({
+      where: { postId },
+      update: {
+        content: linkedInData.content,
+        hashtags: linkedInData.hashtags,
+      },
+      create: {
+        postId,
+        content: linkedInData.content,
+        hashtags: linkedInData.hashtags,
+        status: 'PENDING',
+      },
+    })
+    console.log(`Created/Updated LinkedIn post for: ${linkedInData.postSlug}`)
   }
 
   console.log('Seed completed!')
