@@ -1365,7 +1365,7 @@
       "Step 7: Verify footer spans full width appropriately",
       "Step 8: Take screenshot for visual verification"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
@@ -1381,7 +1381,7 @@
       "Step 8: Verify touch targets are appropriately sized",
       "Step 9: Take screenshot for visual verification"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
@@ -1398,7 +1398,7 @@
       "Step 9: Verify footer content stacks appropriately",
       "Step 10: Take screenshot for visual verification"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
