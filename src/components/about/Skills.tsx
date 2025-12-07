@@ -94,7 +94,18 @@ function LeadershipIcon() {
 const skillCategories: SkillCategory[] = [
   {
     title: 'Technical Skills',
-    skills: ['Python', 'TypeScript', 'SQL', 'React', 'Next.js', 'Node.js', 'PostgreSQL', 'AWS'],
+    skills: [
+      'Python',
+      'TypeScript',
+      'R',
+      'SQL',
+      'Machine Learning Workflows',
+      'Agentic System Design',
+      'REST/gRPC',
+      'Kubernetes',
+      'Next.js',
+      'Cloud Infrastructure',
+    ],
     colorScheme: {
       bg: 'bg-blue-50',
       bgDark: 'dark:bg-blue-950/30',
@@ -108,7 +119,14 @@ const skillCategories: SkillCategory[] = [
   },
   {
     title: 'Domain Expertise',
-    skills: ['Pharmaceutical', 'Supply Chain', 'Healthcare', 'Enterprise AI', 'Data Analytics'],
+    skills: [
+      'Pharmaceutical BD',
+      'Healthcare Operations',
+      'Supply Chain Optimization',
+      'Enterprise AI Adoption',
+      'Context Management',
+      'Licensing Negotiations',
+    ],
     colorScheme: {
       bg: 'bg-emerald-50',
       bgDark: 'dark:bg-emerald-950/30',
@@ -122,7 +140,14 @@ const skillCategories: SkillCategory[] = [
   },
   {
     title: 'Leadership Skills',
-    skills: ['Team Leadership', 'Strategy', 'Product Management', 'Stakeholder Communication'],
+    skills: [
+      'Strategic Negotiation',
+      'Cross-functional Leadership',
+      'Deal Execution',
+      'Enterprise Stakeholder Mgmt',
+      'Founder-driven Execution',
+      'Product Thinking',
+    ],
     colorScheme: {
       bg: 'bg-purple-50',
       bgDark: 'dark:bg-purple-950/30',

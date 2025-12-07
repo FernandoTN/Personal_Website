@@ -4,11 +4,11 @@ import { AboutHero, Skills, Timeline } from '@/components/about'
 export const metadata: Metadata = {
   title: 'About',
   description:
-    "Learn about Fernando Torres - MSx '26 at Stanford GSB, exploring AI agents and pharmaceutical innovation.",
+    "Learn about Fernando Torres - MSx '26 at Stanford GSB, Founder and Builder exploring AI agents and enterprise systems.",
   openGraph: {
     title: 'About | Fernando Torres',
     description:
-      "Learn about Fernando Torres - MSx '26 at Stanford GSB, exploring AI agents and pharmaceutical innovation.",
+      "Learn about Fernando Torres - MSx '26 at Stanford GSB, Founder and Builder exploring AI agents and enterprise systems.",
     type: 'website',
     url: 'https://fernandotorres.io/about',
     images: [

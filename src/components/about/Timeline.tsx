@@ -52,44 +52,74 @@ export interface TimelineProps {
 const defaultEvents: TimelineEvent[] = [
   {
     id: 'stanford-gsb',
-    title: 'MSx Fellow',
+    title: 'Sloan Fellow (MSx)',
     organization: 'Stanford Graduate School of Business',
     startDate: '2025',
     endDate: '2026',
     description:
-      'Pursuing the MSx program with a focus on AI agents, healthcare innovation, and technology-driven business transformation.',
+      'Conducting applied research on AI agent architectures, long‑term memory systems, and context infrastructure. Building Memori as part of the venture development track and engaging with faculty and industry leaders across AI, product, and healthcare.',
     type: 'education',
     isCurrent: true,
   },
   {
-    id: 'tech-lead',
-    title: 'Senior Software Engineer',
-    organization: 'Biotech Solutions Inc.',
-    startDate: '2022',
+    id: 'chinoin',
+    title: 'Business Development Director',
+    organization: 'Chinoin',
+    startDate: '2020',
     endDate: '2025',
     description:
-      'Led development of AI-powered drug discovery platforms, managing cross-functional teams and driving technical architecture decisions.',
+      'Led international negotiations for major licensing deals across 35+ countries. Oversaw strategic partnerships, financial modeling, and regulatory coordination. Managed a direct team of 11 overseeing operations for 200+ employees.',
     type: 'work',
   },
   {
-    id: 'software-engineer',
-    title: 'Software Engineer',
-    organization: 'PharmaTech Corp',
-    startDate: '2019',
-    endDate: '2022',
-    description:
-      'Built full-stack applications for clinical trial management and regulatory compliance systems using React, Node.js, and cloud technologies.',
-    type: 'work',
-  },
-  {
-    id: 'undergrad',
-    title: 'Bachelor of Science in Computer Science',
-    organization: 'University of California, Berkeley',
-    startDate: '2015',
+    id: 'fermintech',
+    title: 'Founder',
+    organization: 'FerminTech',
+    startDate: '2017',
     endDate: '2019',
     description:
-      'Graduated with honors. Focused on machine learning, data structures, and software engineering. Research assistant in computational biology lab.',
+      'Built a platform using Convolutional Neural Networks to identify lung nodules from medical images. Achieved radiologist‑level accuracy in predicting lung cancer probability for challenging nodules.',
+    type: 'work',
+  },
+  {
+    id: 'sahna-innovasalud',
+    title: 'CTO & Product Manager',
+    organization: 'Sahna & InnovaSalud',
+    startDate: '2017',
+    endDate: '2018',
+    description:
+      'Developed a platform using Angular, Node.js, and MongoDB to assess risks for diabetes and hypertension, delivering personalized health plans including nutrition and physical activity recommendations.',
+    type: 'work',
+  },
+  {
+    id: 'socially-mx',
+    title: 'Co‑Founder',
+    organization: 'Socially MX',
+    startDate: 'College',
+    endDate: 'ears',
+    description:
+      'Co‑founded a marketing and communications company specializing in digital advertising, sales promotion, and brand positioning consulting while in college.',
+    type: 'work',
+  },
+  {
+    id: 'ibero',
+    title: 'Industrial Engineer',
+    organization: 'Ibero University',
+    startDate: 'Graduated',
+    endDate: '',
+    description:
+      'Graduated from Ibero University in Mexico City. Active member of the chess team and built lasting relationships with peers.',
     type: 'education',
+  },
+  {
+    id: 'early-career',
+    title: 'Early Career',
+    organization: 'Self-taught Developer',
+    startDate: 'Childhood',
+    endDate: '',
+    description:
+      'Started coding to build a custom server for an MMORPG (Runescape style). Maintained it for 6 months for a mid‑size community, learning core programming concepts driven by a passion for gaming.',
+    type: 'work',
   },
 ]
 
