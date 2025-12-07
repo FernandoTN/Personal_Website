@@ -1065,7 +1065,7 @@
       "Step 6: Verify AI Agents series performance is visible",
       "Step 7: Click on a page to see detailed analytics"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1101,7 +1101,7 @@
       "Step 9: Verify CSV file downloads",
       "Step 10: Open CSV and verify data format"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1118,7 +1118,7 @@
       "Step 9: Navigate to public site",
       "Step 10: Verify updated metadata is reflected (title, description)"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
