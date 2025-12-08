@@ -549,6 +549,14 @@ export default function BlogPostEditPage() {
   const { status: sessionStatus } = useSession()
   const postId = params.id as string
 
+  // LinkedIn post interface
+  interface LinkedInPostInfo {
+    id: string
+    content: string
+    status: string
+    createdAt: string
+  }
+
   // Form state
   const [formData, setFormData] = useState<BlogPostFormData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -556,6 +564,8 @@ export default function BlogPostEditPage() {
   const [seriesList, setSeriesList] = useState<Series[]>([])
   const [existingTags, setExistingTags] = useState<ExistingTag[]>([])
   const [showTagSelector, setShowTagSelector] = useState(false)
+  const [linkedinPost, setLinkedinPost] = useState<LinkedInPostInfo | null>(null)
+  const [isCreatingLinkedIn, setIsCreatingLinkedIn] = useState(false)
   const [isUploadingFeatured, setIsUploadingFeatured] = useState(false)
   const [isUploadingOg, setIsUploadingOg] = useState(false)
 
@@ -584,11 +594,12 @@ export default function BlogPostEditPage() {
       try {
         setIsLoading(true)
 
-        // Fetch post, series, and existing tags in parallel
-        const [postResponse, seriesResponse, tagsResponse] = await Promise.all([
+        // Fetch post, series, existing tags, and LinkedIn post in parallel
+        const [postResponse, seriesResponse, tagsResponse, linkedinResponse] = await Promise.all([
           fetch(`/api/admin/posts/${postId}`),
           fetch('/api/series'),
-          fetch('/api/tags')
+          fetch('/api/tags'),
+          fetch(`/api/admin/linkedin-db/by-post/${postId}`)
         ])
 
         if (!postResponse.ok) {
@@ -608,6 +619,19 @@ export default function BlogPostEditPage() {
         if (tagsResponse.ok) {
           const tagsData = await tagsResponse.json()
           setExistingTags(tagsData.tags || [])
+        }
+
+        // Set LinkedIn post if exists
+        if (linkedinResponse.ok) {
+          const linkedinData = await linkedinResponse.json()
+          if (linkedinData.exists && linkedinData.linkedinPost) {
+            setLinkedinPost({
+              id: linkedinData.linkedinPost.id,
+              content: linkedinData.linkedinPost.content,
+              status: linkedinData.linkedinPost.status,
+              createdAt: linkedinData.linkedinPost.createdAt,
+            })
+          }
         }
 
         setFormData({
@@ -686,6 +710,51 @@ export default function BlogPostEditPage() {
     setToast({ message, type })
     setTimeout(() => setToast(null), 5000)
   }, [])
+
+  // Create LinkedIn post from blog post
+  const handleCreateLinkedInPost = useCallback(async () => {
+    if (!formData) return
+
+    setIsCreatingLinkedIn(true)
+    try {
+      // Generate initial content from blog post
+      const blogUrl = `https://fernandotorres.dev/blog/${formData.slug}`
+      const initialContent = `${formData.title}\n\n${formData.excerpt || ''}\n\nRead more: ${blogUrl}`
+
+      const response = await fetch('/api/admin/linkedin-db', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          postId: formData.id,
+          content: initialContent,
+          hashtags: [],
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || 'Failed to create LinkedIn post')
+      }
+
+      // Set the LinkedIn post in state
+      setLinkedinPost({
+        id: data.linkedinPost.id,
+        content: data.linkedinPost.content,
+        status: data.linkedinPost.status,
+        createdAt: data.linkedinPost.createdAt,
+      })
+
+      showToast('LinkedIn post created successfully!', 'success')
+
+      // Navigate to edit the new LinkedIn post
+      router.push(`/admin/linkedin/${data.linkedinPost.id}/edit`)
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : 'Failed to create LinkedIn post', 'error')
+    } finally {
+      setIsCreatingLinkedIn(false)
+    }
+  }, [formData, router, showToast])
 
   // Handle image upload
   const handleImageUpload = useCallback(async (
@@ -1446,6 +1515,95 @@ export default function BlogPostEditPage() {
               />
             </div>
           </div>
+        </div>
+
+        {/* LinkedIn Post Section */}
+        <div className="rounded-xl border border-blue-300 dark:border-blue-700 p-6 bg-blue-50/50 dark:bg-blue-900/10">
+          <div className="flex items-center gap-3 mb-4">
+            <svg className="w-6 h-6 text-blue-600 dark:text-blue-400" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+            </svg>
+            <h2 className="text-lg font-semibold text-text-primary dark:text-text-dark-primary font-heading">
+              LinkedIn Post
+            </h2>
+          </div>
+
+          {linkedinPost ? (
+            // Show existing LinkedIn post
+            <div className="space-y-4">
+              <div className="flex items-center justify-between p-4 rounded-lg bg-white dark:bg-dark-panel border border-border-light dark:border-border-dark">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                        linkedinPost.status === 'POSTED'
+                          ? 'bg-accent-success/10 text-accent-success'
+                          : linkedinPost.status === 'MANUALLY_SCHEDULED'
+                          ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400'
+                          : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400'
+                      }`}
+                    >
+                      {linkedinPost.status === 'POSTED' ? 'Posted' : linkedinPost.status === 'MANUALLY_SCHEDULED' ? 'Scheduled' : 'Pending'}
+                    </span>
+                    <span className="text-xs text-text-muted dark:text-text-dark-muted">
+                      Created {new Date(linkedinPost.createdAt).toLocaleDateString()}
+                    </span>
+                  </div>
+                  <p className="text-sm text-text-secondary dark:text-text-dark-secondary line-clamp-2">
+                    {linkedinPost.content || 'No content yet'}
+                  </p>
+                </div>
+                <Link
+                  href={`/admin/linkedin/${linkedinPost.id}/edit`}
+                  className="ml-4 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 transition-colors flex-shrink-0"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                  </svg>
+                  Edit LinkedIn Post
+                </Link>
+              </div>
+              <p className="text-xs text-text-muted dark:text-text-dark-muted">
+                This blog post has a linked LinkedIn post. Edit it to customize the content, add hashtags, and copy the blog URL.
+              </p>
+            </div>
+          ) : (
+            // Show create LinkedIn post option
+            <div className="text-center py-6">
+              <svg className="mx-auto h-12 w-12 text-blue-400 dark:text-blue-500 mb-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+              </svg>
+              <h3 className="text-base font-medium text-text-primary dark:text-text-dark-primary mb-2">
+                No LinkedIn Post Linked
+              </h3>
+              <p className="text-sm text-text-secondary dark:text-text-dark-secondary mb-4 max-w-md mx-auto">
+                Create a LinkedIn post to promote this blog post. The post URL and image will be available for easy copying.
+              </p>
+              <button
+                type="button"
+                onClick={handleCreateLinkedInPost}
+                disabled={isCreatingLinkedIn}
+                className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-700 transition-colors disabled:opacity-50"
+              >
+                {isCreatingLinkedIn ? (
+                  <>
+                    <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Creating...
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>
+                    Create LinkedIn Post
+                  </>
+                )}
+              </button>
+            </div>
+          )}
         </div>
       </form>
 
