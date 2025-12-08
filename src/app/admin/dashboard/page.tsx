@@ -365,13 +365,31 @@ function QuickAction({ label, href, icon, variant = 'secondary' }: QuickActionPr
 // ------------------------------------------------------------------
 // UpcomingPublications Component
 // ------------------------------------------------------------------
+const POSTS_PER_PAGE = 6
+
 function UpcomingPublications({ posts, loading }: { posts: UpcomingPost[]; loading: boolean }) {
+  const [currentPage, setCurrentPage] = useState(1)
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
       year: 'numeric',
     })
+  }
+
+  // Sort posts by scheduledFor date (closest first)
+  const sortedPosts = [...posts].sort((a, b) => {
+    return new Date(a.scheduledFor).getTime() - new Date(b.scheduledFor).getTime()
+  })
+
+  // Pagination
+  const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE)
+  const startIndex = (currentPage - 1) * POSTS_PER_PAGE
+  const paginatedPosts = sortedPosts.slice(startIndex, startIndex + POSTS_PER_PAGE)
+
+  const goToPage = (page: number) => {
+    setCurrentPage(Math.max(1, Math.min(page, totalPages)))
   }
 
   return (
@@ -390,7 +408,7 @@ function UpcomingPublications({ posts, loading }: { posts: UpcomingPost[]; loadi
 
       {loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {Array.from({ length: 3 }).map((_, i) => (
+          {Array.from({ length: 6 }).map((_, i) => (
             <div key={i} className="p-4 bg-light-icy-blue dark:bg-dark-deep-blue rounded-lg animate-pulse">
               <div className="h-4 w-1/3 bg-light-neutral-grey dark:bg-dark-panel rounded mb-3" />
               <div className="h-5 w-full bg-light-neutral-grey dark:bg-dark-panel rounded mb-2" />
@@ -403,28 +421,80 @@ function UpcomingPublications({ posts, loading }: { posts: UpcomingPost[]; loadi
           No upcoming scheduled posts
         </p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {posts.map((post) => (
-            <Link
-              key={post.id}
-              href={`/admin/blog/${post.id}`}
-              className="p-4 bg-light-icy-blue dark:bg-dark-deep-blue rounded-lg border border-border-light dark:border-border-dark hover:border-accent-primary/50 transition-colors"
-            >
-              <div className="flex items-center gap-2 mb-2">
-                <Icons.Rocket />
-                <span className="text-xs font-medium text-accent-primary uppercase tracking-wide">
-                  {post.category ? post.category.charAt(0) + post.category.slice(1).toLowerCase() : 'Post'}
-                </span>
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {paginatedPosts.map((post) => (
+              <Link
+                key={post.id}
+                href={`/admin/blog/${post.id}`}
+                className="p-4 bg-light-icy-blue dark:bg-dark-deep-blue rounded-lg border border-border-light dark:border-border-dark hover:border-accent-primary/50 transition-colors"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <Icons.Rocket />
+                  <span className="text-xs font-medium text-accent-primary uppercase tracking-wide">
+                    {post.category ? post.category.charAt(0) + post.category.slice(1).toLowerCase() : 'Post'}
+                  </span>
+                </div>
+                <p className="font-medium text-text-primary dark:text-text-dark-primary line-clamp-2">
+                  {post.title}
+                </p>
+                <p className="mt-2 text-sm text-text-muted dark:text-text-dark-muted">
+                  {formatDate(post.scheduledFor)}
+                </p>
+              </Link>
+            ))}
+          </div>
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="mt-6 flex items-center justify-center gap-2">
+              <button
+                onClick={() => goToPage(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="p-2 rounded-lg border border-border-light dark:border-border-dark text-text-secondary dark:text-text-dark-secondary hover:bg-light-icy-blue dark:hover:bg-dark-deep-blue disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                aria-label="Previous page"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                </svg>
+              </button>
+
+              <div className="flex items-center gap-1">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <button
+                    key={page}
+                    onClick={() => goToPage(page)}
+                    className={`min-w-[2rem] h-8 px-2 rounded-lg text-sm font-medium transition-colors ${
+                      currentPage === page
+                        ? 'bg-accent-primary text-white'
+                        : 'text-text-secondary dark:text-text-dark-secondary hover:bg-light-icy-blue dark:hover:bg-dark-deep-blue'
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ))}
               </div>
-              <p className="font-medium text-text-primary dark:text-text-dark-primary line-clamp-2">
-                {post.title}
-              </p>
-              <p className="mt-2 text-sm text-text-muted dark:text-text-dark-muted">
-                {formatDate(post.scheduledFor)}
-              </p>
-            </Link>
-          ))}
-        </div>
+
+              <button
+                onClick={() => goToPage(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="p-2 rounded-lg border border-border-light dark:border-border-dark text-text-secondary dark:text-text-dark-secondary hover:bg-light-icy-blue dark:hover:bg-dark-deep-blue disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                aria-label="Next page"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                </svg>
+              </button>
+            </div>
+          )}
+
+          {/* Page info */}
+          {totalPages > 1 && (
+            <p className="mt-3 text-center text-xs text-text-muted dark:text-text-dark-muted">
+              Showing {startIndex + 1}-{Math.min(startIndex + POSTS_PER_PAGE, sortedPosts.length)} of {sortedPosts.length} scheduled posts
+            </p>
+          )}
+        </>
       )}
     </div>
   )
