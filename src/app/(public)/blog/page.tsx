@@ -7,245 +7,64 @@ import { ChevronLeft, ChevronRight, BookOpen, X, Tag, Search } from 'lucide-reac
 import { BlogPostCard, type BlogPost } from '@/components/ui/BlogPostCard'
 
 /**
- * Mock blog post data for the AI Agents series and other posts
- * In production, this would come from the database/CMS
+ * Interface for API response
  */
-const mockBlogPosts: BlogPost[] = [
-  // Post 1: Anchor
-  {
-    slug: 'what-is-needed-to-unlock-ai-agents',
-    title: "What's Needed to Unlock the Full Potential of AI Agents?",
-    excerpt: 'The anchor post for our AI Agents research series. Discover the Eight Pillars framework and why 90% of enterprise AI agent pilots fail to reach production.',
-    publishedAt: '2024-12-07',
-    category: 'Anchor',
-    readingTime: 12,
-    featured: true,
-    tags: ['AI Agents', 'Enterprise', 'Research', 'Stanford'],
-  },
-  // Theme Deep-Dives (6)
-  {
-    slug: 'llm-cognitive-engine',
-    title: 'The LLM as Cognitive Engine: Beyond Chat Completions',
-    excerpt: 'Exploring how large language models serve as the reasoning core of AI agents, and why model capability alone accounts for only 30-40% of agent success.',
-    publishedAt: '2024-12-09',
-    category: 'Theme',
-    readingTime: 8,
-    tags: ['AI Agents', 'LLM', 'Machine Learning'],
-  },
-  {
-    slug: 'context-memory-foundations',
-    title: 'Context and Memory Management: The Agent\'s Working Memory',
-    excerpt: 'How AI agents maintain context across long-running tasks and why the 40% context utilization rule is critical for production systems.',
-    publishedAt: '2024-12-11',
-    category: 'Theme',
-    readingTime: 10,
-    tags: ['AI Agents', 'Memory', 'Architecture'],
-  },
-  {
-    slug: 'system-integration-challenges',
-    title: 'System Integration: The 92% Blocker',
-    excerpt: 'Deep dive into why system integration is the primary reason enterprise AI agent pilots fail, and practical strategies to overcome these challenges.',
-    publishedAt: '2024-12-14',
-    category: 'Theme',
-    readingTime: 9,
-    tags: ['AI Agents', 'Enterprise', 'Integration'],
-  },
-  {
-    slug: 'authentication-identity',
-    title: 'Authentication and Identity for AI Agents',
-    excerpt: 'Exploring the unique challenges of managing credentials, permissions, and identity when AI agents act on behalf of users and systems.',
-    publishedAt: '2024-12-16',
-    category: 'Theme',
-    readingTime: 7,
-    tags: ['AI Agents', 'Security', 'Authentication'],
-  },
-  {
-    slug: 'trust-governance-guardrails',
-    title: 'Trust, Governance, and Guardrails: Keeping Agents Safe',
-    excerpt: 'How organizations can build trust in AI agents through proper governance frameworks, safety guardrails, and human-in-the-loop controls.',
-    publishedAt: '2024-12-18',
-    category: 'Theme',
-    readingTime: 11,
-    tags: ['AI Agents', 'Safety', 'Governance'],
-  },
-  // Emergent Insights (6)
-  {
-    slug: 'emergent-behaviors',
-    title: 'Emergent Behaviors in Multi-Agent Systems',
-    excerpt: 'When agents collaborate, surprising capabilities emerge.',
-    publishedAt: '2024-12-20',
-    category: 'Emergent',
-    readingTime: 6,
-    tags: ['AI Agents', 'Research', 'Behavior'],
-  },
-  {
-    slug: 'cost-management-strategies',
-    title: 'Cost Management Strategies for Production AI Agents',
-    excerpt: 'Practical approaches to managing the operational costs of AI agents, from token optimization to intelligent caching strategies.',
-    publishedAt: '2024-12-22',
-    category: 'Theme',
-    readingTime: 8,
-    tags: ['AI Agents', 'Cost', 'Production'],
-  },
-  {
-    slug: 'agent-evaluations',
-    title: 'Agent Evaluations: Beyond Simple Accuracy',
-    excerpt: 'Why traditional ML metrics fail for agents and what to measure instead.',
-    publishedAt: '2024-12-24',
-    category: 'Emergent',
-    readingTime: 7,
-    tags: ['AI Agents', 'Testing', 'Evaluation'],
-  },
-  {
-    slug: 'monitoring-telemetry',
-    title: 'Monitoring & Telemetry for Production Agents',
-    excerpt: 'Setting up effective monitoring and alerting for agent systems in production.',
-    publishedAt: '2024-12-26',
-    category: 'Emergent',
-    readingTime: 9,
-    tags: ['AI Agents', 'Monitoring', 'DevOps'],
-  },
-  {
-    slug: 'emergent-reasoning-patterns',
-    title: 'Emergent Reasoning Patterns in AI Agents',
-    excerpt: 'How agents develop unexpected reasoning capabilities through training.',
-    publishedAt: '2024-12-28',
-    category: 'Emergent',
-    readingTime: 8,
-    tags: ['AI Agents', 'Reasoning', 'Research'],
-  },
-  {
-    slug: 'emergent-tool-use',
-    title: 'Emergent Tool Use in AI Agents',
-    excerpt: 'How agents learn to use tools in unexpected ways.',
-    publishedAt: '2024-12-30',
-    category: 'Emergent',
-    readingTime: 7,
-    tags: ['AI Agents', 'Tools', 'Research'],
-  },
-  // Practitioner Perspectives (5)
-  {
-    slug: 'practitioner-pharma-insights',
-    title: 'Practitioner Perspective: AI Agents in Pharma',
-    excerpt: 'Lessons learned from deploying AI agents in pharmaceutical operations.',
-    publishedAt: '2025-01-02',
-    category: 'Practitioner',
-    readingTime: 5,
-    tags: ['AI Agents', 'Pharma', 'Enterprise'],
-  },
-  {
-    slug: 'practitioner-supply-chain',
-    title: 'Practitioner Perspective: Supply Chain Automation',
-    excerpt: 'How AI agents are transforming supply chain operations.',
-    publishedAt: '2025-01-04',
-    category: 'Practitioner',
-    readingTime: 6,
-    tags: ['AI Agents', 'Supply Chain', 'Automation'],
-  },
-  {
-    slug: 'practitioner-customer-service',
-    title: 'Practitioner Perspective: Customer Service Agents',
-    excerpt: 'Building effective customer service AI agents.',
-    publishedAt: '2025-01-06',
-    category: 'Practitioner',
-    readingTime: 5,
-    tags: ['AI Agents', 'Customer Service', 'Enterprise'],
-  },
-  {
-    slug: 'practitioner-code-assistants',
-    title: 'Practitioner Perspective: Code Assistant Agents',
-    excerpt: 'Lessons from building AI coding assistants.',
-    publishedAt: '2025-01-08',
-    category: 'Practitioner',
-    readingTime: 6,
-    tags: ['AI Agents', 'Developer Tools', 'Coding'],
-  },
-  {
-    slug: 'practitioner-data-analysis',
-    title: 'Practitioner Perspective: Data Analysis Agents',
-    excerpt: 'Using AI agents for automated data analysis.',
-    publishedAt: '2025-01-10',
-    category: 'Practitioner',
-    readingTime: 5,
-    tags: ['AI Agents', 'Data Analysis', 'Automation'],
-  },
-  // Prototype Learnings (3)
-  {
-    slug: 'prototype-rag-agent',
-    title: 'Prototype Learning: Building a RAG-Powered Agent',
-    excerpt: 'Lessons from building a retrieval-augmented agent.',
-    publishedAt: '2025-01-12',
-    category: 'Prototype',
-    readingTime: 7,
-    tags: ['AI Agents', 'RAG', 'Prototype'],
-  },
-  {
-    slug: 'prototype-multi-agent',
-    title: 'Prototype Learning: Multi-Agent Collaboration',
-    excerpt: 'Building systems where multiple agents work together.',
-    publishedAt: '2025-01-14',
-    category: 'Prototype',
-    readingTime: 8,
-    tags: ['AI Agents', 'Multi-Agent', 'Prototype'],
-  },
-  {
-    slug: 'prototype-voice-agent',
-    title: 'Prototype Learning: Voice-Enabled Agent',
-    excerpt: 'Adding voice capabilities to AI agents.',
-    publishedAt: '2025-01-16',
-    category: 'Prototype',
-    readingTime: 6,
-    tags: ['AI Agents', 'Voice', 'Prototype'],
-  },
-  // Conference Insights (3)
-  {
-    slug: 'conference-neurips-insights',
-    title: 'Conference Insights: NeurIPS on AI Agents',
-    excerpt: 'Key takeaways from the latest academic research on AI agents presented at NeurIPS.',
-    publishedAt: '2025-01-18',
-    category: 'Conference',
-    readingTime: 8,
-    tags: ['AI Agents', 'Research', 'Conference'],
-  },
-  {
-    slug: 'conference-icml-trends',
-    title: 'Conference Insights: ICML Trends in Agents',
-    excerpt: 'Emerging trends from ICML on AI agent development.',
-    publishedAt: '2025-01-20',
-    category: 'Conference',
-    readingTime: 7,
-    tags: ['AI Agents', 'Research', 'Conference'],
-  },
-  {
-    slug: 'conference-stanford-ai',
-    title: 'Conference Insights: Stanford AI Agents Summit',
-    excerpt: 'Highlights from the Stanford AI Agents research symposium.',
-    publishedAt: '2025-01-22',
-    category: 'Conference',
-    readingTime: 6,
-    tags: ['AI Agents', 'Stanford', 'Conference'],
-  },
-  // Methodology (1)
-  {
-    slug: 'methodology-eight-pillars',
-    title: 'The Eight Pillars Methodology',
-    excerpt: 'A systematic framework for building production AI agents.',
-    publishedAt: '2025-01-24',
-    category: 'Theme',
-    readingTime: 10,
-    tags: ['AI Agents', 'Methodology', 'Framework'],
-  },
-  // Series Conclusion (1)
-  {
-    slug: 'series-conclusion',
-    title: 'Series Conclusion: The Future of AI Agents',
-    excerpt: 'Looking ahead at what the future holds for AI agents.',
-    publishedAt: '2025-01-26',
-    category: 'Theme',
-    readingTime: 8,
-    tags: ['AI Agents', 'Future', 'Research'],
-  },
-]
+interface ApiPost {
+  id: string
+  slug: string
+  title: string
+  excerpt: string | null
+  featuredImage: string | null
+  category: string | null
+  author: string
+  publishedAt: string
+  readingTimeMinutes: number
+  viewCount: number
+  tags: Array<{
+    tag: {
+      slug: string
+      name: string
+    }
+  }>
+  series: {
+    slug: string
+    name: string
+  } | null
+}
+
+/**
+ * Map API category to BlogPost category format
+ */
+function mapCategory(apiCategory: string | null): 'Anchor' | 'Theme' | 'Emergent' | 'Practitioner' | 'Prototype' | 'Conference' | 'Meta' | 'General' {
+  const categoryMap: Record<string, 'Anchor' | 'Theme' | 'Emergent' | 'Practitioner' | 'Prototype' | 'Conference' | 'Meta' | 'General'> = {
+    'ANCHOR': 'Anchor',
+    'THEME': 'Theme',
+    'EMERGENT': 'Emergent',
+    'PRACTITIONER': 'Practitioner',
+    'PROTOTYPE': 'Prototype',
+    'CONFERENCE': 'Conference',
+    'METHODOLOGY': 'Theme', // Map methodology to Theme
+    'META': 'Meta',
+    'GENERAL': 'General',
+  }
+  return categoryMap[apiCategory?.toUpperCase() || ''] || 'General'
+}
+
+/**
+ * Transform API post to BlogPost format
+ */
+function transformApiPost(apiPost: ApiPost): BlogPost {
+  return {
+    slug: apiPost.slug,
+    title: apiPost.title,
+    excerpt: apiPost.excerpt || '',
+    publishedAt: apiPost.publishedAt,
+    category: mapCategory(apiPost.category),
+    readingTime: apiPost.readingTimeMinutes,
+    featured: apiPost.category === 'ANCHOR',
+    tags: apiPost.tags.map(t => t.tag.name),
+  }
+}
 
 /**
  * Helper function to convert tag to URL-safe slug
@@ -257,37 +76,26 @@ function tagToSlug(tag: string): string {
 /**
  * Helper function to convert slug back to tag display name
  */
-function slugToTag(slug: string): string | undefined {
-  const allTags = getAllTags()
+function slugToTagFromList(slug: string, allTags: string[]): string | undefined {
   return allTags.find((tag) => tagToSlug(tag) === slug)
 }
 
 /**
- * Filter to get only published posts (Feature 41)
- * Posts without a status are treated as published for backward compatibility
+ * Get all unique tags from posts
  */
-function getPublishedPosts(): BlogPost[] {
-  return mockBlogPosts.filter((post) => !post.status || post.status === 'published')
-}
-
-/**
- * Get all unique tags from published posts only
- */
-function getAllTags(): string[] {
+function getAllTagsFromPosts(posts: BlogPost[]): string[] {
   const tagSet = new Set<string>()
-  const publishedPosts = getPublishedPosts()
-  publishedPosts.forEach((post) => {
+  posts.forEach((post) => {
     post.tags?.forEach((tag) => tagSet.add(tag))
   })
   return Array.from(tagSet).sort()
 }
 
 /**
- * Get tag count (number of published posts with this tag)
+ * Get tag count (number of posts with this tag)
  */
-function getTagCount(tag: string): number {
-  const publishedPosts = getPublishedPosts()
-  return publishedPosts.filter((post) => post.tags?.includes(tag)).length
+function getTagCountFromPosts(tag: string, posts: BlogPost[]): number {
+  return posts.filter((post) => post.tags?.includes(tag)).length
 }
 
 /**
@@ -452,9 +260,10 @@ interface TagFilterProps {
   allTags: string[]
   selectedTag: string | null
   onTagSelect: (tag: string | null) => void
+  posts: BlogPost[]
 }
 
-function TagFilter({ allTags, selectedTag, onTagSelect }: TagFilterProps) {
+function TagFilter({ allTags, selectedTag, onTagSelect, posts }: TagFilterProps) {
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
@@ -553,7 +362,7 @@ function TagFilter({ allTags, selectedTag, onTagSelect }: TagFilterProps) {
               <div className="p-2">
                 {allTags.map((tag) => {
                   const isSelected = selectedTag === tag
-                  const count = getTagCount(tag)
+                  const count = getTagCountFromPosts(tag, posts)
                   return (
                     <button
                       key={tag}
@@ -607,16 +416,47 @@ function BlogPageContent() {
   const searchParams = useSearchParams()
   const searchInputRef = useRef<HTMLInputElement>(null)
 
-  // Get tag from URL query parameter
-  const tagSlug = searchParams.get('tag')
-  const selectedTag = tagSlug ? (slugToTag(tagSlug) ?? null) : null
-
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedCategory, setSelectedCategory] = useState<CategoryId>('all')
   const [searchQuery, setSearchQuery] = useState('')
 
-  // Get all unique tags
-  const allTags = useMemo(() => getAllTags(), [])
+  // State for API-fetched posts
+  const [posts, setPosts] = useState<BlogPost[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  // Fetch posts from API on mount
+  useEffect(() => {
+    async function fetchPosts() {
+      try {
+        setIsLoading(true)
+        setError(null)
+        // Fetch all published posts (API filters by status=PUBLISHED)
+        const response = await fetch('/api/posts?limit=100')
+        if (!response.ok) {
+          throw new Error('Failed to fetch posts')
+        }
+        const data = await response.json()
+        if (data.success && data.posts) {
+          const transformedPosts = data.posts.map(transformApiPost)
+          setPosts(transformedPosts)
+        }
+      } catch (err) {
+        console.error('Error fetching posts:', err)
+        setError('Failed to load posts')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    fetchPosts()
+  }, [])
+
+  // Get all unique tags from fetched posts
+  const allTags = useMemo(() => getAllTagsFromPosts(posts), [posts])
+
+  // Get tag from URL query parameter
+  const tagSlug = searchParams.get('tag')
+  const selectedTag = tagSlug ? (slugToTagFromList(tagSlug, allTags) ?? null) : null
 
   // Handle tag selection and update URL
   const handleTagSelect = useCallback((tag: string | null) => {
@@ -629,29 +469,27 @@ function BlogPageContent() {
   }, [router])
 
   // Filter posts based on selected category, tag, and search query
-  // Feature 41: Only show published posts (filter out scheduled/draft)
   const filteredPosts = useMemo(() => {
-    const publishedPosts = getPublishedPosts()
-    let posts = selectedCategory === 'all'
-      ? publishedPosts
-      : publishedPosts.filter((post) => post.category === selectedCategory)
+    let filtered = selectedCategory === 'all'
+      ? posts
+      : posts.filter((post) => post.category?.toUpperCase() === selectedCategory.toUpperCase())
 
     // Apply tag filter if selected
     if (selectedTag) {
-      posts = posts.filter((post) => post.tags?.includes(selectedTag))
+      filtered = filtered.filter((post) => post.tags?.includes(selectedTag))
     }
 
     // Apply search filter if query exists
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase().trim()
-      posts = posts.filter((post) =>
+      filtered = filtered.filter((post) =>
         post.title.toLowerCase().includes(query) ||
         post.excerpt.toLowerCase().includes(query)
       )
     }
 
-    return posts
-  }, [selectedCategory, selectedTag, searchQuery])
+    return filtered
+  }, [posts, selectedCategory, selectedTag, searchQuery])
 
   // Calculate pagination based on filtered posts
   const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE)
@@ -659,11 +497,10 @@ function BlogPageContent() {
   const endIndex = startIndex + POSTS_PER_PAGE
   const currentPosts = filteredPosts.slice(startIndex, endIndex)
 
-  // Get count for each category (only published posts - Feature 41)
+  // Get count for each category
   const getCategoryCount = (categoryId: CategoryId): number => {
-    const publishedPosts = getPublishedPosts()
-    if (categoryId === 'all') return publishedPosts.length
-    return publishedPosts.filter((post) => post.category === categoryId).length
+    if (categoryId === 'all') return posts.length
+    return posts.filter((post) => post.category?.toUpperCase() === categoryId.toUpperCase()).length
   }
 
   // Handle page change with scroll to top
@@ -694,6 +531,37 @@ function BlogPageContent() {
 
   // Determine if search is active
   const isSearchActive = searchQuery.trim().length > 0
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <main className="min-h-screen bg-light-base dark:bg-dark-base flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-accent-primary/10 mb-4 animate-pulse">
+            <BookOpen className="w-8 h-8 text-accent-primary" aria-hidden="true" />
+          </div>
+          <p className="text-text-secondary dark:text-text-dark-secondary">Loading posts...</p>
+        </div>
+      </main>
+    )
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <main className="min-h-screen bg-light-base dark:bg-dark-base flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-500 mb-4">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-accent-primary text-white rounded-lg hover:bg-accent-primary/90"
+          >
+            Retry
+          </button>
+        </div>
+      </main>
+    )
+  }
 
   return (
     <main className="min-h-screen bg-light-base dark:bg-dark-base">
@@ -727,14 +595,14 @@ function BlogPageContent() {
               Explore the AI Agents research series and practical guides for building production systems.
             </p>
 
-            {/* Stats - only count published posts (Feature 41) */}
+            {/* Stats */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
               className="flex items-center justify-center gap-6 mt-8 text-sm text-text-muted dark:text-text-dark-muted"
             >
-              <span>{getPublishedPosts().length} articles</span>
+              <span>{posts.length} articles</span>
               <span className="w-1 h-1 rounded-full bg-text-muted dark:bg-text-dark-muted" aria-hidden="true" />
               <span>AI Agents Series</span>
             </motion.div>
@@ -876,6 +744,7 @@ function BlogPageContent() {
             allTags={allTags}
             selectedTag={selectedTag}
             onTagSelect={handleTagSelect}
+            posts={posts}
           />
 
           {/* Active Filter Indicator */}
