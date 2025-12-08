@@ -22,22 +22,12 @@ interface Post {
   } | null
 }
 
-interface WeekInfo {
-  weekNumber: number
-  startDate: string
-  endDate: string
-  theme: string
-  postCount: number
-  dates: string[]
-}
-
 interface CalendarData {
   success: boolean
   startDate: string
   endDate: string
   calendarData: Record<string, Post[]>
   unscheduledDrafts: Post[]
-  weeks: WeekInfo[]
   totalPosts: number
   publishedCount: number
   scheduledCount: number
@@ -66,19 +56,6 @@ function formatDate(dateString: string): string {
   })
 }
 
-function formatMonthDay(dateString: string): string {
-  const date = new Date(dateString)
-  return date.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-  })
-}
-
-function getDayName(dateString: string): string {
-  const date = new Date(dateString)
-  return date.toLocaleDateString('en-US', { weekday: 'short' })
-}
-
 function isToday(dateString: string): boolean {
   const today = new Date().toISOString().split('T')[0]
   return dateString === today
@@ -87,6 +64,22 @@ function isToday(dateString: string): boolean {
 function isPast(dateString: string): boolean {
   const today = new Date().toISOString().split('T')[0]
   return dateString < today
+}
+
+function getMonthName(year: number, month: number): string {
+  return new Date(year, month, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+}
+
+function getDaysInMonth(year: number, month: number): number {
+  return new Date(year, month + 1, 0).getDate()
+}
+
+function getFirstDayOfMonth(year: number, month: number): number {
+  return new Date(year, month, 1).getDay()
+}
+
+function formatDateKey(year: number, month: number, day: number): string {
+  return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
 }
 
 // ------------------------------------------------------------------
@@ -256,9 +249,10 @@ function CategoryBadge({ category }: { category: string | null }) {
 interface DraggablePostCardProps {
   post: Post
   onDragStart: (post: Post, sourceDate: string | null) => void
+  compact?: boolean
 }
 
-function DraggablePostCard({ post, onDragStart }: DraggablePostCardProps) {
+function DraggablePostCard({ post, onDragStart, compact = false }: DraggablePostCardProps) {
   const statusColors = {
     PUBLISHED: 'border-l-green-500',
     SCHEDULED: 'border-l-yellow-500',
@@ -268,13 +262,39 @@ function DraggablePostCard({ post, onDragStart }: DraggablePostCardProps) {
   const handleDragStart = (e: DragEvent<HTMLDivElement>) => {
     e.dataTransfer.effectAllowed = 'move'
     e.dataTransfer.setData('text/plain', post.id)
-    // Determine source date based on status
     const sourceDate = post.status === 'SCHEDULED'
       ? post.scheduledFor
       : post.status === 'PUBLISHED'
         ? post.publishedAt
         : null
     onDragStart(post, sourceDate)
+  }
+
+  if (compact) {
+    return (
+      <div
+        draggable
+        onDragStart={handleDragStart}
+        className={`
+          p-1.5 rounded bg-light-base dark:bg-dark-panel
+          border border-border-light dark:border-border-dark
+          border-l-2 ${statusColors[post.status]}
+          hover:shadow-sm transition-all cursor-grab active:cursor-grabbing
+          hover:ring-1 hover:ring-accent-primary/30
+        `}
+        data-post-id={post.id}
+        title={post.title}
+      >
+        <p className="text-xs font-medium text-text-primary dark:text-text-dark-primary truncate">
+          {post.seriesOrder && (
+            <span className="text-text-tertiary dark:text-text-dark-tertiary mr-1">
+              #{post.seriesOrder}
+            </span>
+          )}
+          {post.title}
+        </p>
+      </div>
+    )
   }
 
   return (
@@ -306,7 +326,6 @@ function DraggablePostCard({ post, onDragStart }: DraggablePostCardProps) {
             <CategoryBadge category={post.category} />
           </div>
         </div>
-        {/* Drag handle indicator */}
         <div className="flex-shrink-0 opacity-50">
           <svg className="w-4 h-4 text-text-tertiary" fill="currentColor" viewBox="0 0 20 20">
             <path d="M7 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 2zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 14zm6-8a2 2 0 1 0-.001-4.001A2 2 0 0 0 13 6zm0 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 14z" />
@@ -318,22 +337,26 @@ function DraggablePostCard({ post, onDragStart }: DraggablePostCardProps) {
 }
 
 // ------------------------------------------------------------------
-// Droppable Day Cell Component
+// Droppable Day Cell Component for Month View
 // ------------------------------------------------------------------
 interface DroppableDayCellProps {
   dateString: string
+  dayNumber: number
   posts: Post[]
   onDragStart: (post: Post, sourceDate: string | null) => void
   onDrop: (targetDate: string) => void
   isDragActive: boolean
+  isCurrentMonth: boolean
 }
 
 function DroppableDayCell({
   dateString,
+  dayNumber,
   posts,
   onDragStart,
   onDrop,
   isDragActive,
+  isCurrentMonth,
 }: DroppableDayCellProps) {
   const [isDragOver, setIsDragOver] = useState(false)
   const today = isToday(dateString)
@@ -349,7 +372,6 @@ function DroppableDayCell({
 
   const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
-    // Only set false if we're actually leaving the cell (not entering a child)
     const rect = e.currentTarget.getBoundingClientRect()
     const x = e.clientX
     const y = e.clientY
@@ -370,102 +392,53 @@ function DroppableDayCell({
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
       data-date={dateString}
-      data-testid="calendar-day-cell"
       className={`
-        min-h-[120px] p-2 border rounded-lg transition-all
+        min-h-[100px] p-1.5 border rounded-lg transition-all
         ${isDragOver
           ? 'border-accent-primary border-2 bg-accent-primary/10 ring-2 ring-accent-primary/30'
           : 'border-border-light dark:border-border-dark'
         }
         ${isDragActive && !isDragOver ? 'opacity-75' : ''}
         ${today && !isDragOver ? 'bg-accent-primary/5 border-accent-primary' : ''}
-        ${past && !today && !isDragOver ? 'bg-light-neutral-grey/50 dark:bg-dark-deep-blue/30' : ''}
-        ${!past && !today && !isDragOver ? 'bg-light-base dark:bg-dark-panel' : ''}
+        ${past && !today && !isDragOver && isCurrentMonth ? 'bg-light-neutral-grey/50 dark:bg-dark-deep-blue/30' : ''}
+        ${!past && !today && !isDragOver && isCurrentMonth ? 'bg-light-base dark:bg-dark-panel' : ''}
+        ${!isCurrentMonth ? 'bg-light-neutral-grey/30 dark:bg-dark-deep-blue/20 opacity-50' : ''}
       `}
     >
-      <div className="flex items-center justify-between mb-2">
-        <span
-          className={`
-            text-xs font-medium
-            ${today ? 'text-accent-primary' : 'text-text-secondary dark:text-text-dark-secondary'}
-          `}
-        >
-          {getDayName(dateString)}
-        </span>
+      <div className="flex items-center justify-between mb-1">
         <span
           className={`
             text-sm font-semibold
             ${today ? 'bg-accent-primary text-white px-1.5 py-0.5 rounded' : ''}
-            ${!today ? 'text-text-primary dark:text-text-dark-primary' : ''}
+            ${!today && isCurrentMonth ? 'text-text-primary dark:text-text-dark-primary' : ''}
+            ${!isCurrentMonth ? 'text-text-tertiary dark:text-text-dark-tertiary' : ''}
           `}
         >
-          {formatMonthDay(dateString)}
+          {dayNumber}
         </span>
+        {posts.length > 0 && (
+          <span className="text-xs text-accent-primary font-medium">
+            {posts.length}
+          </span>
+        )}
       </div>
 
       <div className="space-y-1">
-        {posts.map((post) => (
-          <DraggablePostCard key={post.id} post={post} onDragStart={onDragStart} />
+        {posts.slice(0, 3).map((post) => (
+          <DraggablePostCard key={post.id} post={post} onDragStart={onDragStart} compact />
         ))}
+        {posts.length > 3 && (
+          <p className="text-xs text-text-tertiary dark:text-text-dark-tertiary text-center">
+            +{posts.length - 3} more
+          </p>
+        )}
       </div>
 
-      {/* Drop zone indicator when dragging */}
       {isDragOver && (
-        <div className="mt-2 p-2 border-2 border-dashed border-accent-primary rounded-lg text-center">
-          <span className="text-xs text-accent-primary font-medium">Drop here</span>
+        <div className="mt-1 p-1 border border-dashed border-accent-primary rounded text-center">
+          <span className="text-xs text-accent-primary font-medium">Drop</span>
         </div>
       )}
-    </div>
-  )
-}
-
-// ------------------------------------------------------------------
-// Week Row Component with Drag-Drop Support
-// ------------------------------------------------------------------
-interface WeekRowProps {
-  week: WeekInfo
-  calendarData: Record<string, Post[]>
-  onDragStart: (post: Post, sourceDate: string | null) => void
-  onDrop: (targetDate: string) => void
-  isDragActive: boolean
-}
-
-function WeekRow({ week, calendarData, onDragStart, onDrop, isDragActive }: WeekRowProps) {
-  return (
-    <div className="mb-6">
-      {/* Week Header */}
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-3">
-          <span className="text-lg font-heading font-semibold text-text-primary dark:text-text-dark-primary">
-            Week {week.weekNumber}
-          </span>
-          <span className="text-sm text-text-secondary dark:text-text-dark-secondary">
-            {week.theme}
-          </span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-text-tertiary dark:text-text-dark-tertiary">
-            {formatDate(week.startDate)} - {formatDate(week.endDate)}
-          </span>
-          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-accent-primary/10 text-accent-primary">
-            {week.postCount} posts
-          </span>
-        </div>
-      </div>
-
-      {/* Days Grid */}
-      <div className="grid grid-cols-7 gap-2">
-        {week.dates.map((dateString) => (
-          <DroppableDayCell
-            key={dateString}
-            dateString={dateString}
-            posts={calendarData[dateString] || []}
-            onDragStart={onDragStart}
-            onDrop={onDrop}
-            isDragActive={isDragActive}
-          />
-        ))}
-      </div>
     </div>
   )
 }
@@ -619,8 +592,10 @@ export function PublicationCalendar() {
   const [data, setData] = useState<CalendarData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [currentWeekIndex, setCurrentWeekIndex] = useState(0)
-  const [viewMode, setViewMode] = useState<'week' | 'all'>('all')
+
+  // Month navigation state
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear())
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth())
 
   // Drag-and-drop state
   const [draggedPost, setDraggedPost] = useState<Post | null>(null)
@@ -659,38 +634,75 @@ export function PublicationCalendar() {
     fetchCalendarData()
   }, [fetchCalendarData])
 
-  // Find which week is current
-  useEffect(() => {
-    if (data?.weeks) {
-      const today = new Date().toISOString().split('T')[0]
-      const currentIndex = data.weeks.findIndex(
-        (week) => today >= week.startDate && today <= week.endDate
-      )
-      if (currentIndex !== -1) {
-        setCurrentWeekIndex(currentIndex)
-      }
+  // Generate calendar grid for current month
+  const calendarGrid = useMemo(() => {
+    const daysInMonth = getDaysInMonth(currentYear, currentMonth)
+    const firstDayOfMonth = getFirstDayOfMonth(currentYear, currentMonth)
+    const grid: Array<{ dateString: string; dayNumber: number; isCurrentMonth: boolean }> = []
+
+    // Add empty cells for days before the 1st of the month
+    const prevMonth = currentMonth === 0 ? 11 : currentMonth - 1
+    const prevYear = currentMonth === 0 ? currentYear - 1 : currentYear
+    const daysInPrevMonth = getDaysInMonth(prevYear, prevMonth)
+
+    for (let i = firstDayOfMonth - 1; i >= 0; i--) {
+      const day = daysInPrevMonth - i
+      grid.push({
+        dateString: formatDateKey(prevYear, prevMonth, day),
+        dayNumber: day,
+        isCurrentMonth: false,
+      })
     }
-  }, [data])
+
+    // Add days of the current month
+    for (let day = 1; day <= daysInMonth; day++) {
+      grid.push({
+        dateString: formatDateKey(currentYear, currentMonth, day),
+        dayNumber: day,
+        isCurrentMonth: true,
+      })
+    }
+
+    // Add days from next month to complete the grid (always show 6 rows = 42 cells)
+    const nextMonth = currentMonth === 11 ? 0 : currentMonth + 1
+    const nextYear = currentMonth === 11 ? currentYear + 1 : currentYear
+    const remainingCells = 42 - grid.length
+
+    for (let day = 1; day <= remainingCells; day++) {
+      grid.push({
+        dateString: formatDateKey(nextYear, nextMonth, day),
+        dayNumber: day,
+        isCurrentMonth: false,
+      })
+    }
+
+    return grid
+  }, [currentYear, currentMonth])
 
   // Navigation handlers
-  const goToPreviousWeek = () => {
-    if (currentWeekIndex > 0) {
-      setCurrentWeekIndex(currentWeekIndex - 1)
+  const goToPreviousMonth = () => {
+    if (currentMonth === 0) {
+      setCurrentYear(currentYear - 1)
+      setCurrentMonth(11)
+    } else {
+      setCurrentMonth(currentMonth - 1)
     }
   }
 
-  const goToNextWeek = () => {
-    if (data && currentWeekIndex < data.weeks.length - 1) {
-      setCurrentWeekIndex(currentWeekIndex + 1)
+  const goToNextMonth = () => {
+    if (currentMonth === 11) {
+      setCurrentYear(currentYear + 1)
+      setCurrentMonth(0)
+    } else {
+      setCurrentMonth(currentMonth + 1)
     }
   }
 
-  // Visible weeks based on view mode
-  const visibleWeeks = useMemo(() => {
-    if (!data) return []
-    if (viewMode === 'all') return data.weeks
-    return [data.weeks[currentWeekIndex]]
-  }, [data, viewMode, currentWeekIndex])
+  const goToToday = () => {
+    const today = new Date()
+    setCurrentYear(today.getFullYear())
+    setCurrentMonth(today.getMonth())
+  }
 
   // Drag-and-drop handlers
   const handleDragStart = useCallback((post: Post, sourceDate: string | null) => {
@@ -707,7 +719,7 @@ export function PublicationCalendar() {
     setIsDragActive(false)
   }, [draggedPost, dragSourceDate])
 
-  // Handle global drag end (in case drop is cancelled)
+  // Handle global drag end
   useEffect(() => {
     const handleDragEnd = () => {
       if (!showRescheduleDialog) {
@@ -743,7 +755,6 @@ export function PublicationCalendar() {
 
       if (result.success) {
         setToast({ message: `Post rescheduled to ${formatDate(dropTargetDate)}`, type: 'success' })
-        // Refresh calendar data
         await fetchCalendarData()
       } else {
         setToast({ message: result.error || 'Failed to reschedule post', type: 'error' })
@@ -817,112 +828,96 @@ export function PublicationCalendar() {
     )
   }
 
+  const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+
   return (
     <div>
       {/* Stats Cards */}
       <StatsCards data={data} />
 
-      {/* Calendar Header */}
+      {/* Calendar Header with Month Navigation */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
         <div>
           <h2 className="text-xl font-heading font-semibold text-text-primary dark:text-text-dark-primary">
             Publication Schedule
           </h2>
           <p className="text-sm text-text-secondary dark:text-text-dark-secondary mt-1">
-            {formatDate(data.startDate)} - {formatDate(data.endDate)} ({data.weeks.length} weeks, {data.totalPosts} posts)
+            {data.totalPosts} posts total
           </p>
         </div>
 
+        {/* Month Navigation */}
         <div className="flex items-center gap-2">
-          {/* View Mode Toggle */}
-          <div className="flex items-center bg-light-neutral-grey dark:bg-dark-deep-blue rounded-lg p-1">
-            <button
-              onClick={() => setViewMode('week')}
-              className={`
-                px-3 py-1.5 text-sm font-medium rounded-md transition-colors
-                ${viewMode === 'week'
-                  ? 'bg-light-base dark:bg-dark-panel text-text-primary dark:text-text-dark-primary shadow-sm'
-                  : 'text-text-secondary dark:text-text-dark-secondary hover:text-text-primary dark:hover:text-text-dark-primary'
-                }
-              `}
-            >
-              Week View
-            </button>
-            <button
-              onClick={() => setViewMode('all')}
-              className={`
-                px-3 py-1.5 text-sm font-medium rounded-md transition-colors
-                ${viewMode === 'all'
-                  ? 'bg-light-base dark:bg-dark-panel text-text-primary dark:text-text-dark-primary shadow-sm'
-                  : 'text-text-secondary dark:text-text-dark-secondary hover:text-text-primary dark:hover:text-text-dark-primary'
-                }
-              `}
-            >
-              All Weeks
-            </button>
+          <button
+            onClick={goToPreviousMonth}
+            className="p-2 rounded-lg text-text-secondary dark:text-text-dark-secondary hover:bg-light-neutral-grey dark:hover:bg-dark-deep-blue hover:text-text-primary dark:hover:text-text-dark-primary transition-colors"
+            aria-label="Previous month"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
+          </button>
+
+          <div className="min-w-[180px] text-center">
+            <span className="text-lg font-heading font-semibold text-text-primary dark:text-text-dark-primary">
+              {getMonthName(currentYear, currentMonth)}
+            </span>
           </div>
 
-          {/* Week Navigation (only in week view) */}
-          {viewMode === 'week' && (
-            <div className="flex items-center gap-1">
-              <button
-                onClick={goToPreviousWeek}
-                disabled={currentWeekIndex === 0}
-                className={`
-                  p-2 rounded-lg transition-colors
-                  ${currentWeekIndex === 0
-                    ? 'text-text-tertiary dark:text-text-dark-tertiary cursor-not-allowed'
-                    : 'text-text-secondary dark:text-text-dark-secondary hover:bg-light-neutral-grey dark:hover:bg-dark-deep-blue hover:text-text-primary dark:hover:text-text-dark-primary'
-                  }
-                `}
-                aria-label="Previous week"
-              >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                </svg>
-              </button>
-              <span className="text-sm font-medium text-text-primary dark:text-text-dark-primary min-w-[80px] text-center">
-                Week {currentWeekIndex + 1} of {data.weeks.length}
-              </span>
-              <button
-                onClick={goToNextWeek}
-                disabled={currentWeekIndex >= data.weeks.length - 1}
-                className={`
-                  p-2 rounded-lg transition-colors
-                  ${currentWeekIndex >= data.weeks.length - 1
-                    ? 'text-text-tertiary dark:text-text-dark-tertiary cursor-not-allowed'
-                    : 'text-text-secondary dark:text-text-dark-secondary hover:bg-light-neutral-grey dark:hover:bg-dark-deep-blue hover:text-text-primary dark:hover:text-text-dark-primary'
-                  }
-                `}
-                aria-label="Next week"
-              >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                </svg>
-              </button>
-            </div>
-          )}
+          <button
+            onClick={goToNextMonth}
+            className="p-2 rounded-lg text-text-secondary dark:text-text-dark-secondary hover:bg-light-neutral-grey dark:hover:bg-dark-deep-blue hover:text-text-primary dark:hover:text-text-dark-primary transition-colors"
+            aria-label="Next month"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+            </svg>
+          </button>
+
+          <button
+            onClick={goToToday}
+            className="ml-2 px-3 py-1.5 text-sm font-medium rounded-lg bg-accent-primary text-white hover:bg-accent-primary/90 transition-colors"
+          >
+            Today
+          </button>
         </div>
       </div>
 
       {/* Legend */}
       <Legend />
 
-      {/* Calendar Grid with Drag-Drop Support */}
-      <div className="space-y-2">
-        {visibleWeeks.map((week) => (
-          <WeekRow
-            key={week.weekNumber}
-            week={week}
-            calendarData={data.calendarData}
-            onDragStart={handleDragStart}
-            onDrop={handleDrop}
-            isDragActive={isDragActive}
-          />
-        ))}
+      {/* Month Calendar Grid */}
+      <div className="bg-light-base dark:bg-dark-panel rounded-xl border border-border-light dark:border-border-dark overflow-hidden">
+        {/* Week day headers */}
+        <div className="grid grid-cols-7 bg-light-neutral-grey/50 dark:bg-dark-deep-blue/50 border-b border-border-light dark:border-border-dark">
+          {weekDays.map((day) => (
+            <div
+              key={day}
+              className="px-2 py-3 text-center text-sm font-medium text-text-secondary dark:text-text-dark-secondary"
+            >
+              {day}
+            </div>
+          ))}
+        </div>
+
+        {/* Calendar days grid */}
+        <div className="grid grid-cols-7 gap-px bg-border-light dark:bg-border-dark">
+          {calendarGrid.map((cell, index) => (
+            <DroppableDayCell
+              key={`${cell.dateString}-${index}`}
+              dateString={cell.dateString}
+              dayNumber={cell.dayNumber}
+              posts={data.calendarData[cell.dateString] || []}
+              onDragStart={handleDragStart}
+              onDrop={handleDrop}
+              isDragActive={isDragActive}
+              isCurrentMonth={cell.isCurrentMonth}
+            />
+          ))}
+        </div>
       </div>
 
-      {/* Unscheduled Drafts (also draggable) */}
+      {/* Unscheduled Drafts */}
       {data.unscheduledDrafts.length > 0 && (
         <div className="mt-8">
           <h3 className="text-lg font-heading font-semibold text-text-primary dark:text-text-dark-primary mb-4">
