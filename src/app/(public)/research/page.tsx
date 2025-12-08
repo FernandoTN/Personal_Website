@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import { motion, useInView, useSpring, useTransform } from 'framer-motion'
 import Link from 'next/link'
 import { FinalReport } from '@/components/research/FinalReport'
@@ -225,9 +225,11 @@ function AnimatedCounter({
   )
 
   // Trigger animation when in view
-  if (isInView) {
-    spring.set(value)
-  }
+  useEffect(() => {
+    if (isInView) {
+      spring.set(value)
+    }
+  }, [isInView, spring, value])
 
   return (
     <span ref={ref} className="tabular-nums">
