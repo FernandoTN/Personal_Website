@@ -46,6 +46,14 @@ interface Series {
   slug: string
 }
 
+// Tag interface for existing tags
+interface ExistingTag {
+  id: string
+  name: string
+  slug: string
+  postCount: number
+}
+
 // Schedule Modal Props
 interface ScheduleModalProps {
   isOpen: boolean
@@ -546,6 +554,10 @@ export default function BlogPostEditPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [seriesList, setSeriesList] = useState<Series[]>([])
+  const [existingTags, setExistingTags] = useState<ExistingTag[]>([])
+  const [showTagSelector, setShowTagSelector] = useState(false)
+  const [isUploadingFeatured, setIsUploadingFeatured] = useState(false)
+  const [isUploadingOg, setIsUploadingOg] = useState(false)
 
   // UI state
   const [tagInput, setTagInput] = useState('')
@@ -572,10 +584,11 @@ export default function BlogPostEditPage() {
       try {
         setIsLoading(true)
 
-        // Fetch post and series in parallel
-        const [postResponse, seriesResponse] = await Promise.all([
+        // Fetch post, series, and existing tags in parallel
+        const [postResponse, seriesResponse, tagsResponse] = await Promise.all([
           fetch(`/api/admin/posts/${postId}`),
-          fetch('/api/series')
+          fetch('/api/series'),
+          fetch('/api/tags')
         ])
 
         if (!postResponse.ok) {
@@ -589,6 +602,12 @@ export default function BlogPostEditPage() {
         if (seriesResponse.ok) {
           const seriesData = await seriesResponse.json()
           setSeriesList(seriesData.series || seriesData || [])
+        }
+
+        // Set existing tags
+        if (tagsResponse.ok) {
+          const tagsData = await tagsResponse.json()
+          setExistingTags(tagsData.tags || [])
         }
 
         setFormData({
@@ -652,11 +671,59 @@ export default function BlogPostEditPage() {
     } : null)
   }, [])
 
+  // Handle selecting an existing tag
+  const handleSelectExistingTag = useCallback((tagName: string) => {
+    if (formData && !formData.tags.includes(tagName)) {
+      setFormData(prev => prev ? {
+        ...prev,
+        tags: [...prev.tags, tagName],
+      } : null)
+    }
+  }, [formData])
+
   // Show toast notification
   const showToast = useCallback((message: string, type: 'success' | 'error') => {
     setToast({ message, type })
     setTimeout(() => setToast(null), 5000)
   }, [])
+
+  // Handle image upload
+  const handleImageUpload = useCallback(async (
+    file: File,
+    field: 'featuredImage' | 'ogImage'
+  ) => {
+    const setUploading = field === 'featuredImage' ? setIsUploadingFeatured : setIsUploadingOg
+
+    setUploading(true)
+    try {
+      const uploadFormData = new FormData()
+      uploadFormData.append('file', file)
+      uploadFormData.append('folder', 'blog')
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: uploadFormData,
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Upload failed')
+      }
+
+      const data = await response.json()
+
+      setFormData(prev => prev ? {
+        ...prev,
+        [field]: data.url,
+      } : null)
+
+      showToast('Image uploaded successfully!', 'success')
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : 'Upload failed', 'error')
+    } finally {
+      setUploading(false)
+    }
+  }, [showToast])
 
   // Save post changes
   const handleSave = useCallback(async () => {
@@ -1011,15 +1078,57 @@ export default function BlogPostEditPage() {
           >
             Featured Image URL
           </label>
-          <input
-            type="url"
-            id="featuredImage"
-            name="featuredImage"
-            value={formData.featuredImage}
-            onChange={handleChange}
-            placeholder="https://example.com/image.jpg"
-            className="w-full rounded-lg border border-border-light dark:border-border-dark bg-light-base dark:bg-dark-deep-blue px-4 py-2.5 text-text-primary dark:text-text-dark-primary placeholder-text-muted dark:placeholder-text-dark-muted focus:outline-none focus:ring-2 focus:ring-accent-primary/50 focus:border-accent-primary transition-colors"
-          />
+          <div className="flex gap-2">
+            <input
+              type="url"
+              id="featuredImage"
+              name="featuredImage"
+              value={formData.featuredImage}
+              onChange={handleChange}
+              placeholder="https://example.com/image.jpg"
+              className="flex-1 rounded-lg border border-border-light dark:border-border-dark bg-light-base dark:bg-dark-deep-blue px-4 py-2.5 text-text-primary dark:text-text-dark-primary placeholder-text-muted dark:placeholder-text-dark-muted focus:outline-none focus:ring-2 focus:ring-accent-primary/50 focus:border-accent-primary transition-colors"
+            />
+            <label className="relative cursor-pointer">
+              <input
+                type="file"
+                accept="image/*"
+                className="sr-only"
+                onChange={(e) => {
+                  const file = e.target.files?.[0]
+                  if (file) handleImageUpload(file, 'featuredImage')
+                }}
+                disabled={isUploadingFeatured}
+              />
+              <span className={`inline-flex items-center gap-2 rounded-lg border border-accent-primary px-4 py-2.5 text-sm font-medium text-accent-primary hover:bg-accent-primary/10 transition-colors ${isUploadingFeatured ? 'opacity-50 cursor-wait' : ''}`}>
+                {isUploadingFeatured ? (
+                  <>
+                    <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                    Uploading...
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+                    </svg>
+                    Upload
+                  </>
+                )}
+              </span>
+            </label>
+          </div>
+          {formData.featuredImage && (
+            <div className="mt-3 relative rounded-lg overflow-hidden border border-border-light dark:border-border-dark max-w-xs">
+              <img
+                src={formData.featuredImage}
+                alt="Featured image preview"
+                className="w-full h-auto max-h-40 object-cover"
+                onError={(e) => { e.currentTarget.style.display = 'none' }}
+              />
+            </div>
+          )}
         </div>
 
         {/* OG Image */}
@@ -1030,18 +1139,60 @@ export default function BlogPostEditPage() {
           >
             Social Share Image (OG Image)
           </label>
-          <input
-            type="url"
-            id="ogImage"
-            name="ogImage"
-            value={formData.ogImage}
-            onChange={handleChange}
-            placeholder="https://example.com/og-image.jpg (defaults to featured image)"
-            className="w-full rounded-lg border border-border-light dark:border-border-dark bg-light-base dark:bg-dark-deep-blue px-4 py-2.5 text-text-primary dark:text-text-dark-primary placeholder-text-muted dark:placeholder-text-dark-muted focus:outline-none focus:ring-2 focus:ring-accent-primary/50 focus:border-accent-primary transition-colors"
-          />
+          <div className="flex gap-2">
+            <input
+              type="url"
+              id="ogImage"
+              name="ogImage"
+              value={formData.ogImage}
+              onChange={handleChange}
+              placeholder="https://example.com/og-image.jpg (defaults to featured image)"
+              className="flex-1 rounded-lg border border-border-light dark:border-border-dark bg-light-base dark:bg-dark-deep-blue px-4 py-2.5 text-text-primary dark:text-text-dark-primary placeholder-text-muted dark:placeholder-text-dark-muted focus:outline-none focus:ring-2 focus:ring-accent-primary/50 focus:border-accent-primary transition-colors"
+            />
+            <label className="relative cursor-pointer">
+              <input
+                type="file"
+                accept="image/*"
+                className="sr-only"
+                onChange={(e) => {
+                  const file = e.target.files?.[0]
+                  if (file) handleImageUpload(file, 'ogImage')
+                }}
+                disabled={isUploadingOg}
+              />
+              <span className={`inline-flex items-center gap-2 rounded-lg border border-accent-primary px-4 py-2.5 text-sm font-medium text-accent-primary hover:bg-accent-primary/10 transition-colors ${isUploadingOg ? 'opacity-50 cursor-wait' : ''}`}>
+                {isUploadingOg ? (
+                  <>
+                    <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                    Uploading...
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+                    </svg>
+                    Upload
+                  </>
+                )}
+              </span>
+            </label>
+          </div>
           <p className="mt-1 text-xs text-text-muted dark:text-text-dark-muted">
             Image used when sharing on social media. Falls back to featured image if not set.
           </p>
+          {formData.ogImage && (
+            <div className="mt-3 relative rounded-lg overflow-hidden border border-border-light dark:border-border-dark max-w-xs">
+              <img
+                src={formData.ogImage}
+                alt="OG image preview"
+                className="w-full h-auto max-h-40 object-cover"
+                onError={(e) => { e.currentTarget.style.display = 'none' }}
+              />
+            </div>
+          )}
         </div>
 
         {/* Category */}
@@ -1160,7 +1311,74 @@ export default function BlogPostEditPage() {
             >
               Add
             </button>
+            <button
+              type="button"
+              onClick={() => setShowTagSelector(!showTagSelector)}
+              className="rounded-lg border border-accent-primary px-4 py-2 text-sm font-medium text-accent-primary hover:bg-accent-primary/10 transition-colors flex items-center gap-2"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 6h.008v.008H6V6Z" />
+              </svg>
+              Existing
+            </button>
           </div>
+
+          {/* Existing Tags Selector */}
+          {showTagSelector && existingTags.length > 0 && (
+            <div className="mt-3 p-4 rounded-lg border border-border-light dark:border-border-dark bg-light-neutral-grey/50 dark:bg-dark-panel/50">
+              <div className="flex items-center justify-between mb-3">
+                <h4 className="text-sm font-medium text-text-primary dark:text-text-dark-primary">
+                  Select from existing tags
+                </h4>
+                <button
+                  type="button"
+                  onClick={() => setShowTagSelector(false)}
+                  className="text-text-muted hover:text-text-primary dark:hover:text-text-dark-primary"
+                  aria-label="Close tag selector"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              <div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto">
+                {existingTags
+                  .filter(tag => !formData.tags.includes(tag.name))
+                  .map(tag => (
+                    <button
+                      key={tag.id}
+                      type="button"
+                      onClick={() => {
+                        handleSelectExistingTag(tag.name)
+                      }}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-accent-primary/30 bg-white dark:bg-dark-base px-3 py-1 text-sm text-accent-primary hover:bg-accent-primary/10 transition-colors"
+                    >
+                      {tag.name}
+                      {tag.postCount > 0 && (
+                        <span className="text-xs text-text-muted dark:text-text-dark-muted">
+                          ({tag.postCount})
+                        </span>
+                      )}
+                    </button>
+                  ))}
+              </div>
+              {existingTags.filter(tag => !formData.tags.includes(tag.name)).length === 0 && (
+                <p className="text-sm text-text-muted dark:text-text-dark-muted italic">
+                  All available tags have been added.
+                </p>
+              )}
+            </div>
+          )}
+
+          {showTagSelector && existingTags.length === 0 && (
+            <div className="mt-3 p-4 rounded-lg border border-border-light dark:border-border-dark bg-light-neutral-grey/50 dark:bg-dark-panel/50">
+              <p className="text-sm text-text-muted dark:text-text-dark-muted italic">
+                No existing tags found. Create new tags by typing them above.
+              </p>
+            </div>
+          )}
+
           {formData.tags.length > 0 && (
             <div className="mt-3 flex flex-wrap gap-2">
               {formData.tags.map(tag => (

@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
 import { writeFile, mkdir } from 'fs/promises'
 import path from 'path'
 import { existsSync } from 'fs'
@@ -6,9 +8,9 @@ import { existsSync } from 'fs'
 // ------------------------------------------------------------------
 // Configuration
 // ------------------------------------------------------------------
-const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
-const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
-const UPLOAD_DIR = path.join(process.cwd(), 'public', 'uploads')
+const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml']
+const BASE_UPLOAD_DIR = path.join(process.cwd(), 'public', 'images')
 
 // ------------------------------------------------------------------
 // Helper Functions
@@ -55,10 +57,12 @@ function validateFile(file: File): { valid: boolean; error?: string } {
 /**
  * Ensures the upload directory exists
  */
-async function ensureUploadDir(): Promise<void> {
-  if (!existsSync(UPLOAD_DIR)) {
-    await mkdir(UPLOAD_DIR, { recursive: true })
+async function ensureUploadDir(folder: string): Promise<string> {
+  const uploadDir = path.join(BASE_UPLOAD_DIR, folder)
+  if (!existsSync(uploadDir)) {
+    await mkdir(uploadDir, { recursive: true })
   }
+  return uploadDir
 }
 
 // ------------------------------------------------------------------
@@ -68,13 +72,28 @@ async function ensureUploadDir(): Promise<void> {
 /**
  * POST /api/upload
  * Handles image file uploads
+ * Requires authentication
+ * Optional folder parameter to organize uploads (defaults to 'blog')
  * Returns the URL of the uploaded file
  */
 export async function POST(request: NextRequest) {
   try {
+    // Check authentication
+    const session = await getServerSession(authOptions)
+    if (!session) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
+
     // Parse the multipart form data
     const formData = await request.formData()
     const file = formData.get('file') as File | null
+    const folder = (formData.get('folder') as string) || 'blog'
+
+    // Sanitize folder name (only allow alphanumeric, dash, underscore)
+    const sanitizedFolder = folder.replace(/[^a-zA-Z0-9-_]/g, '').toLowerCase()
 
     // Validate file presence
     if (!file) {
@@ -94,11 +113,11 @@ export async function POST(request: NextRequest) {
     }
 
     // Ensure upload directory exists
-    await ensureUploadDir()
+    const uploadDir = await ensureUploadDir(sanitizedFolder)
 
     // Generate unique filename
     const uniqueFilename = generateUniqueFilename(file.name)
-    const filePath = path.join(UPLOAD_DIR, uniqueFilename)
+    const filePath = path.join(uploadDir, uniqueFilename)
 
     // Convert File to Buffer and write to disk
     const bytes = await file.arrayBuffer()
@@ -106,7 +125,7 @@ export async function POST(request: NextRequest) {
     await writeFile(filePath, buffer)
 
     // Generate the public URL
-    const publicUrl = `/uploads/${uniqueFilename}`
+    const publicUrl = `/images/${sanitizedFolder}/${uniqueFilename}`
 
     // Return success response
     return NextResponse.json(

@@ -16,6 +16,7 @@
  */
 
 import { useState, useCallback, useEffect } from 'react'
+import { useSearchParams, useRouter } from 'next/navigation'
 import { BlogEditor } from '@/components/admin/BlogEditor'
 
 // Tab type for switching between views
@@ -46,11 +47,43 @@ const STATUS_FILTERS: { value: StatusFilter; label: string; color: string }[] = 
 ]
 
 export default function AdminPostsPage() {
+  const searchParams = useSearchParams()
+  const router = useRouter()
+
+  // Initialize status filter from URL query param
+  const getInitialStatus = (): StatusFilter => {
+    const urlStatus = searchParams.get('status')?.toUpperCase()
+    if (urlStatus === 'PUBLISHED' || urlStatus === 'SCHEDULED' || urlStatus === 'DRAFT') {
+      return urlStatus
+    }
+    return 'ALL'
+  }
+
   const [activeTab, setActiveTab] = useState<TabView>('list')
-  const [statusFilter, setStatusFilter] = useState<StatusFilter>('ALL')
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>(getInitialStatus)
   const [posts, setPosts] = useState<Post[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  // Sync status filter when URL changes
+  useEffect(() => {
+    const urlStatus = searchParams.get('status')?.toUpperCase()
+    if (urlStatus === 'PUBLISHED' || urlStatus === 'SCHEDULED' || urlStatus === 'DRAFT') {
+      setStatusFilter(urlStatus)
+    } else if (!searchParams.get('status')) {
+      setStatusFilter('ALL')
+    }
+  }, [searchParams])
+
+  // Update URL when status filter changes
+  const handleStatusFilterChange = (newStatus: StatusFilter) => {
+    setStatusFilter(newStatus)
+    if (newStatus === 'ALL') {
+      router.push('/admin/posts')
+    } else {
+      router.push(`/admin/posts?status=${newStatus}`)
+    }
+  }
 
   // Fetch posts from API
   const fetchPosts = useCallback(async (status: StatusFilter) => {
@@ -194,7 +227,7 @@ export default function AdminPostsPage() {
             {STATUS_FILTERS.map((filter) => (
               <button
                 key={filter.value}
-                onClick={() => setStatusFilter(filter.value)}
+                onClick={() => handleStatusFilterChange(filter.value)}
                 className={`
                   px-4 py-2 text-sm font-medium rounded-lg transition-all
                   ${

@@ -14,6 +14,11 @@
             "date": 1765126252624,
             "name": "/Users/fernandotn/Projects/PersonalWebsite/logs/mcp-puppeteer-2025-12-07.log",
             "hash": "23e7e657ba1d3d90387ac80a793a2a3df771435e6d86f6784b1feb20a34ffaa9"
+        },
+        {
+            "date": 1765220841521,
+            "name": "/Users/fernandotn/Projects/PersonalWebsite/logs/mcp-puppeteer-2025-12-08.log",
+            "hash": "1bb17d51ed1db46be460a40a62c6d8f86380071683e37d23dbeb73778b02398e"
         }
     ],
     "hashType": "sha256"
