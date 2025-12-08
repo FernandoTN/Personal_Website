@@ -351,7 +351,7 @@ export default function AdminPostsPage() {
                     {/* Actions */}
                     <div className="col-span-1 flex items-center justify-end md:justify-start">
                       <a
-                        href={`/admin/blog/${post.id}`}
+                        href={`/admin/blog/${post.id}/edit`}
                         className="text-accent-primary hover:text-accent-primary/80 text-sm font-medium"
                       >
                         Edit
