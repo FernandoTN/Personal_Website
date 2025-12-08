@@ -36,7 +36,7 @@ export const metadata: Metadata = {
  */
 export default function AboutPage() {
   return (
-    <main className="container-wide max-w-6xl mx-auto py-8 md:py-16">
+    <main className="container-narrow py-8 md:py-16">
       {/* Hero section with name, title, profile photo, and bio */}
       <AboutHero />
 
