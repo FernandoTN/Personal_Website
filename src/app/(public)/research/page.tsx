@@ -1,7 +1,7 @@
 'use client'
 
-import { useRef, useEffect } from 'react'
-import { motion, useInView, useSpring, useTransform } from 'framer-motion'
+import { useRef, useEffect, useState } from 'react'
+import { motion, useInView } from 'framer-motion'
 import Link from 'next/link'
 import { FinalReport } from '@/components/research/FinalReport'
 
@@ -199,13 +199,13 @@ const gpuAcceleratedStyle = {
 
 /**
  * Animated counter component that counts up to a target value when in view.
- * Uses Framer Motion's spring animation for smooth number transitions.
+ * Uses requestAnimationFrame for smooth, iOS Safari-compatible animations.
  */
 function AnimatedCounter({
   value,
   suffix = '',
   prefix = '',
-  duration = 2,
+  duration = 2000,
 }: {
   value: number
   suffix?: string
@@ -213,28 +213,40 @@ function AnimatedCounter({
   duration?: number
 }) {
   const ref = useRef<HTMLSpanElement>(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const [count, setCount] = useState(0)
+  const [hasAnimated, setHasAnimated] = useState(false)
+  const isInView = useInView(ref, { once: true, amount: 0.5 })
 
-  const spring = useSpring(0, {
-    duration: duration * 1000,
-    bounce: 0,
-  })
-
-  const display = useTransform(spring, (current) =>
-    Math.round(current).toString()
-  )
-
-  // Trigger animation when in view
   useEffect(() => {
-    if (isInView) {
-      spring.set(value)
+    if (!isInView || hasAnimated) return
+
+    setHasAnimated(true)
+    const startTime = performance.now()
+    const startValue = 0
+    const endValue = value
+
+    const animate = (currentTime: number) => {
+      const elapsed = currentTime - startTime
+      const progress = Math.min(elapsed / duration, 1)
+
+      // Ease out cubic for smooth deceleration
+      const easeOut = 1 - Math.pow(1 - progress, 3)
+      const currentValue = Math.round(startValue + (endValue - startValue) * easeOut)
+
+      setCount(currentValue)
+
+      if (progress < 1) {
+        requestAnimationFrame(animate)
+      }
     }
-  }, [isInView, spring, value])
+
+    requestAnimationFrame(animate)
+  }, [isInView, hasAnimated, value, duration])
 
   return (
     <span ref={ref} className="tabular-nums">
       {prefix}
-      <motion.span>{display}</motion.span>
+      <span>{count}</span>
       {suffix}
     </span>
   )
