@@ -150,15 +150,3 @@ export function loadAllMDXContent(mdxDirectory: string): Map<string, ParsedMDX> 
   return contentMap
 }
 
-// CLI test (commented out for production build)
-// if (require.main === module) {
-//   const mdxDir = path.join(__dirname, '../content/deliverables/blog-posts')
-//   console.log('Loading MDX content from:', mdxDir)
-//   const content = loadAllMDXContent(mdxDir)
-//   console.log(`\nLoaded ${content.size} MDX files:`)
-//   content.forEach((parsed, slug) => {
-//     console.log(`\n- ${slug}:`)
-//     console.log(`  Title: ${parsed.frontmatter.title}`)
-//     console.log(`  Content length: ${parsed.content.length} chars`)
-//   })
-// }
