@@ -1,6 +1,17 @@
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+// Lazy-initialized Resend client to avoid build-time errors
+let resend: Resend | null = null
+
+function getResendClient(): Resend | null {
+  if (!process.env.RESEND_API_KEY) {
+    return null
+  }
+  if (!resend) {
+    resend = new Resend(process.env.RESEND_API_KEY)
+  }
+  return resend
+}
 
 interface ContactNotificationData {
   name: string
@@ -27,7 +38,8 @@ export async function sendContactNotification(data: ContactNotificationData): Pr
     return { success: false, error: 'Contact email not configured' }
   }
 
-  if (!process.env.RESEND_API_KEY) {
+  const client = getResendClient()
+  if (!client) {
     console.error('RESEND_API_KEY environment variable is not set')
     return { success: false, error: 'Email service not configured' }
   }
@@ -106,7 +118,7 @@ This email was sent from the contact form on your personal website.
   `.trim()
 
   try {
-    const { error } = await resend.emails.send({
+    const { error } = await client.emails.send({
       from: fromEmail,
       to: contactEmail,
       subject: emailSubject,
@@ -162,7 +174,8 @@ interface WelcomeEmailResult {
 export async function sendWelcomeEmail({ to }: SendWelcomeEmailParams): Promise<WelcomeEmailResult> {
   const fromEmail = process.env.EMAIL_FROM || 'noreply@fernandotorres.dev'
 
-  if (!process.env.RESEND_API_KEY) {
+  const client = getResendClient()
+  if (!client) {
     console.error('RESEND_API_KEY environment variable is not set')
     return { success: false, error: 'Email service not configured' }
   }
@@ -170,7 +183,7 @@ export async function sendWelcomeEmail({ to }: SendWelcomeEmailParams): Promise<
   try {
     const unsubscribeUrl = `${SITE_URL}/api/unsubscribe?email=${encodeURIComponent(to)}`
 
-    const { error } = await resend.emails.send({
+    const { error } = await client.emails.send({
       from: fromEmail,
       to,
       subject: `Welcome to ${SITE_NAME}'s Newsletter!`,
