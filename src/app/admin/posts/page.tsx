@@ -15,7 +15,7 @@
  * Navigate to /admin/posts to access the blog post management interface
  */
 
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { BlogEditor } from '@/components/admin/BlogEditor'
 
@@ -46,7 +46,33 @@ const STATUS_FILTERS: { value: StatusFilter; label: string; color: string }[] = 
   { value: 'DRAFT', label: 'Draft', color: 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400' },
 ]
 
-export default function AdminPostsPage() {
+// Loading fallback for Suspense
+function PostsPageLoading() {
+  return (
+    <div>
+      {/* Page Header */}
+      <div className="mb-8">
+        <h1 className="font-heading text-3xl font-bold text-text-primary dark:text-text-dark-primary">
+          Manage Posts
+        </h1>
+        <p className="mt-2 text-text-secondary dark:text-text-dark-secondary">
+          Create, edit, and manage your blog posts.
+        </p>
+      </div>
+
+      {/* Loading indicator */}
+      <div className="text-center py-12 bg-light-base dark:bg-dark-panel rounded-xl border border-border-light dark:border-border-dark">
+        <div className="animate-spin mx-auto h-8 w-8 border-2 border-accent-primary border-t-transparent rounded-full" />
+        <p className="mt-4 text-sm text-text-secondary dark:text-text-dark-secondary">
+          Loading posts...
+        </p>
+      </div>
+    </div>
+  )
+}
+
+// Main posts page content component
+function PostsPageContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
 
@@ -398,5 +424,14 @@ export default function AdminPostsPage() {
         </div>
       )}
     </div>
+  )
+}
+
+// Main page component wrapped in Suspense
+export default function AdminPostsPage() {
+  return (
+    <Suspense fallback={<PostsPageLoading />}>
+      <PostsPageContent />
+    </Suspense>
   )
 }

@@ -446,12 +446,12 @@ function PreviewModal({ isOpen, onClose, formData }: PreviewModalProps) {
           {/* Divider */}
           <hr className="border-border-light dark:border-border-dark mb-8" />
 
-          {/* Content Preview */}
+          {/* Content Preview - Full content without truncation */}
           <div className="prose dark:prose-invert max-w-none prose-headings:font-heading prose-headings:text-text-primary dark:prose-headings:text-text-dark-primary prose-p:text-text-secondary dark:prose-p:text-text-dark-secondary prose-a:text-accent-primary prose-strong:text-text-primary dark:prose-strong:text-text-dark-primary prose-code:text-accent-primary prose-code:bg-light-neutral-grey dark:prose-code:bg-dark-panel prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-dark-base prose-pre:text-text-dark-primary">
             {formData.content ? (
               <div
                 dangerouslySetInnerHTML={{
-                  __html: formData.content.slice(0, 3000) + (formData.content.length > 3000 ? '<p class="text-text-muted dark:text-text-dark-muted italic mt-4">... [Content truncated in preview]</p>' : '')
+                  __html: formData.content
                 }}
               />
             ) : (
@@ -517,6 +517,126 @@ function Toast({ message, type, onClose }: ToastProps) {
   )
 }
 
+// Image Selector Modal Component
+interface ImageSelectorModalProps {
+  isOpen: boolean
+  onClose: () => void
+  onSelect: (imageUrl: string) => void
+  images: { name: string; url: string; size: number; modifiedAt: string }[]
+  isLoading: boolean
+  title: string
+}
+
+function ImageSelectorModal({ isOpen, onClose, onSelect, images, isLoading, title }: ImageSelectorModalProps) {
+  if (!isOpen) return null
+
+  const formatFileSize = (bytes: number) => {
+    if (bytes < 1024) return `${bytes} B`
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto">
+      {/* Backdrop */}
+      <div
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm"
+        onClick={onClose}
+        aria-hidden="true"
+      />
+
+      {/* Dialog */}
+      <div
+        className="relative z-10 w-full max-w-4xl max-h-[85vh] overflow-hidden m-4 rounded-xl bg-light-base dark:bg-dark-base shadow-2xl border border-border-light dark:border-border-dark flex flex-col"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="image-selector-title"
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-4 bg-light-base dark:bg-dark-base border-b border-border-light dark:border-border-dark">
+          <div className="flex items-center gap-3">
+            <svg className="w-5 h-5 text-accent-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+            </svg>
+            <h3 id="image-selector-title" className="text-lg font-semibold text-text-primary dark:text-text-dark-primary font-heading">
+              {title}
+            </h3>
+            <span className="text-sm text-text-muted dark:text-text-dark-muted">
+              {images.length} images
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-lg p-2 text-text-secondary dark:text-text-dark-secondary hover:bg-light-neutral-grey dark:hover:bg-dark-panel transition-colors"
+            aria-label="Close image selector"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 overflow-y-auto p-6">
+          {isLoading ? (
+            <div className="flex items-center justify-center h-64">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent-primary" />
+            </div>
+          ) : images.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-64 text-center">
+              <svg className="w-16 h-16 text-text-muted dark:text-text-dark-muted mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+              </svg>
+              <p className="text-text-secondary dark:text-text-dark-secondary">No images found in this folder.</p>
+              <p className="text-sm text-text-muted dark:text-text-dark-muted mt-1">Upload an image first to see it here.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+              {images.map((image) => (
+                <button
+                  key={image.url}
+                  type="button"
+                  onClick={() => onSelect(image.url)}
+                  className="group relative aspect-square rounded-lg overflow-hidden border-2 border-transparent hover:border-accent-primary transition-all bg-light-neutral-grey dark:bg-dark-panel"
+                >
+                  <img
+                    src={image.url}
+                    alt={image.name}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23374151" width="100" height="100"/><text fill="%239CA3AF" font-size="10" x="50" y="50" text-anchor="middle" dominant-baseline="middle">Error</text></svg>'
+                    }}
+                  />
+                  {/* Overlay on hover */}
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-2">
+                    <svg className="w-6 h-6 text-white mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                    </svg>
+                    <span className="text-white text-xs font-medium text-center truncate w-full">{image.name}</span>
+                    <span className="text-white/70 text-xs">{formatFileSize(image.size)}</span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div className="px-6 py-4 bg-light-neutral-grey/80 dark:bg-dark-panel/80 border-t border-border-light dark:border-border-dark flex justify-end">
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-lg border border-border-light dark:border-border-dark px-4 py-2 text-sm font-medium text-text-secondary dark:text-text-dark-secondary hover:bg-light-neutral-grey dark:hover:bg-dark-deep-blue transition-colors"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // Icons
 const Icons = {
   ArrowLeft: () => (
@@ -568,6 +688,11 @@ export default function BlogPostEditPage() {
   const [isCreatingLinkedIn, setIsCreatingLinkedIn] = useState(false)
   const [isUploadingFeatured, setIsUploadingFeatured] = useState(false)
   const [isUploadingOg, setIsUploadingOg] = useState(false)
+
+  // Image selector state
+  const [showImageSelector, setShowImageSelector] = useState<'featured' | 'og' | null>(null)
+  const [availableImages, setAvailableImages] = useState<{ name: string; url: string; size: number; modifiedAt: string }[]>([])
+  const [isLoadingImages, setIsLoadingImages] = useState(false)
 
   // UI state
   const [tagInput, setTagInput] = useState('')
@@ -793,6 +918,37 @@ export default function BlogPostEditPage() {
       setUploading(false)
     }
   }, [showToast])
+
+  // Open image selector modal
+  const handleOpenImageSelector = useCallback(async (field: 'featured' | 'og') => {
+    setShowImageSelector(field)
+    setIsLoadingImages(true)
+
+    try {
+      const response = await fetch('/api/images?folder=blog')
+      if (response.ok) {
+        const data = await response.json()
+        setAvailableImages(data.images || [])
+      } else {
+        showToast('Failed to load images', 'error')
+      }
+    } catch {
+      showToast('Failed to load images', 'error')
+    } finally {
+      setIsLoadingImages(false)
+    }
+  }, [showToast])
+
+  // Select image from gallery
+  const handleSelectImage = useCallback((imageUrl: string) => {
+    const field = showImageSelector === 'featured' ? 'featuredImage' : 'ogImage'
+    setFormData(prev => prev ? {
+      ...prev,
+      [field]: imageUrl,
+    } : null)
+    setShowImageSelector(null)
+    showToast('Image selected successfully!', 'success')
+  }, [showImageSelector, showToast])
 
   // Save post changes
   const handleSave = useCallback(async () => {
@@ -1187,6 +1343,16 @@ export default function BlogPostEditPage() {
                 )}
               </span>
             </label>
+            <button
+              type="button"
+              onClick={() => handleOpenImageSelector('featured')}
+              className="inline-flex items-center gap-2 rounded-lg border border-accent-secondary px-4 py-2.5 text-sm font-medium text-accent-secondary hover:bg-accent-secondary/10 transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+              </svg>
+              Select
+            </button>
           </div>
           {formData.featuredImage && (
             <div className="mt-3 relative rounded-lg overflow-hidden border border-border-light dark:border-border-dark max-w-xs">
@@ -1248,6 +1414,16 @@ export default function BlogPostEditPage() {
                 )}
               </span>
             </label>
+            <button
+              type="button"
+              onClick={() => handleOpenImageSelector('og')}
+              className="inline-flex items-center gap-2 rounded-lg border border-accent-secondary px-4 py-2.5 text-sm font-medium text-accent-secondary hover:bg-accent-secondary/10 transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+              </svg>
+              Select
+            </button>
           </div>
           <p className="mt-1 text-xs text-text-muted dark:text-text-dark-muted">
             Image used when sharing on social media. Falls back to featured image if not set.
@@ -1624,6 +1800,16 @@ export default function BlogPostEditPage() {
         isOpen={showPreviewModal}
         onClose={() => setShowPreviewModal(false)}
         formData={formData}
+      />
+
+      {/* Image Selector Modal */}
+      <ImageSelectorModal
+        isOpen={showImageSelector !== null}
+        onClose={() => setShowImageSelector(null)}
+        onSelect={handleSelectImage}
+        images={availableImages}
+        isLoading={isLoadingImages}
+        title={showImageSelector === 'featured' ? 'Select Featured Image' : 'Select Social Share Image'}
       />
 
       {/* Toast Notification */}
