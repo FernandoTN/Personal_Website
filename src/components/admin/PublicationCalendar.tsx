@@ -826,10 +826,10 @@ export function PublicationCalendar() {
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
         <div>
           <h2 className="text-xl font-heading font-semibold text-text-primary dark:text-text-dark-primary">
-            AI Agents Research Publication Schedule
+            Publication Schedule
           </h2>
           <p className="text-sm text-text-secondary dark:text-text-dark-secondary mt-1">
-            {formatDate(data.startDate)} - {formatDate(data.endDate)} (10 weeks, 25 posts)
+            {formatDate(data.startDate)} - {formatDate(data.endDate)} ({data.weeks.length} weeks, {data.totalPosts} posts)
           </p>
         </div>
 

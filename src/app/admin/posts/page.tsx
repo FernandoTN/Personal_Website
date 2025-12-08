@@ -25,6 +25,9 @@ type TabView = 'create' | 'list'
 // Status filter type
 type StatusFilter = 'ALL' | 'PUBLISHED' | 'SCHEDULED' | 'DRAFT'
 
+// Sort order type for date column
+type SortOrder = 'asc' | 'desc'
+
 // Post type from API
 interface Post {
   id: string
@@ -90,6 +93,7 @@ function PostsPageContent() {
   const [posts, setPosts] = useState<Post[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [dateSortOrder, setDateSortOrder] = useState<SortOrder>('asc')
 
   // Sync status filter when URL changes
   useEffect(() => {
@@ -163,6 +167,29 @@ function PostsPageContent() {
       month: 'short',
       day: 'numeric',
     })
+  }
+
+  // Get the relevant date for a post based on its status
+  const getPostDate = (post: Post): Date => {
+    if (post.status === 'PUBLISHED' && post.publishedAt) {
+      return new Date(post.publishedAt)
+    }
+    if (post.status === 'SCHEDULED' && post.scheduledFor) {
+      return new Date(post.scheduledFor)
+    }
+    return new Date(post.createdAt)
+  }
+
+  // Sort posts by date
+  const sortedPosts = [...posts].sort((a, b) => {
+    const dateA = getPostDate(a).getTime()
+    const dateB = getPostDate(b).getTime()
+    return dateSortOrder === 'asc' ? dateA - dateB : dateB - dateA
+  })
+
+  // Toggle date sort order
+  const toggleDateSort = () => {
+    setDateSortOrder(prev => prev === 'asc' ? 'desc' : 'asc')
   }
 
   // Get status badge styling
@@ -359,13 +386,27 @@ function PostsPageContent() {
                 <div className="col-span-5">Title</div>
                 <div className="col-span-2">Status</div>
                 <div className="col-span-2">Category</div>
-                <div className="col-span-2">Date</div>
+                <button
+                  onClick={toggleDateSort}
+                  className="col-span-2 flex items-center gap-1 hover:text-text-primary dark:hover:text-text-dark-primary transition-colors cursor-pointer text-left"
+                >
+                  Date
+                  <svg
+                    className={`w-3 h-3 transition-transform ${dateSortOrder === 'desc' ? 'rotate-180' : ''}`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+                  </svg>
+                </button>
                 <div className="col-span-1">Actions</div>
               </div>
 
               {/* Posts Rows */}
               <div className="divide-y divide-border-light dark:divide-border-dark">
-                {posts.map((post) => (
+                {sortedPosts.map((post) => (
                   <div
                     key={post.id}
                     className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 p-4 md:px-6 md:py-4 hover:bg-light-neutral-grey/30 dark:hover:bg-dark-elevated/30 transition-colors"

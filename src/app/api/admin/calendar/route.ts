@@ -12,13 +12,13 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
 
-    // Get date range from query params (default to AI Agents series: Dec 8, 2025 - Feb 13, 2026)
+    // Get date range from query params (default to AI Agents series: Dec 8, 2025 - Dec 31, 2026)
     const startDateParam = searchParams.get('startDate')
     const endDateParam = searchParams.get('endDate')
 
-    // Default date range for AI Agents series
+    // Default date range for AI Agents series (extended to end of 2026)
     const defaultStartDate = new Date('2025-12-08')
-    const defaultEndDate = new Date('2026-02-13')
+    const defaultEndDate = new Date('2026-12-31')
 
     const startDate = startDateParam ? new Date(startDateParam) : defaultStartDate
     const endDate = endDateParam ? new Date(endDateParam) : defaultEndDate
@@ -138,7 +138,7 @@ function calculateWeeks(startDate: Date, endDate: Date, calendarData: Record<str
     dates: string[]
   }> = []
 
-  // AI Agents series week themes based on spec
+  // AI Agents series week themes based on spec (first 10 weeks)
   const weekThemes = [
     'Launch Week',        // Week 1
     'Framework Week',     // Week 2
@@ -153,21 +153,31 @@ function calculateWeeks(startDate: Date, endDate: Date, calendarData: Record<str
   ]
 
   const currentDate = new Date(startDate)
+  let weekNum = 1
 
-  for (let weekNum = 1; weekNum <= 10 && currentDate <= endDate; weekNum++) {
-    // Get Monday of the current week
+  // Calculate total weeks between start and end date
+  const totalDays = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24))
+  const maxWeeks = Math.ceil(totalDays / 7)
+
+  while (weekNum <= maxWeeks && currentDate <= endDate) {
+    // Get start of the current week
     const weekStart = new Date(currentDate)
 
-    // Get Friday of the current week (5 days later from Monday, but show full week)
+    // Get end of the current week (6 days later = Sunday)
     const weekEnd = new Date(weekStart)
-    weekEnd.setDate(weekEnd.getDate() + 6) // Sunday
+    weekEnd.setDate(weekEnd.getDate() + 6)
+
+    // Don't exceed the end date for the last week
+    if (weekEnd > endDate) {
+      weekEnd.setTime(endDate.getTime())
+    }
 
     // Calculate dates in this week
     const dates: string[] = []
     let postCount = 0
     const tempDate = new Date(weekStart)
 
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < 7 && tempDate <= endDate; i++) {
       const dateKey = tempDate.toISOString().split('T')[0]
       dates.push(dateKey)
 
@@ -178,17 +188,28 @@ function calculateWeeks(startDate: Date, endDate: Date, calendarData: Record<str
       tempDate.setDate(tempDate.getDate() + 1)
     }
 
+    // Generate theme - use predefined themes for first 10 weeks, then month-based
+    let theme: string
+    if (weekNum <= 10) {
+      theme = weekThemes[weekNum - 1]
+    } else {
+      // For weeks beyond 10, use the month name
+      const monthName = weekStart.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+      theme = monthName
+    }
+
     weeks.push({
       weekNumber: weekNum,
       startDate: weekStart.toISOString().split('T')[0],
       endDate: weekEnd.toISOString().split('T')[0],
-      theme: weekThemes[weekNum - 1] || `Week ${weekNum}`,
+      theme,
       postCount,
       dates,
     })
 
     // Move to next week
     currentDate.setDate(currentDate.getDate() + 7)
+    weekNum++
   }
 
   return weeks
