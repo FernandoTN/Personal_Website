@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     description:
       'Explore projects by Fernando Torres across pharmaceutical, coding, and research domains.',
     type: 'website',
-    url: 'https://fernandotorres.io/projects',
+    url: 'https://fernandotorres.dev/projects',
     images: [
       {
         url: '/og-image.svg',

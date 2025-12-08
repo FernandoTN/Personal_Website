@@ -1,6 +1,6 @@
 import prisma from '@/lib/prisma'
 
-const SITE_URL = 'https://fernandotorres.io'
+const SITE_URL = 'https://fernandotorres.dev'
 const SITE_TITLE = 'Fernando Torres | Stanford GSB MSx'
 const SITE_DESCRIPTION = "Personal portfolio and blog of Fernando Torres, MSx '26 at Stanford GSB. Exploring AI agents, pharmaceutical innovation, and digital transformation."
 

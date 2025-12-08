@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     description:
       'Get in touch with Fernando Torres. Connect on LinkedIn, GitHub, or send a message.',
     type: 'website',
-    url: 'https://fernandotorres.io/contact',
+    url: 'https://fernandotorres.dev/contact',
     images: [
       {
         url: '/og-image.svg',

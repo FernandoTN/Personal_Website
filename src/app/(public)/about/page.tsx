@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     description:
       "Learn about Fernando Torres - MSx '26 at Stanford GSB, Founder and Builder exploring AI agents and enterprise systems.",
     type: 'website',
-    url: 'https://fernandotorres.io/about',
+    url: 'https://fernandotorres.dev/about',
     images: [
       {
         url: '/og-image.svg',

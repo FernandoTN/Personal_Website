@@ -159,7 +159,7 @@ export function debounce<T extends (...args: unknown[]) => unknown>(
  * Get absolute URL for the site
  */
 export function getAbsoluteUrl(path: string): string {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://fernandotorres.io'
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://fernandotorres.dev'
   return `${baseUrl}${path.startsWith('/') ? path : `/${path}`}`
 }
 

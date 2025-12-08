@@ -123,7 +123,7 @@ export async function POST(request: NextRequest) {
           .join('\n')
 
         await resend.emails.send({
-          from: process.env.EMAIL_FROM || 'noreply@fernandotorres.io',
+          from: process.env.EMAIL_FROM || 'noreply@fernandotorres.dev',
           to: contactEmail,
           subject: `LinkedIn Reminder: ${reminders.length} post${reminders.length !== 1 ? 's' : ''} need scheduling`,
           text: `The following blog posts are scheduled to publish soon but their LinkedIn posts haven't been scheduled yet:\n\n${reminderList}\n\nPlease visit the admin dashboard to schedule these LinkedIn posts.`,

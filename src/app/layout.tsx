@@ -64,7 +64,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const { siteTitle, siteDescription } = await getSiteSettings()
 
   return {
-    metadataBase: new URL('https://fernandotorres.io'),
+    metadataBase: new URL('https://fernandotorres.dev'),
     title: {
       default: siteTitle,
       template: '%s | Fernando Torres',
@@ -80,12 +80,12 @@ export async function generateMetadata(): Promise<Metadata> {
       'Portfolio',
       'Blog',
     ],
-    authors: [{ name: 'Fernando Torres', url: 'https://fernandotorres.io' }],
+    authors: [{ name: 'Fernando Torres', url: 'https://fernandotorres.dev' }],
     creator: 'Fernando Torres',
     openGraph: {
       type: 'website',
       locale: 'en_US',
-      url: 'https://fernandotorres.io',
+      url: 'https://fernandotorres.dev',
       siteName: 'Fernando Torres',
       title: siteTitle,
       description: siteDescription,
@@ -163,8 +163,8 @@ export default function RootLayout({
         {/* JSON-LD Structured Data for SEO */}
         <PersonJsonLd
           name="Fernando Torres"
-          url="https://fernandotorres.io"
-          image="https://fernandotorres.io/og-image.svg"
+          url="https://fernandotorres.dev"
+          image="https://fernandotorres.dev/og-image.svg"
           jobTitle="MSx '26"
           worksFor={{
             name: "Stanford Graduate School of Business",
@@ -178,11 +178,11 @@ export default function RootLayout({
         />
         <WebSiteJsonLd
           name="Fernando Torres"
-          url="https://fernandotorres.io"
+          url="https://fernandotorres.dev"
           description="Personal portfolio and blog of Fernando Torres, MSx '26 at Stanford GSB. Exploring AI agents, pharmaceutical innovation, and digital transformation."
           author={{
             name: "Fernando Torres",
-            url: "https://fernandotorres.io"
+            url: "https://fernandotorres.dev"
           }}
         />
       </head>

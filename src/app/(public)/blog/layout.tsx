@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     description:
       'Insights on AI agents, pharmaceutical innovation, and technology. Explore the AI Agents research series and practical guides.',
     type: 'website',
-    url: 'https://fernandotorres.io/blog',
+    url: 'https://fernandotorres.dev/blog',
     images: [
       {
         url: '/og-image.png',

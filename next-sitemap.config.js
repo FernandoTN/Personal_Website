@@ -1,12 +1,12 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: process.env.SITE_URL || 'https://fernandotorres.io',
+  siteUrl: process.env.SITE_URL || 'https://fernandotorres.dev',
   generateRobotsTxt: true,
   generateIndexSitemap: false,
   exclude: ['/admin/*', '/api/*'],
   robotsTxtOptions: {
     additionalSitemaps: [
-      'https://fernandotorres.io/sitemap.xml',
+      'https://fernandotorres.dev/sitemap.xml',
     ],
     policies: [
       {

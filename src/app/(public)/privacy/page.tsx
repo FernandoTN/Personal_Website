@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     description:
       'Privacy policy for Fernando Torres personal website. Learn how we collect, use, and protect your personal information.',
     type: 'website',
-    url: 'https://fernandotorres.io/privacy',
+    url: 'https://fernandotorres.dev/privacy',
   },
 }
 

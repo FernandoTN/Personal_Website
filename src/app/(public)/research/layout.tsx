@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     description:
       'Stanford GSB research revealing why 90% of enterprise AI agent pilots fail and the eight critical infrastructure pillars for success.',
     type: 'article',
-    url: 'https://fernandotorres.io/research',
+    url: 'https://fernandotorres.dev/research',
     images: [
       {
         url: '/og-image.svg',

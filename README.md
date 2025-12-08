@@ -6,6 +6,7 @@ A personal portfolio and blog website serving as my professional landing page on
 
 **Fernando Torres** — MSx '26, Stanford GSB
 
+- Website: [fernandotorres.dev](https://fernandotorres.dev)
 - GitHub: [github.com/FernandoTN](https://github.com/FernandoTN)
 - LinkedIn: [linkedin.com/in/fernandotn](https://www.linkedin.com/in/fernandotn/)
 - Resume: `/content/Profile.pdf`

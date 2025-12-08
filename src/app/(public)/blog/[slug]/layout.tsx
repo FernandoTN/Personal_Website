@@ -46,7 +46,7 @@ export async function generateMetadata({
           title,
           description,
           type: 'article',
-          url: `https://fernandotorres.io/blog/${slug}`,
+          url: `https://fernandotorres.dev/blog/${slug}`,
           publishedTime: post.publishedAt?.toISOString(),
           authors: [post.author || 'Fernando Torres'],
           images: [
@@ -84,7 +84,7 @@ export async function generateMetadata({
       title: `${defaultTitle} | Fernando Torres`,
       description: `Read "${defaultTitle}" on Fernando Torres's blog about AI agents, pharmaceutical innovation, and technology.`,
       type: 'article',
-      url: `https://fernandotorres.io/blog/${slug}`,
+      url: `https://fernandotorres.dev/blog/${slug}`,
       images: [
         {
           url: '/og-image.svg',
@@ -131,15 +131,15 @@ export default async function BlogPostLayout({ children, params }: BlogPostLayou
           description={post.excerpt || `Read "${post.title}" by ${post.author || 'Fernando Torres'}`}
           author={{
             name: post.author || 'Fernando Torres',
-            url: 'https://fernandotorres.io',
+            url: 'https://fernandotorres.dev',
           }}
           datePublished={post.publishedAt.toISOString()}
           dateModified={post.updatedAt?.toISOString()}
-          image={post.featuredImage || 'https://fernandotorres.io/og-image.svg'}
-          url={`https://fernandotorres.io/blog/${slug}`}
+          image={post.featuredImage || 'https://fernandotorres.dev/og-image.svg'}
+          url={`https://fernandotorres.dev/blog/${slug}`}
           publisher={{
             name: 'Fernando Torres',
-            logo: 'https://fernandotorres.io/og-image.svg',
+            logo: 'https://fernandotorres.dev/og-image.svg',
           }}
         />
       )
