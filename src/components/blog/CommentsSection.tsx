@@ -33,32 +33,41 @@ interface CommentsSectionProps {
 }
 
 /**
- * Mock comments data for demonstration
+ * Generate mock comments with dates relative to now
  * In production, these would come from the database via API
  */
-const mockComments: Comment[] = [
-  {
-    id: '1',
-    authorName: 'Sarah Chen',
-    content: 'This is an excellent breakdown of the challenges facing AI agent deployments. The 92% system integration statistic really resonates with what we have experienced at our organization. Looking forward to the rest of the series!',
-    createdAt: '2024-12-08T10:30:00Z',
-    status: 'APPROVED',
-  },
-  {
-    id: '2',
-    authorName: 'Michael Rodriguez',
-    content: 'The Eight Pillars framework provides a really useful mental model for thinking about agent infrastructure. I especially appreciate the emphasis on context management - that 40% utilization rule is something more teams should be aware of.',
-    createdAt: '2024-12-08T14:15:00Z',
-    status: 'APPROVED',
-  },
-  {
-    id: '3',
-    authorName: 'Emily Watson',
-    content: 'Great insights on why pilot projects fail to reach production. The distinction between model capability and infrastructure readiness is crucial. Would love to see more case studies in future posts.',
-    createdAt: '2024-12-08T18:45:00Z',
-    status: 'APPROVED',
-  },
-]
+function generateMockComments(): Comment[] {
+  const now = new Date()
+
+  // Create dates in the past: 2 days ago, 1 day ago, 6 hours ago
+  const twoDaysAgo = new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000)
+  const oneDayAgo = new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000)
+  const sixHoursAgo = new Date(now.getTime() - 6 * 60 * 60 * 1000)
+
+  return [
+    {
+      id: '1',
+      authorName: 'Sarah Chen',
+      content: 'This is an excellent breakdown of the challenges facing AI agent deployments. The 92% system integration statistic really resonates with what we have experienced at our organization. Looking forward to the rest of the series!',
+      createdAt: twoDaysAgo.toISOString(),
+      status: 'APPROVED',
+    },
+    {
+      id: '2',
+      authorName: 'Michael Rodriguez',
+      content: 'The Eight Pillars framework provides a really useful mental model for thinking about agent infrastructure. I especially appreciate the emphasis on context management - that 40% utilization rule is something more teams should be aware of.',
+      createdAt: oneDayAgo.toISOString(),
+      status: 'APPROVED',
+    },
+    {
+      id: '3',
+      authorName: 'Emily Watson',
+      content: 'Great insights on why pilot projects fail to reach production. The distinction between model capability and infrastructure readiness is crucial. Would love to see more case studies in future posts.',
+      createdAt: sixHoursAgo.toISOString(),
+      status: 'APPROVED',
+    },
+  ]
+}
 
 /**
  * Format date for display
@@ -116,7 +125,8 @@ export function CommentsSection({ postSlug, postTitle }: CommentsSectionProps) {
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [errors, setErrors] = useState<FormErrors>({})
 
-  // Display approved comments only
+  // Generate mock comments with dynamic dates and filter to approved only
+  const mockComments = generateMockComments()
   const approvedComments = mockComments.filter((c) => c.status === 'APPROVED')
 
   /**
