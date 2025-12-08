@@ -1,7 +1,7 @@
 'use client'
 
 import { motion, Variants } from 'framer-motion'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { useInView } from 'framer-motion'
 
 /**
@@ -257,6 +257,7 @@ export interface SkillsProps {
 export function Skills({ className = '' }: SkillsProps) {
   const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { once: true, amount: 0.2 })
+  const [isExpanded, setIsExpanded] = useState(false)
 
   return (
     <section
@@ -274,75 +275,114 @@ export function Skills({ className = '' }: SkillsProps) {
         Skills & Expertise
       </motion.h2>
 
-      <motion.div
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        variants={containerVariants}
-        initial="hidden"
-        animate={isInView ? 'visible' : 'hidden'}
-      >
-        {skillCategories.map((category, categoryIndex) => (
-          <motion.div
-            key={category.title}
-            variants={cardVariants}
-            className={`
-              rounded-xl p-6 border
-              ${category.colorScheme.bg} ${category.colorScheme.bgDark}
-              ${category.colorScheme.border} ${category.colorScheme.borderDark}
-              transition-shadow duration-300
-              hover:shadow-lg dark:hover:shadow-glow
-            `}
-          >
-            {/* Category Header */}
-            <div className="flex items-center gap-3 mb-4">
-              <span
-                className={`
-                  flex items-center justify-center
-                  w-10 h-10 rounded-lg
-                  bg-white/80 dark:bg-dark-panel/80
-                  ${category.colorScheme.icon}
-                `}
-                aria-hidden="true"
-              >
-                {category.icon}
-              </span>
-              <h3
-                className={`
-                  font-heading font-semibold text-lg
-                  ${category.colorScheme.text} ${category.colorScheme.textDark}
-                `}
-              >
-                {category.title}
-              </h3>
-            </div>
-
-            {/* Skill Tags */}
-            <div
-              className="flex flex-wrap gap-2"
-              role="list"
-              aria-label={`${category.title} list`}
+      <div className="relative">
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-hidden"
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? 'visible' : 'hidden'}
+          style={{
+            maxHeight: isExpanded ? '2000px' : '360px', // Approx height for 2 rows
+            transition: 'max-height 0.8s ease-in-out'
+          }}
+        >
+          {skillCategories.map((category, categoryIndex) => (
+            <motion.div
+              key={category.title}
+              variants={cardVariants}
+              className={`
+                rounded-xl p-6 border
+                ${category.colorScheme.bg} ${category.colorScheme.bgDark}
+                ${category.colorScheme.border} ${category.colorScheme.borderDark}
+                transition-all duration-300
+                hover:shadow-glow-lg hover:-translate-y-1
+                group cursor-default
+              `}
             >
-              {category.skills.map((skill, skillIndex) => (
-                <motion.span
-                  key={skill}
-                  variants={skillTagVariants}
+              {/* Category Header */}
+              <div className="flex items-center gap-3 mb-4">
+                <span
                   className={`
-                    inline-flex items-center
-                    px-3 py-1.5 rounded-full
-                    text-sm font-medium
-                    bg-white/90 dark:bg-dark-base/60
-                    ${category.colorScheme.text} ${category.colorScheme.textDark}
-                    border ${category.colorScheme.border} ${category.colorScheme.borderDark}
-                    hover:scale-105 transition-transform duration-200
+                    flex items-center justify-center
+                    w-10 h-10 rounded-lg
+                    bg-white/80 dark:bg-dark-panel/80
+                    ${category.colorScheme.icon}
+                    shadow-sm
                   `}
-                  role="listitem"
+                  aria-hidden="true"
                 >
-                  {skill}
-                </motion.span>
-              ))}
-            </div>
-          </motion.div>
-        ))}
-      </motion.div>
+                  {category.icon}
+                </span>
+                <h3
+                  className={`
+                    font-heading font-semibold text-lg
+                    ${category.colorScheme.text} ${category.colorScheme.textDark}
+                  `}
+                >
+                  {category.title}
+                </h3>
+              </div>
+
+              {/* Skill Tags */}
+              <div
+                className="flex flex-wrap gap-2"
+                role="list"
+                aria-label={`${category.title} list`}
+              >
+                {category.skills.map((skill, skillIndex) => (
+                  <motion.span
+                    key={skill}
+                    variants={skillTagVariants}
+                    className={`
+                      inline-flex items-center
+                      px-3 py-1.5 rounded-full
+                      text-sm font-medium
+                      bg-white/90 dark:bg-dark-base/60
+                      ${category.colorScheme.text} ${category.colorScheme.textDark}
+                      border ${category.colorScheme.border} ${category.colorScheme.borderDark}
+                      hover:scale-105 transition-transform duration-200
+                      shadow-sm
+                    `}
+                    role="listitem"
+                  >
+                    {skill}
+                  </motion.span>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Gradient Overlay when collapsed */}
+        {!isExpanded && (
+          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-light-base via-light-base/80 to-transparent dark:from-dark-base dark:via-dark-base/80 dark:to-transparent z-10 pointer-events-none" />
+        )}
+      </div>
+
+      {/* Expand Button */}
+      <div className="mt-8 flex justify-center">
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="
+              group flex flex-col items-center gap-2
+              text-sm font-semibold text-text-secondary dark:text-text-dark-secondary
+              hover:text-accent-primary dark:hover:text-accent-primary
+              transition-colors duration-300 focus:outline-none
+            "
+        >
+          <span className="uppercase tracking-wider">{isExpanded ? 'Show Less' : 'Expand Skills'}</span>
+          <div className={`p-2 rounded-full bg-light-neutral-grey dark:bg-dark-panel group-hover:bg-accent-primary/10 transition-colors duration-300 transform ${isExpanded ? 'rotate-180' : ''}`}>
+            <svg
+              className="w-5 h-5 group-hover:text-accent-primary transition-colors duration-300"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        </button>
+      </div>
     </section>
   )
 }

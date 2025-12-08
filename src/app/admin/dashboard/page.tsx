@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { useSession, signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
@@ -13,8 +13,8 @@ interface StatCardProps {
   value: number | string
   icon: React.ReactNode
   description?: string
-  trend?: { value: number; isPositive: boolean }
   href?: string
+  loading?: boolean
 }
 
 interface ActivityItem {
@@ -32,57 +32,40 @@ interface QuickActionProps {
   variant?: 'primary' | 'secondary'
 }
 
-// ------------------------------------------------------------------
-// Mock Data
-// ------------------------------------------------------------------
-const mockStats = {
-  totalPosts: 25,
-  publishedPosts: 8,
-  scheduledPosts: 12,
-  draftPosts: 5,
-  aiAgentsSeries: {
-    total: 25,
-    published: 8,
-  },
+interface UpcomingPost {
+  id: string
+  title: string
+  slug: string
+  category: string | null
+  scheduledFor: string
 }
 
-const mockRecentActivity: ActivityItem[] = [
-  {
-    id: '1',
-    type: 'post_published',
-    title: 'Eight Pillars Framework Overview',
-    timestamp: '2 hours ago',
-    metadata: 'AI Agents Series',
-  },
-  {
-    id: '2',
-    type: 'subscriber_added',
-    title: 'New subscriber joined',
-    timestamp: '4 hours ago',
-    metadata: 'john.doe@example.com',
-  },
-  {
-    id: '3',
-    type: 'comment_received',
-    title: 'New comment on "LLM Cognitive Engine"',
-    timestamp: '6 hours ago',
-    metadata: 'Pending moderation',
-  },
-  {
-    id: '4',
-    type: 'post_scheduled',
-    title: 'Context & Memory Management',
-    timestamp: '1 day ago',
-    metadata: 'Scheduled for Dec 15, 2025',
-  },
-  {
-    id: '5',
-    type: 'post_published',
-    title: 'System Integration Deep Dive',
-    timestamp: '2 days ago',
-    metadata: 'AI Agents Series',
-  },
-]
+interface DashboardData {
+  success: boolean
+  stats: {
+    posts: {
+      total: number
+      published: number
+      scheduled: number
+      draft: number
+    }
+    subscribers: {
+      total: number
+      active: number
+    }
+    comments: {
+      total: number
+      pending: number
+    }
+    aiAgentsSeries: {
+      total: number
+      published: number
+    }
+  }
+  recentActivity: ActivityItem[]
+  upcomingPosts: UpcomingPost[]
+  categoryBreakdown: Array<{ category: string | null; count: number }>
+}
 
 // ------------------------------------------------------------------
 // Icons (inline SVG for simplicity)
@@ -138,12 +121,28 @@ const Icons = {
       <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
     </svg>
   ),
+  Refresh: () => (
+    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+    </svg>
+  ),
+}
+
+// Category colors for the progress breakdown
+const CATEGORY_COLORS: Record<string, string> = {
+  ANCHOR: 'bg-category-research',
+  THEME: 'bg-accent-primary',
+  EMERGENT: 'bg-accent-secondary',
+  PRACTITIONER: 'bg-accent-success',
+  PROTOTYPE: 'bg-accent-warning',
+  CONFERENCE: 'bg-category-pharma',
+  METHODOLOGY: 'bg-category-ai-agents',
 }
 
 // ------------------------------------------------------------------
 // StatCard Component
 // ------------------------------------------------------------------
-function StatCard({ title, value, icon, description, trend, href }: StatCardProps) {
+function StatCard({ title, value, icon, description, href, loading }: StatCardProps) {
   const content = (
     <div className="bg-light-base dark:bg-dark-panel rounded-xl p-6 border border-border-light dark:border-border-dark shadow-light hover:shadow-glow transition-shadow duration-200">
       <div className="flex items-start justify-between">
@@ -151,17 +150,16 @@ function StatCard({ title, value, icon, description, trend, href }: StatCardProp
           <p className="text-sm font-medium text-text-secondary dark:text-text-dark-secondary uppercase tracking-wide">
             {title}
           </p>
-          <p className="mt-2 text-3xl font-bold text-text-primary dark:text-text-dark-primary">
-            {value}
-          </p>
+          {loading ? (
+            <div className="mt-2 h-9 w-16 bg-light-neutral-grey dark:bg-dark-deep-blue animate-pulse rounded" />
+          ) : (
+            <p className="mt-2 text-3xl font-bold text-text-primary dark:text-text-dark-primary">
+              {value}
+            </p>
+          )}
           {description && (
             <p className="mt-1 text-sm text-text-muted dark:text-text-dark-muted">
               {description}
-            </p>
-          )}
-          {trend && (
-            <p className={`mt-2 text-sm font-medium ${trend.isPositive ? 'text-accent-success' : 'text-accent-error'}`}>
-              {trend.isPositive ? '+' : ''}{trend.value}% from last week
             </p>
           )}
         </div>
@@ -182,8 +180,18 @@ function StatCard({ title, value, icon, description, trend, href }: StatCardProp
 // ------------------------------------------------------------------
 // SeriesProgress Component
 // ------------------------------------------------------------------
-function SeriesProgress({ published, total }: { published: number; total: number }) {
-  const percentage = Math.round((published / total) * 100)
+function SeriesProgress({
+  published,
+  total,
+  categoryBreakdown,
+  loading,
+}: {
+  published: number
+  total: number
+  categoryBreakdown: Array<{ category: string | null; count: number }>
+  loading: boolean
+}) {
+  const percentage = total > 0 ? Math.round((published / total) * 100) : 0
 
   return (
     <div className="bg-light-base dark:bg-dark-panel rounded-xl p-6 border border-border-light dark:border-border-dark">
@@ -191,48 +199,55 @@ function SeriesProgress({ published, total }: { published: number; total: number
         <h3 className="font-heading text-lg font-semibold text-text-primary dark:text-text-dark-primary">
           AI Agents Series Progress
         </h3>
-        <span className="text-sm font-medium text-accent-primary">
-          {published} of {total} published
-        </span>
+        {loading ? (
+          <div className="h-5 w-32 bg-light-neutral-grey dark:bg-dark-deep-blue animate-pulse rounded" />
+        ) : (
+          <span className="text-sm font-medium text-accent-primary">
+            {published} of {total} published
+          </span>
+        )}
       </div>
 
       {/* Progress Bar */}
       <div className="relative h-4 bg-light-neutral-grey dark:bg-dark-deep-blue rounded-full overflow-hidden">
-        <div
-          className="absolute inset-y-0 left-0 bg-gradient-to-r from-accent-primary to-accent-secondary rounded-full transition-all duration-500"
-          style={{ width: `${percentage}%` }}
-        />
+        {loading ? (
+          <div className="absolute inset-0 animate-pulse" />
+        ) : (
+          <div
+            className="absolute inset-y-0 left-0 bg-gradient-to-r from-accent-primary to-accent-secondary rounded-full transition-all duration-500"
+            style={{ width: `${percentage}%` }}
+          />
+        )}
       </div>
 
       <div className="mt-4 flex items-center justify-between text-sm">
         <span className="text-text-muted dark:text-text-dark-muted">
-          {percentage}% complete
+          {loading ? '...' : `${percentage}% complete`}
         </span>
         <span className="text-text-secondary dark:text-text-dark-secondary">
-          {total - published} posts remaining
+          {loading ? '...' : `${total - published} posts remaining`}
         </span>
       </div>
 
       {/* Category Breakdown */}
       <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 gap-3">
-        {[
-          { label: 'Anchor', count: 1, color: 'bg-category-research' },
-          { label: 'Theme', count: 6, color: 'bg-accent-primary' },
-          { label: 'Emergent', count: 6, color: 'bg-accent-secondary' },
-          { label: 'Practitioner', count: 5, color: 'bg-accent-success' },
-          { label: 'Prototype', count: 3, color: 'bg-accent-warning' },
-          { label: 'Conference', count: 3, color: 'bg-category-pharma' },
-        ].map((category) => (
-          <div
-            key={category.label}
-            className="flex items-center gap-2 text-sm"
-          >
-            <span className={`w-3 h-3 rounded-full ${category.color}`} />
-            <span className="text-text-secondary dark:text-text-dark-secondary">
-              {category.label}: {category.count}
-            </span>
-          </div>
-        ))}
+        {loading ? (
+          Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="h-5 bg-light-neutral-grey dark:bg-dark-deep-blue animate-pulse rounded" />
+          ))
+        ) : (
+          categoryBreakdown.map((cat) => (
+            <div
+              key={cat.category || 'unknown'}
+              className="flex items-center gap-2 text-sm"
+            >
+              <span className={`w-3 h-3 rounded-full ${CATEGORY_COLORS[cat.category || ''] || 'bg-gray-400'}`} />
+              <span className="text-text-secondary dark:text-text-dark-secondary">
+                {cat.category ? cat.category.charAt(0) + cat.category.slice(1).toLowerCase() : 'Other'}: {cat.count}
+              </span>
+            </div>
+          ))
+        )}
       </div>
     </div>
   )
@@ -241,7 +256,7 @@ function SeriesProgress({ published, total }: { published: number; total: number
 // ------------------------------------------------------------------
 // ActivityFeed Component
 // ------------------------------------------------------------------
-function ActivityFeed({ activities }: { activities: ActivityItem[] }) {
+function ActivityFeed({ activities, loading }: { activities: ActivityItem[]; loading: boolean }) {
   const getActivityIcon = (type: ActivityItem['type']) => {
     switch (type) {
       case 'post_published':
@@ -279,26 +294,42 @@ function ActivityFeed({ activities }: { activities: ActivityItem[] }) {
       </h3>
 
       <div className="space-y-4">
-        {activities.map((activity) => (
-          <div key={activity.id} className="flex items-start gap-3">
-            <div className={`p-2 rounded-lg ${getActivityColor(activity.type)}`}>
-              {getActivityIcon(activity.type)}
+        {loading ? (
+          Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="flex items-start gap-3 animate-pulse">
+              <div className="w-10 h-10 rounded-lg bg-light-neutral-grey dark:bg-dark-deep-blue" />
+              <div className="flex-1">
+                <div className="h-4 w-3/4 bg-light-neutral-grey dark:bg-dark-deep-blue rounded mb-2" />
+                <div className="h-3 w-1/2 bg-light-neutral-grey dark:bg-dark-deep-blue rounded" />
+              </div>
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-text-primary dark:text-text-dark-primary truncate">
-                {activity.title}
-              </p>
-              {activity.metadata && (
-                <p className="text-xs text-text-muted dark:text-text-dark-muted mt-0.5">
-                  {activity.metadata}
+          ))
+        ) : activities.length === 0 ? (
+          <p className="text-sm text-text-muted dark:text-text-dark-muted text-center py-4">
+            No recent activity
+          </p>
+        ) : (
+          activities.map((activity) => (
+            <div key={activity.id} className="flex items-start gap-3">
+              <div className={`p-2 rounded-lg ${getActivityColor(activity.type)}`}>
+                {getActivityIcon(activity.type)}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-text-primary dark:text-text-dark-primary truncate">
+                  {activity.title}
                 </p>
-              )}
-              <p className="text-xs text-text-muted dark:text-text-dark-muted mt-1">
-                {activity.timestamp}
-              </p>
+                {activity.metadata && (
+                  <p className="text-xs text-text-muted dark:text-text-dark-muted mt-0.5">
+                    {activity.metadata}
+                  </p>
+                )}
+                <p className="text-xs text-text-muted dark:text-text-dark-muted mt-1">
+                  {activity.timestamp}
+                </p>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
 
       <Link
@@ -332,21 +363,117 @@ function QuickAction({ label, href, icon, variant = 'secondary' }: QuickActionPr
 }
 
 // ------------------------------------------------------------------
+// UpcomingPublications Component
+// ------------------------------------------------------------------
+function UpcomingPublications({ posts, loading }: { posts: UpcomingPost[]; loading: boolean }) {
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    })
+  }
+
+  return (
+    <div className="bg-light-base dark:bg-dark-panel rounded-xl p-6 border border-border-light dark:border-border-dark">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="font-heading text-lg font-semibold text-text-primary dark:text-text-dark-primary">
+          Upcoming Publications
+        </h3>
+        <Link
+          href="/admin/calendar"
+          className="text-sm font-medium text-accent-primary hover:text-accent-primary/80 transition-colors"
+        >
+          View Calendar
+        </Link>
+      </div>
+
+      {loading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className="p-4 bg-light-icy-blue dark:bg-dark-deep-blue rounded-lg animate-pulse">
+              <div className="h-4 w-1/3 bg-light-neutral-grey dark:bg-dark-panel rounded mb-3" />
+              <div className="h-5 w-full bg-light-neutral-grey dark:bg-dark-panel rounded mb-2" />
+              <div className="h-4 w-1/2 bg-light-neutral-grey dark:bg-dark-panel rounded" />
+            </div>
+          ))}
+        </div>
+      ) : posts.length === 0 ? (
+        <p className="text-sm text-text-muted dark:text-text-dark-muted text-center py-8">
+          No upcoming scheduled posts
+        </p>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {posts.map((post) => (
+            <Link
+              key={post.id}
+              href={`/admin/blog/${post.id}`}
+              className="p-4 bg-light-icy-blue dark:bg-dark-deep-blue rounded-lg border border-border-light dark:border-border-dark hover:border-accent-primary/50 transition-colors"
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <Icons.Rocket />
+                <span className="text-xs font-medium text-accent-primary uppercase tracking-wide">
+                  {post.category ? post.category.charAt(0) + post.category.slice(1).toLowerCase() : 'Post'}
+                </span>
+              </div>
+              <p className="font-medium text-text-primary dark:text-text-dark-primary line-clamp-2">
+                {post.title}
+              </p>
+              <p className="mt-2 text-sm text-text-muted dark:text-text-dark-muted">
+                {formatDate(post.scheduledFor)}
+              </p>
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ------------------------------------------------------------------
 // Dashboard Page
 // ------------------------------------------------------------------
 export default function AdminDashboardPage() {
-  const [stats] = useState(mockStats)
+  const [data, setData] = useState<DashboardData | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const { data: session, status } = useSession()
   const router = useRouter()
 
-  // Redirect to login if not authenticated (session expired or not logged in)
+  // Fetch dashboard data
+  const fetchDashboardData = useCallback(async () => {
+    try {
+      setLoading(true)
+      setError(null)
+      const response = await fetch('/api/admin/dashboard')
+      const result = await response.json()
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || 'Failed to fetch dashboard data')
+      }
+
+      setData(result)
+    } catch (err) {
+      console.error('Dashboard fetch error:', err)
+      setError(err instanceof Error ? err.message : 'Failed to load dashboard')
+    } finally {
+      setLoading(false)
+    }
+  }, [])
+
+  // Redirect to login if not authenticated
   useEffect(() => {
     if (status === 'unauthenticated') {
-      // Add expired=true parameter to show session expired message
-      // This covers cases where session has expired while on the page
       router.push('/admin/login?expired=true')
     }
   }, [status, router])
+
+  // Fetch data when authenticated
+  useEffect(() => {
+    if (status === 'authenticated') {
+      fetchDashboardData()
+    }
+  }, [status, fetchDashboardData])
 
   // Show loading state while checking session
   if (status === 'loading') {
@@ -361,6 +488,8 @@ export default function AdminDashboardPage() {
   if (status === 'unauthenticated') {
     return null
   }
+
+  const stats = data?.stats
 
   return (
     <div className="space-y-8">
@@ -379,7 +508,7 @@ export default function AdminDashboardPage() {
         <div className="flex flex-wrap gap-3">
           <QuickAction
             label="New Post"
-            href="/admin/posts/new"
+            href="/admin/posts"
             icon={<Icons.Plus />}
             variant="primary"
           />
@@ -394,6 +523,14 @@ export default function AdminDashboardPage() {
             icon={<Icons.ChartBar />}
           />
           <button
+            onClick={() => fetchDashboardData()}
+            disabled={loading}
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 bg-light-neutral-grey dark:bg-dark-deep-blue text-text-primary dark:text-text-dark-primary hover:bg-light-icy-blue dark:hover:bg-dark-panel border border-border-light dark:border-border-dark disabled:opacity-50"
+          >
+            <Icons.Refresh />
+            Refresh
+          </button>
+          <button
             onClick={() => signOut({ callbackUrl: '/admin/login' })}
             className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 bg-light-neutral-grey dark:bg-dark-deep-blue text-text-primary dark:text-text-dark-primary hover:bg-light-icy-blue dark:hover:bg-dark-panel border border-border-light dark:border-border-dark"
           >
@@ -402,86 +539,67 @@ export default function AdminDashboardPage() {
         </div>
       </div>
 
+      {/* Error State */}
+      {error && (
+        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4">
+          <p className="text-red-700 dark:text-red-300">{error}</p>
+          <button
+            onClick={fetchDashboardData}
+            className="mt-2 text-sm text-red-600 dark:text-red-400 hover:underline"
+          >
+            Try again
+          </button>
+        </div>
+      )}
+
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
           title="Total Posts"
-          value={stats.totalPosts}
+          value={stats?.posts.total ?? 0}
           icon={<Icons.Document />}
           href="/admin/posts"
+          loading={loading}
         />
         <StatCard
           title="Published"
-          value={stats.publishedPosts}
+          value={stats?.posts.published ?? 0}
           icon={<Icons.CheckCircle />}
           description="Live on the website"
-          href="/admin/posts?status=published"
+          href="/admin/posts?status=PUBLISHED"
+          loading={loading}
         />
         <StatCard
           title="Scheduled"
-          value={stats.scheduledPosts}
+          value={stats?.posts.scheduled ?? 0}
           icon={<Icons.Clock />}
           description="Queued for release"
-          href="/admin/posts?status=scheduled"
+          href="/admin/posts?status=SCHEDULED"
+          loading={loading}
         />
         <StatCard
           title="Drafts"
-          value={stats.draftPosts}
+          value={stats?.posts.draft ?? 0}
           icon={<Icons.PencilSquare />}
           description="Work in progress"
-          href="/admin/posts?status=draft"
+          href="/admin/posts?status=DRAFT"
+          loading={loading}
         />
       </div>
 
       {/* Series Progress & Activity Feed */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <SeriesProgress
-          published={stats.aiAgentsSeries.published}
-          total={stats.aiAgentsSeries.total}
+          published={stats?.aiAgentsSeries.published ?? 0}
+          total={stats?.aiAgentsSeries.total ?? 25}
+          categoryBreakdown={data?.categoryBreakdown ?? []}
+          loading={loading}
         />
-        <ActivityFeed activities={mockRecentActivity} />
+        <ActivityFeed activities={data?.recentActivity ?? []} loading={loading} />
       </div>
 
       {/* Upcoming Publications */}
-      <div className="bg-light-base dark:bg-dark-panel rounded-xl p-6 border border-border-light dark:border-border-dark">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="font-heading text-lg font-semibold text-text-primary dark:text-text-dark-primary">
-            Upcoming Publications
-          </h3>
-          <Link
-            href="/admin/calendar"
-            className="text-sm font-medium text-accent-primary hover:text-accent-primary/80 transition-colors"
-          >
-            View Calendar
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[
-            { title: 'Context & Memory Management', date: 'Dec 15, 2025', category: 'Theme' },
-            { title: 'System Integration Patterns', date: 'Dec 18, 2025', category: 'Theme' },
-            { title: 'Auth & Identity for Agents', date: 'Dec 22, 2025', category: 'Emergent' },
-          ].map((post, index) => (
-            <div
-              key={index}
-              className="p-4 bg-light-icy-blue dark:bg-dark-deep-blue rounded-lg border border-border-light dark:border-border-dark"
-            >
-              <div className="flex items-center gap-2 mb-2">
-                <Icons.Rocket />
-                <span className="text-xs font-medium text-accent-primary uppercase tracking-wide">
-                  {post.category}
-                </span>
-              </div>
-              <p className="font-medium text-text-primary dark:text-text-dark-primary line-clamp-2">
-                {post.title}
-              </p>
-              <p className="mt-2 text-sm text-text-muted dark:text-text-dark-muted">
-                {post.date}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
+      <UpcomingPublications posts={data?.upcomingPosts ?? []} loading={loading} />
     </div>
   )
 }

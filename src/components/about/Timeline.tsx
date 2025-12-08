@@ -96,7 +96,7 @@ const defaultEvents: TimelineEvent[] = [
     title: 'Co‑Founder',
     organization: 'Socially MX',
     startDate: 'College',
-    endDate: 'ears',
+    endDate: 'Years',
     description:
       'Co‑founded a marketing and communications company specializing in digital advertising, sales promotion, and brand positioning consulting while in college.',
     type: 'work',
