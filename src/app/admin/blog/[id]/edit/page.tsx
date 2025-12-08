@@ -27,6 +27,7 @@ interface BlogPostFormData {
   excerpt: string
   content: string
   featuredImage: string
+  ogImage: string
   category: PostCategory | ''
   seriesId: string
   seriesOrder: number | null
@@ -36,6 +37,13 @@ interface BlogPostFormData {
   status: PostStatus
   publishedAt: string | null
   scheduledFor: string | null
+}
+
+// Series interface
+interface Series {
+  id: string
+  name: string
+  slug: string
 }
 
 // Schedule Modal Props
@@ -431,17 +439,13 @@ function PreviewModal({ isOpen, onClose, formData }: PreviewModalProps) {
           <hr className="border-border-light dark:border-border-dark mb-8" />
 
           {/* Content Preview */}
-          <div className="prose dark:prose-invert max-w-none">
+          <div className="prose dark:prose-invert max-w-none prose-headings:font-heading prose-headings:text-text-primary dark:prose-headings:text-text-dark-primary prose-p:text-text-secondary dark:prose-p:text-text-dark-secondary prose-a:text-accent-primary prose-strong:text-text-primary dark:prose-strong:text-text-dark-primary prose-code:text-accent-primary prose-code:bg-light-neutral-grey dark:prose-code:bg-dark-panel prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-dark-base prose-pre:text-text-dark-primary">
             {formData.content ? (
-              <div className="whitespace-pre-wrap text-text-primary dark:text-text-dark-primary leading-relaxed">
-                {/* Show first 1000 characters of content as preview */}
-                {formData.content.slice(0, 1500)}
-                {formData.content.length > 1500 && (
-                  <span className="text-text-muted dark:text-text-dark-muted">
-                    ... [Content truncated in preview]
-                  </span>
-                )}
-              </div>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: formData.content.slice(0, 3000) + (formData.content.length > 3000 ? '<p class="text-text-muted dark:text-text-dark-muted italic mt-4">... [Content truncated in preview]</p>' : '')
+                }}
+              />
             ) : (
               <p className="text-text-muted dark:text-text-dark-muted italic">
                 No content yet. Add content to see it in the preview.
@@ -541,6 +545,7 @@ export default function BlogPostEditPage() {
   const [formData, setFormData] = useState<BlogPostFormData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [seriesList, setSeriesList] = useState<Series[]>([])
 
   // UI state
   const [tagInput, setTagInput] = useState('')
@@ -559,21 +564,32 @@ export default function BlogPostEditPage() {
     }
   }, [sessionStatus, router])
 
-  // Fetch post data
+  // Fetch post data and series list
   useEffect(() => {
-    async function fetchPost() {
+    async function fetchData() {
       if (!postId) return
 
       try {
         setIsLoading(true)
-        const response = await fetch(`/api/admin/posts/${postId}`)
 
-        if (!response.ok) {
+        // Fetch post and series in parallel
+        const [postResponse, seriesResponse] = await Promise.all([
+          fetch(`/api/admin/posts/${postId}`),
+          fetch('/api/series')
+        ])
+
+        if (!postResponse.ok) {
           throw new Error('Failed to fetch post')
         }
 
-        const data = await response.json()
-        const post = data.post
+        const postData = await postResponse.json()
+        const post = postData.post
+
+        // Set series list
+        if (seriesResponse.ok) {
+          const seriesData = await seriesResponse.json()
+          setSeriesList(seriesData.series || seriesData || [])
+        }
 
         setFormData({
           id: post.id,
@@ -582,9 +598,10 @@ export default function BlogPostEditPage() {
           excerpt: post.excerpt || '',
           content: post.content || '',
           featuredImage: post.featuredImage || '',
+          ogImage: post.ogImage || '',
           category: post.category || '',
           seriesId: post.seriesId || '',
-          seriesOrder: post.seriesOrder || null,
+          seriesOrder: post.seriesOrder ?? null,
           tags: post.tags?.map((t: { tag: { name: string } }) => t.tag.name) || [],
           metaTitle: post.metaTitle || '',
           metaDescription: post.metaDescription || '',
@@ -600,7 +617,7 @@ export default function BlogPostEditPage() {
     }
 
     if (sessionStatus === 'authenticated') {
-      fetchPost()
+      fetchData()
     }
   }, [postId, sessionStatus])
 
@@ -1005,6 +1022,28 @@ export default function BlogPostEditPage() {
           />
         </div>
 
+        {/* OG Image */}
+        <div>
+          <label
+            htmlFor="ogImage"
+            className="mb-2 block text-sm font-medium text-text-primary dark:text-text-dark-primary"
+          >
+            Social Share Image (OG Image)
+          </label>
+          <input
+            type="url"
+            id="ogImage"
+            name="ogImage"
+            value={formData.ogImage}
+            onChange={handleChange}
+            placeholder="https://example.com/og-image.jpg (defaults to featured image)"
+            className="w-full rounded-lg border border-border-light dark:border-border-dark bg-light-base dark:bg-dark-deep-blue px-4 py-2.5 text-text-primary dark:text-text-dark-primary placeholder-text-muted dark:placeholder-text-dark-muted focus:outline-none focus:ring-2 focus:ring-accent-primary/50 focus:border-accent-primary transition-colors"
+          />
+          <p className="mt-1 text-xs text-text-muted dark:text-text-dark-muted">
+            Image used when sharing on social media. Falls back to featured image if not set.
+          </p>
+        </div>
+
         {/* Category */}
         <div>
           <label
@@ -1026,6 +1065,69 @@ export default function BlogPostEditPage() {
               </option>
             ))}
           </select>
+        </div>
+
+        {/* Series Section */}
+        <div className="rounded-xl border border-border-light dark:border-border-dark p-6 bg-accent-primary/5 dark:bg-accent-primary/10">
+          <h2 className="mb-4 text-lg font-semibold text-text-primary dark:text-text-dark-primary font-heading">
+            Series Settings
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Series Dropdown */}
+            <div>
+              <label
+                htmlFor="seriesId"
+                className="mb-2 block text-sm font-medium text-text-primary dark:text-text-dark-primary"
+              >
+                Series
+              </label>
+              <select
+                id="seriesId"
+                name="seriesId"
+                value={formData.seriesId}
+                onChange={handleChange}
+                className="w-full rounded-lg border border-border-light dark:border-border-dark bg-light-base dark:bg-dark-panel px-4 py-2.5 text-text-primary dark:text-text-dark-primary focus:outline-none focus:ring-2 focus:ring-accent-primary/50 focus:border-accent-primary transition-colors"
+              >
+                <option value="">No series (standalone post)</option>
+                {seriesList.map(series => (
+                  <option key={series.id} value={series.id}>
+                    {series.name}
+                  </option>
+                ))}
+              </select>
+              <p className="mt-1 text-xs text-text-muted dark:text-text-dark-muted">
+                Assign this post to a series for grouping related content.
+              </p>
+            </div>
+
+            {/* Series Order */}
+            <div>
+              <label
+                htmlFor="seriesOrder"
+                className="mb-2 block text-sm font-medium text-text-primary dark:text-text-dark-primary"
+              >
+                Order in Series
+              </label>
+              <input
+                type="number"
+                id="seriesOrder"
+                name="seriesOrder"
+                value={formData.seriesOrder ?? ''}
+                onChange={(e) => {
+                  const value = e.target.value === '' ? null : parseInt(e.target.value, 10)
+                  setFormData(prev => prev ? { ...prev, seriesOrder: value } : null)
+                }}
+                min="1"
+                placeholder="e.g., 1, 2, 3..."
+                disabled={!formData.seriesId}
+                className="w-full rounded-lg border border-border-light dark:border-border-dark bg-light-base dark:bg-dark-panel px-4 py-2.5 text-text-primary dark:text-text-dark-primary placeholder-text-muted dark:placeholder-text-dark-muted focus:outline-none focus:ring-2 focus:ring-accent-primary/50 focus:border-accent-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              />
+              <p className="mt-1 text-xs text-text-muted dark:text-text-dark-muted">
+                {formData.seriesId ? 'Position of this post within the series.' : 'Select a series first.'}
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Tags */}
