@@ -43,8 +43,18 @@ interface ScheduleModalProps {
   isOpen: boolean
   onClose: () => void
   onSchedule: (scheduledFor: string) => void
+  onMoveToDraft: () => void
   isLoading: boolean
+  isMovingToDraft: boolean
   currentScheduledFor: string | null
+  isScheduled: boolean
+}
+
+// Preview Modal Props
+interface PreviewModalProps {
+  isOpen: boolean
+  onClose: () => void
+  formData: BlogPostFormData
 }
 
 // Schedule Modal Component
@@ -52,8 +62,11 @@ function ScheduleModal({
   isOpen,
   onClose,
   onSchedule,
+  onMoveToDraft,
   isLoading,
+  isMovingToDraft,
   currentScheduledFor,
+  isScheduled,
 }: ScheduleModalProps) {
   const [selectedDate, setSelectedDate] = useState('')
   const [selectedTime, setSelectedTime] = useState('09:00')
@@ -169,11 +182,43 @@ function ScheduleModal({
           )}
         </div>
 
+        {/* Move to Draft option - only show if currently scheduled */}
+        {isScheduled && (
+          <div className="mt-6 pt-4 border-t border-border-light dark:border-border-dark">
+            <p className="text-sm text-text-secondary dark:text-text-dark-secondary mb-3">
+              Or remove the schedule and move back to draft:
+            </p>
+            <button
+              type="button"
+              onClick={onMoveToDraft}
+              disabled={isLoading || isMovingToDraft}
+              className="w-full rounded-lg border border-text-muted dark:border-text-dark-muted px-4 py-2 text-sm font-medium text-text-secondary dark:text-text-dark-secondary hover:bg-light-neutral-grey dark:hover:bg-dark-deep-blue transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+            >
+              {isMovingToDraft ? (
+                <>
+                  <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                  </svg>
+                  Moving to Draft...
+                </>
+              ) : (
+                <>
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                  </svg>
+                  Move to Draft
+                </>
+              )}
+            </button>
+          </div>
+        )}
+
         <div className="mt-6 flex justify-end gap-3">
           <button
             type="button"
             onClick={onClose}
-            disabled={isLoading}
+            disabled={isLoading || isMovingToDraft}
             className="rounded-lg border border-border-light dark:border-border-dark px-4 py-2 text-sm font-medium text-text-secondary dark:text-text-dark-secondary hover:bg-light-neutral-grey dark:hover:bg-dark-deep-blue transition-colors disabled:opacity-50"
           >
             Cancel
@@ -181,7 +226,7 @@ function ScheduleModal({
           <button
             type="button"
             onClick={handleSubmit}
-            disabled={isLoading || !selectedDate || !selectedTime}
+            disabled={isLoading || isMovingToDraft || !selectedDate || !selectedTime}
             className="rounded-lg bg-accent-warning px-4 py-2 text-sm font-medium text-white hover:bg-accent-warning/90 transition-colors disabled:opacity-50 flex items-center gap-2"
           >
             {isLoading ? (
@@ -212,9 +257,207 @@ function ScheduleModal({
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                 </svg>
-                Schedule Post
+                {isScheduled ? 'Update Schedule' : 'Schedule Post'}
               </>
             )}
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Preview Modal Component
+function PreviewModal({ isOpen, onClose, formData }: PreviewModalProps) {
+  if (!isOpen) return null
+
+  // Get category label
+  const getCategoryLabel = (category: string) => {
+    const labels: Record<string, string> = {
+      ANCHOR: 'Anchor',
+      THEME: 'Theme Deep Dive',
+      EMERGENT: 'Emergent Insight',
+      PRACTITIONER: 'Practitioner Perspective',
+      PROTOTYPE: 'Prototype Learning',
+      CONFERENCE: 'Conference Insight',
+      METHODOLOGY: 'Methodology',
+    }
+    return labels[category] || category
+  }
+
+  // Get category color
+  const getCategoryColor = (category: string) => {
+    const colors: Record<string, string> = {
+      ANCHOR: 'bg-accent-primary text-white',
+      THEME: 'bg-category-research text-white',
+      EMERGENT: 'bg-accent-secondary text-white',
+      PRACTITIONER: 'bg-accent-success text-white',
+      PROTOTYPE: 'bg-accent-warning text-white',
+      CONFERENCE: 'bg-accent-error text-white',
+      METHODOLOGY: 'bg-text-muted text-white',
+    }
+    return colors[category] || 'bg-text-muted text-white'
+  }
+
+  // Format date for preview
+  const getDisplayDate = () => {
+    if (formData.status === 'PUBLISHED' && formData.publishedAt) {
+      return new Date(formData.publishedAt).toLocaleDateString('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+      })
+    }
+    if (formData.status === 'SCHEDULED' && formData.scheduledFor) {
+      return new Date(formData.scheduledFor).toLocaleDateString('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+      })
+    }
+    return new Date().toLocaleDateString('en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+    })
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto">
+      {/* Backdrop */}
+      <div
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm"
+        onClick={onClose}
+        aria-hidden="true"
+      />
+
+      {/* Dialog */}
+      <div
+        className="relative z-10 w-full max-w-4xl max-h-[90vh] overflow-y-auto m-4 rounded-xl bg-light-base dark:bg-dark-base shadow-2xl border border-border-light dark:border-border-dark"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="preview-dialog-title"
+      >
+        {/* Header */}
+        <div className="sticky top-0 z-20 flex items-center justify-between px-6 py-4 bg-light-base/95 dark:bg-dark-base/95 backdrop-blur-sm border-b border-border-light dark:border-border-dark">
+          <div className="flex items-center gap-3">
+            <svg className="w-5 h-5 text-accent-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+            </svg>
+            <h3 id="preview-dialog-title" className="text-lg font-semibold text-text-primary dark:text-text-dark-primary font-heading">
+              Post Preview
+            </h3>
+            <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+              formData.status === 'PUBLISHED'
+                ? 'bg-accent-success/10 text-accent-success'
+                : formData.status === 'SCHEDULED'
+                ? 'bg-accent-warning/10 text-accent-warning'
+                : 'bg-text-muted/10 text-text-muted'
+            }`}>
+              {formData.status === 'PUBLISHED' ? 'Published' : formData.status === 'SCHEDULED' ? 'Scheduled' : 'Draft'}
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-lg p-2 text-text-secondary dark:text-text-dark-secondary hover:bg-light-neutral-grey dark:hover:bg-dark-panel transition-colors"
+            aria-label="Close preview"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Preview Content - Simulating the blog post layout */}
+        <div className="p-6 md:p-10">
+          {/* Featured Image */}
+          {formData.featuredImage && (
+            <div className="mb-8 rounded-xl overflow-hidden aspect-video bg-light-neutral-grey dark:bg-dark-panel">
+              <img
+                src={formData.featuredImage}
+                alt={formData.title || 'Featured image'}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none'
+                }}
+              />
+            </div>
+          )}
+
+          {/* Category & Date */}
+          <div className="flex flex-wrap items-center gap-3 mb-4">
+            {formData.category && (
+              <span className={`px-3 py-1 rounded-full text-xs font-medium ${getCategoryColor(formData.category)}`}>
+                {getCategoryLabel(formData.category)}
+              </span>
+            )}
+            <span className="text-sm text-text-secondary dark:text-text-dark-secondary">
+              {getDisplayDate()}
+            </span>
+            <span className="text-sm text-text-muted dark:text-text-dark-muted">
+              • 5 min read
+            </span>
+          </div>
+
+          {/* Title */}
+          <h1 className="font-heading text-3xl md:text-4xl font-bold text-text-primary dark:text-text-dark-primary mb-4 leading-tight">
+            {formData.title || 'Untitled Post'}
+          </h1>
+
+          {/* Excerpt */}
+          {formData.excerpt && (
+            <p className="text-lg text-text-secondary dark:text-text-dark-secondary mb-6 leading-relaxed">
+              {formData.excerpt}
+            </p>
+          )}
+
+          {/* Tags */}
+          {formData.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-8">
+              {formData.tags.map(tag => (
+                <span
+                  key={tag}
+                  className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-accent-primary/10 text-accent-primary dark:bg-accent-primary/20"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+
+          {/* Divider */}
+          <hr className="border-border-light dark:border-border-dark mb-8" />
+
+          {/* Content Preview */}
+          <div className="prose dark:prose-invert max-w-none">
+            {formData.content ? (
+              <div className="whitespace-pre-wrap text-text-primary dark:text-text-dark-primary leading-relaxed">
+                {/* Show first 1000 characters of content as preview */}
+                {formData.content.slice(0, 1500)}
+                {formData.content.length > 1500 && (
+                  <span className="text-text-muted dark:text-text-dark-muted">
+                    ... [Content truncated in preview]
+                  </span>
+                )}
+              </div>
+            ) : (
+              <p className="text-text-muted dark:text-text-dark-muted italic">
+                No content yet. Add content to see it in the preview.
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="sticky bottom-0 px-6 py-4 bg-light-neutral-grey/80 dark:bg-dark-panel/80 backdrop-blur-sm border-t border-border-light dark:border-border-dark flex justify-end">
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-lg bg-accent-primary px-6 py-2 text-sm font-medium text-white hover:bg-accent-primary/90 transition-colors"
+          >
+            Close Preview
           </button>
         </div>
       </div>
@@ -279,6 +522,12 @@ const Icons = {
       <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
     </svg>
   ),
+  Eye: () => (
+    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+    </svg>
+  ),
 }
 
 // Main Blog Editor Page Component
@@ -298,7 +547,9 @@ export default function BlogPostEditPage() {
   const [isSaving, setIsSaving] = useState(false)
   const [isPublishing, setIsPublishing] = useState(false)
   const [isScheduling, setIsScheduling] = useState(false)
+  const [isMovingToDraft, setIsMovingToDraft] = useState(false)
   const [showScheduleModal, setShowScheduleModal] = useState(false)
+  const [showPreviewModal, setShowPreviewModal] = useState(false)
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null)
 
   // Redirect to login if not authenticated
@@ -480,6 +731,42 @@ export default function BlogPostEditPage() {
     }
   }, [formData, showToast])
 
+  // Move post back to draft (remove scheduling)
+  const handleMoveToDraft = useCallback(async () => {
+    if (!formData) return
+
+    setIsMovingToDraft(true)
+    try {
+      const response = await fetch(`/api/admin/posts/${formData.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...formData,
+          status: 'DRAFT',
+          scheduledFor: null,
+        }),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to move post to draft')
+      }
+
+      setFormData(prev => prev ? {
+        ...prev,
+        status: 'DRAFT',
+        scheduledFor: null,
+      } : null)
+
+      setShowScheduleModal(false)
+      showToast('Post moved to draft successfully!', 'success')
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : 'Failed to move post to draft', 'error')
+    } finally {
+      setIsMovingToDraft(false)
+    }
+  }, [formData, showToast])
+
   // Category options
   const categoryOptions: { value: PostCategory | ''; label: string }[] = [
     { value: '', label: 'Select a category' },
@@ -574,10 +861,20 @@ export default function BlogPostEditPage() {
 
           {/* Action buttons */}
           <div className="flex flex-wrap gap-3">
+            {/* Preview Button */}
+            <button
+              type="button"
+              onClick={() => setShowPreviewModal(true)}
+              className="inline-flex items-center gap-2 rounded-lg border border-accent-primary px-4 py-2 text-sm font-medium text-accent-primary hover:bg-accent-primary/10 transition-colors"
+            >
+              <Icons.Eye />
+              Preview
+            </button>
+
             <button
               type="button"
               onClick={handleSave}
-              disabled={isSaving || isPublishing || isScheduling}
+              disabled={isSaving || isPublishing || isScheduling || isMovingToDraft}
               className="rounded-lg border border-border-light dark:border-border-dark px-4 py-2 text-sm font-medium text-text-secondary dark:text-text-dark-secondary hover:bg-light-neutral-grey dark:hover:bg-dark-deep-blue transition-colors disabled:opacity-50"
             >
               {isSaving ? 'Saving...' : 'Save Changes'}
@@ -588,7 +885,7 @@ export default function BlogPostEditPage() {
               <button
                 type="button"
                 onClick={() => setShowScheduleModal(true)}
-                disabled={isSaving || isPublishing || isScheduling}
+                disabled={isSaving || isPublishing || isScheduling || isMovingToDraft}
                 className="inline-flex items-center gap-2 rounded-lg bg-accent-warning px-4 py-2 text-sm font-medium text-white hover:bg-accent-warning/90 transition-colors disabled:opacity-50"
               >
                 <Icons.Clock />
@@ -601,7 +898,7 @@ export default function BlogPostEditPage() {
               <button
                 type="button"
                 onClick={handlePublish}
-                disabled={isSaving || isPublishing || isScheduling}
+                disabled={isSaving || isPublishing || isScheduling || isMovingToDraft}
                 className="rounded-lg bg-accent-success px-4 py-2 text-sm font-medium text-white hover:bg-accent-success/90 transition-colors disabled:opacity-50"
               >
                 {isPublishing ? 'Publishing...' : 'Publish Now'}
@@ -837,8 +1134,18 @@ export default function BlogPostEditPage() {
         isOpen={showScheduleModal}
         onClose={() => setShowScheduleModal(false)}
         onSchedule={handleSchedule}
+        onMoveToDraft={handleMoveToDraft}
         isLoading={isScheduling}
+        isMovingToDraft={isMovingToDraft}
         currentScheduledFor={formData.scheduledFor}
+        isScheduled={formData.status === 'SCHEDULED'}
+      />
+
+      {/* Preview Modal */}
+      <PreviewModal
+        isOpen={showPreviewModal}
+        onClose={() => setShowPreviewModal(false)}
+        formData={formData}
       />
 
       {/* Toast Notification */}
