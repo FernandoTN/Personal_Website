@@ -200,8 +200,8 @@ export async function PUT(
 
     // Validate category if provided
     const validCategories = ['ANCHOR', 'THEME', 'EMERGENT', 'PRACTITIONER', 'PROTOTYPE', 'CONFERENCE', 'METHODOLOGY']
-    const category = body.category
-      ? (validCategories.includes(body.category as string) ? body.category as string : null)
+    const category = body.category !== undefined
+      ? (body.category && validCategories.includes(body.category as string) ? body.category as string : null)
       : existingPost.category
 
     // Validate status
@@ -228,11 +228,11 @@ export async function PUT(
         publishedAt: body.publishedAt
           ? new Date(body.publishedAt as string)
           : existingPost.publishedAt,
-        scheduledFor: body.scheduledFor
-          ? new Date(body.scheduledFor as string)
+        scheduledFor: body.scheduledFor !== undefined
+          ? (body.scheduledFor ? new Date(body.scheduledFor as string) : null)
           : existingPost.scheduledFor,
         seriesId: body.seriesId !== undefined
-          ? (body.seriesId as string | null)
+          ? (body.seriesId && body.seriesId !== '' ? body.seriesId as string : null)
           : existingPost.seriesId,
         seriesOrder: body.seriesOrder !== undefined
           ? (body.seriesOrder as number | null)
