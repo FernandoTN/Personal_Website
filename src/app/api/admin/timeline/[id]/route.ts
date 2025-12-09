@@ -10,7 +10,7 @@ import prisma from '@/lib/prisma'
  */
 export async function PUT(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
     // Check authentication
@@ -22,7 +22,7 @@ export async function PUT(
       )
     }
 
-    const { id } = await params
+    const { id } = params
 
     // Parse request body
     let body: {
@@ -121,7 +121,7 @@ export async function PUT(
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
     // Check authentication
@@ -133,7 +133,7 @@ export async function DELETE(
       )
     }
 
-    const { id } = await params
+    const { id } = params
 
     // Check if event exists
     const existingEvent = await prisma.timelineEvent.findUnique({

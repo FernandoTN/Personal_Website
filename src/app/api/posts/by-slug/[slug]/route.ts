@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 
 interface RouteParams {
-  params: Promise<{ slug: string }>
+  params: { slug: string }
 }
 
 /**
@@ -13,7 +13,7 @@ interface RouteParams {
  */
 export async function GET(request: NextRequest, { params }: RouteParams) {
   try {
-    const { slug } = await params
+    const { slug } = params
 
     if (!slug) {
       return NextResponse.json(

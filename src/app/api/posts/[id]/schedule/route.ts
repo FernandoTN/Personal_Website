@@ -10,7 +10,7 @@ import { authOptions } from '@/lib/auth'
  */
 export async function POST(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
     // Check authentication
@@ -22,7 +22,7 @@ export async function POST(
       )
     }
 
-    const { id: postId } = await params
+    const { id: postId } = params
 
     // Validate post ID
     if (!postId) {
@@ -132,8 +132,8 @@ export async function POST(
  */
 export async function PUT(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  context: { params: { id: string } }
 ) {
   // Delegate to POST handler
-  return POST(request, { params })
+  return POST(request, context)
 }

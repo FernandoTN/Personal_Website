@@ -11,7 +11,7 @@ import { slugify, calculateReadingTime, extractExcerpt } from '@/lib/utils'
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
     // Check authentication
@@ -23,7 +23,7 @@ export async function GET(
       )
     }
 
-    const { id } = await params
+    const { id } = params
 
     // Try to find by ID first, then by slug
     let post = await prisma.post.findUnique({
@@ -108,7 +108,7 @@ export async function GET(
  */
 export async function PUT(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
     // Check authentication
@@ -120,7 +120,7 @@ export async function PUT(
       )
     }
 
-    const { id } = await params
+    const { id } = params
 
     // Parse request body
     let body: Record<string, unknown>
@@ -340,7 +340,7 @@ export async function PUT(
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
     // Check authentication
@@ -352,7 +352,7 @@ export async function DELETE(
       )
     }
 
-    const { id } = await params
+    const { id } = params
 
     // Find the post first (by ID or slug)
     let existingPost = await prisma.post.findUnique({
