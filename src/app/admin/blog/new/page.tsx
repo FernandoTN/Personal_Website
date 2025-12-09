@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useMemo, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 
 // Post status types matching Prisma schema
@@ -342,6 +343,14 @@ function generateSlug(title: string): string {
 // Main Blog Editor Page Component
 export default function NewBlogPostPage() {
   const router = useRouter()
+  const { status: sessionStatus } = useSession()
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (sessionStatus === 'unauthenticated') {
+      router.push('/admin/login')
+    }
+  }, [sessionStatus, router])
 
   // Form state
   const [formData, setFormData] = useState<BlogPostFormData>({
@@ -722,6 +731,20 @@ export default function NewBlogPostPage() {
     { value: 'CONFERENCE', label: 'Conference Insight' },
     { value: 'METHODOLOGY', label: 'Methodology' },
   ]
+
+  // Loading state
+  if (sessionStatus === 'loading') {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent-primary" />
+      </div>
+    )
+  }
+
+  // Don't render if not authenticated
+  if (sessionStatus === 'unauthenticated') {
+    return null
+  }
 
   return (
     <div className="mx-auto max-w-4xl">

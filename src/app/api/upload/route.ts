@@ -1,16 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { writeFile, mkdir } from 'fs/promises'
-import path from 'path'
-import { existsSync } from 'fs'
+import { put } from '@vercel/blob'
 
 // ------------------------------------------------------------------
 // Configuration
 // ------------------------------------------------------------------
 const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml']
-const BASE_UPLOAD_DIR = path.join(process.cwd(), 'public', 'images')
 
 // ------------------------------------------------------------------
 // Helper Functions
@@ -19,14 +16,26 @@ const BASE_UPLOAD_DIR = path.join(process.cwd(), 'public', 'images')
 /**
  * Generates a unique filename to prevent collisions
  */
-function generateUniqueFilename(originalName: string): string {
+function generateUniqueFilename(originalName: string, folder: string): string {
   const timestamp = Date.now()
   const randomString = Math.random().toString(36).substring(2, 8)
-  const extension = path.extname(originalName).toLowerCase()
-  const baseName = path.basename(originalName, extension)
+  const extension = getExtension(originalName)
+  const baseName = originalName
+    .replace(/\.[^.]+$/, '') // Remove extension
     .replace(/[^a-zA-Z0-9-_]/g, '-') // Sanitize filename
     .substring(0, 50) // Limit length
-  return `${baseName}-${timestamp}-${randomString}${extension}`
+  return `${folder}/${baseName}-${timestamp}-${randomString}${extension}`
+}
+
+/**
+ * Get file extension from filename or mime type
+ */
+function getExtension(filename: string): string {
+  const ext = filename.split('.').pop()?.toLowerCase()
+  if (ext && ['jpg', 'jpeg', 'png', 'webp', 'gif', 'svg'].includes(ext)) {
+    return `.${ext}`
+  }
+  return '.jpg' // Default
 }
 
 /**
@@ -54,24 +63,13 @@ function validateFile(file: File): { valid: boolean; error?: string } {
   return { valid: true }
 }
 
-/**
- * Ensures the upload directory exists
- */
-async function ensureUploadDir(folder: string): Promise<string> {
-  const uploadDir = path.join(BASE_UPLOAD_DIR, folder)
-  if (!existsSync(uploadDir)) {
-    await mkdir(uploadDir, { recursive: true })
-  }
-  return uploadDir
-}
-
 // ------------------------------------------------------------------
 // API Route Handlers
 // ------------------------------------------------------------------
 
 /**
  * POST /api/upload
- * Handles image file uploads
+ * Handles image file uploads to Vercel Blob storage
  * Requires authentication
  * Optional folder parameter to organize uploads (defaults to 'blog')
  * Returns the URL of the uploaded file
@@ -82,7 +80,7 @@ export async function POST(request: NextRequest) {
     const session = await getServerSession(authOptions)
     if (!session) {
       return NextResponse.json(
-        { success: false, error: 'Unauthorized' },
+        { success: false, error: 'Unauthorized. Please log in to upload images.' },
         { status: 401 }
       )
     }
@@ -112,27 +110,21 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Ensure upload directory exists
-    const uploadDir = await ensureUploadDir(sanitizedFolder)
+    // Generate unique filename with folder path
+    const pathname = generateUniqueFilename(file.name, sanitizedFolder)
 
-    // Generate unique filename
-    const uniqueFilename = generateUniqueFilename(file.name)
-    const filePath = path.join(uploadDir, uniqueFilename)
-
-    // Convert File to Buffer and write to disk
-    const bytes = await file.arrayBuffer()
-    const buffer = Buffer.from(bytes)
-    await writeFile(filePath, buffer)
-
-    // Generate the public URL
-    const publicUrl = `/images/${sanitizedFolder}/${uniqueFilename}`
+    // Upload to Vercel Blob
+    const blob = await put(pathname, file, {
+      access: 'public',
+      addRandomSuffix: false, // We already add our own unique suffix
+    })
 
     // Return success response
     return NextResponse.json(
       {
         success: true,
-        url: publicUrl,
-        filename: uniqueFilename,
+        url: blob.url,
+        filename: pathname.split('/').pop(),
         size: file.size,
         type: file.type,
       },
@@ -140,6 +132,19 @@ export async function POST(request: NextRequest) {
     )
   } catch (error) {
     console.error('Upload error:', error)
+
+    // Check for specific Vercel Blob errors
+    if (error instanceof Error) {
+      if (error.message.includes('BLOB_READ_WRITE_TOKEN')) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: 'Blob storage is not configured. Please set BLOB_READ_WRITE_TOKEN environment variable.',
+          },
+          { status: 500 }
+        )
+      }
+    }
 
     // Return generic error response
     return NextResponse.json(
