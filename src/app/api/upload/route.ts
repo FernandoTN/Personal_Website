@@ -5,6 +5,10 @@ import { put } from '@vercel/blob'
 import { writeFile, mkdir } from 'fs/promises'
 import path from 'path'
 
+// Route segment config for file uploads
+export const runtime = 'nodejs'
+export const dynamic = 'force-dynamic'
+
 // ------------------------------------------------------------------
 // Configuration
 // ------------------------------------------------------------------
@@ -15,6 +19,13 @@ const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'im
 // Check if we're in development or if Blob token is available
 const BLOB_TOKEN = process.env.BLOB_READ_WRITE_TOKEN
 const IS_PRODUCTION = process.env.NODE_ENV === 'production' || process.env.VERCEL === '1'
+
+// Log token status on startup (without exposing the token)
+console.log('Upload API initialized:', {
+  hasBlobToken: !!BLOB_TOKEN,
+  tokenPrefix: BLOB_TOKEN ? BLOB_TOKEN.substring(0, 15) + '...' : 'none',
+  isProduction: IS_PRODUCTION,
+})
 
 // ------------------------------------------------------------------
 // Helper Functions
@@ -148,22 +159,40 @@ export async function POST(request: NextRequest) {
     // Check if Blob token is available for production uploads
     if (BLOB_TOKEN) {
       try {
+        console.log('Uploading to Vercel Blob:', { pathname, fileSize: file.size, fileType: file.type })
+
         // Upload to Vercel Blob
         const blob = await put(pathname, file, {
           access: 'public',
           addRandomSuffix: false, // We already add our own unique suffix
           token: BLOB_TOKEN, // Explicitly pass the token
         })
+
+        console.log('Vercel Blob upload success:', { url: blob.url })
         url = blob.url
       } catch (blobError) {
-        console.error('Vercel Blob upload error:', blobError)
+        // Log detailed error information
+        const errorDetails = {
+          message: blobError instanceof Error ? blobError.message : String(blobError),
+          name: blobError instanceof Error ? blobError.name : 'Unknown',
+          stack: blobError instanceof Error ? blobError.stack : undefined,
+        }
+        console.error('Vercel Blob upload error:', errorDetails)
 
         // If blob fails in development, fall back to local
         if (!IS_PRODUCTION) {
           console.log('Falling back to local storage...')
           url = await uploadToLocal(file, pathname)
         } else {
-          throw blobError
+          // In production, return detailed error
+          return NextResponse.json(
+            {
+              success: false,
+              error: `Blob upload failed: ${errorDetails.message}`,
+              details: errorDetails.name,
+            },
+            { status: 500 }
+          )
         }
       }
     } else if (!IS_PRODUCTION) {

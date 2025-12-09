@@ -890,21 +890,47 @@ export default function BlogPostEditPage() {
 
     setUploading(true)
     try {
+      // Validate file before upload
+      if (!file || file.size === 0) {
+        throw new Error('No file selected or file is empty')
+      }
+
+      // Check file size (4.5MB limit for server uploads)
+      const maxSize = 4.5 * 1024 * 1024
+      if (file.size > maxSize) {
+        throw new Error(`File is too large (${(file.size / 1024 / 1024).toFixed(1)}MB). Maximum size is 4.5MB.`)
+      }
+
+      // Create FormData with the file
       const uploadFormData = new FormData()
-      uploadFormData.append('file', file)
+      uploadFormData.append('file', file, file.name)
       uploadFormData.append('folder', 'blog')
 
+      // Make the upload request
       const response = await fetch('/api/upload', {
         method: 'POST',
         body: uploadFormData,
       })
 
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || 'Upload failed')
+      // Try to parse response as JSON
+      let data
+      const contentType = response.headers.get('content-type')
+      if (contentType && contentType.includes('application/json')) {
+        data = await response.json()
+      } else {
+        // Non-JSON response - get text for debugging
+        const text = await response.text()
+        console.error('Non-JSON response:', text)
+        throw new Error('Server returned an invalid response. Please try again.')
       }
 
-      const data = await response.json()
+      if (!response.ok) {
+        throw new Error(data.error || `Upload failed with status ${response.status}`)
+      }
+
+      if (!data.success || !data.url) {
+        throw new Error(data.error || 'Upload failed - no URL returned')
+      }
 
       setFormData(prev => prev ? {
         ...prev,
@@ -913,7 +939,9 @@ export default function BlogPostEditPage() {
 
       showToast('Image uploaded successfully!', 'success')
     } catch (err) {
-      showToast(err instanceof Error ? err.message : 'Upload failed', 'error')
+      console.error('Upload error:', err)
+      const errorMessage = err instanceof Error ? err.message : 'Upload failed'
+      showToast(errorMessage, 'error')
     } finally {
       setUploading(false)
     }
