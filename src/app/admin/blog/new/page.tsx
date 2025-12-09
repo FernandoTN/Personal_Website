@@ -475,35 +475,55 @@ export default function NewBlogPostPage() {
     }
   }, [formData.tags])
 
-  // Handle image upload via /api/upload
+  // Handle image upload using client-side upload (supports larger files up to 10MB)
   const handleImageUpload = useCallback(async (file: File, field: 'featuredImage' | 'ogImage') => {
     const setUploading = field === 'featuredImage' ? setIsUploadingFeatured : setIsUploadingOg
 
     setUploading(true)
     try {
-      const uploadFormData = new FormData()
-      uploadFormData.append('file', file)
-      uploadFormData.append('folder', 'blog')
-
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: uploadFormData,
-      })
-
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || 'Upload failed')
+      // Validate file before upload
+      if (!file || file.size === 0) {
+        throw new Error('No file selected or file is empty')
       }
 
-      const data = await response.json()
+      // Check file size (10MB limit for client uploads)
+      const maxSize = 10 * 1024 * 1024
+      if (file.size > maxSize) {
+        throw new Error(`File is too large (${(file.size / 1024 / 1024).toFixed(1)}MB). Maximum size is 10MB.`)
+      }
+
+      // Validate file type
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml']
+      if (!allowedTypes.includes(file.type)) {
+        throw new Error(`Invalid file type. Allowed: JPEG, PNG, WebP, GIF, SVG`)
+      }
+
+      // Generate unique filename
+      const timestamp = Date.now()
+      const randomString = Math.random().toString(36).substring(2, 8)
+      const extension = file.name.split('.').pop()?.toLowerCase() || 'jpg'
+      const baseName = file.name
+        .replace(/\.[^.]+$/, '')
+        .replace(/[^a-zA-Z0-9-_]/g, '-')
+        .substring(0, 50)
+      const pathname = `blog/${baseName}-${timestamp}-${randomString}.${extension}`
+
+      // Import and use client upload
+      const { upload } = await import('@vercel/blob/client')
+
+      const blob = await upload(pathname, file, {
+        access: 'public',
+        handleUploadUrl: '/api/upload/client-token',
+      })
 
       setFormData(prev => ({
         ...prev,
-        [field]: data.url,
+        [field]: blob.url,
       }))
 
       showToast('Image uploaded successfully!', 'success')
     } catch (err) {
+      console.error('Upload error:', err)
       showToast(err instanceof Error ? err.message : 'Upload failed', 'error')
     } finally {
       setUploading(false)

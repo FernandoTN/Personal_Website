@@ -881,7 +881,7 @@ export default function BlogPostEditPage() {
     }
   }, [formData, router, showToast])
 
-  // Handle image upload
+  // Handle image upload using client-side upload (supports larger files)
   const handleImageUpload = useCallback(async (
     file: File,
     field: 'featuredImage' | 'ogImage'
@@ -895,46 +895,39 @@ export default function BlogPostEditPage() {
         throw new Error('No file selected or file is empty')
       }
 
-      // Check file size (4.5MB limit for server uploads)
-      const maxSize = 4.5 * 1024 * 1024
+      // Check file size (10MB limit for client uploads)
+      const maxSize = 10 * 1024 * 1024
       if (file.size > maxSize) {
-        throw new Error(`File is too large (${(file.size / 1024 / 1024).toFixed(1)}MB). Maximum size is 4.5MB.`)
+        throw new Error(`File is too large (${(file.size / 1024 / 1024).toFixed(1)}MB). Maximum size is 10MB.`)
       }
 
-      // Create FormData with the file
-      const uploadFormData = new FormData()
-      uploadFormData.append('file', file, file.name)
-      uploadFormData.append('folder', 'blog')
+      // Validate file type
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml']
+      if (!allowedTypes.includes(file.type)) {
+        throw new Error(`Invalid file type. Allowed: JPEG, PNG, WebP, GIF, SVG`)
+      }
 
-      // Make the upload request
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: uploadFormData,
+      // Generate unique filename
+      const timestamp = Date.now()
+      const randomString = Math.random().toString(36).substring(2, 8)
+      const extension = file.name.split('.').pop()?.toLowerCase() || 'jpg'
+      const baseName = file.name
+        .replace(/\.[^.]+$/, '')
+        .replace(/[^a-zA-Z0-9-_]/g, '-')
+        .substring(0, 50)
+      const pathname = `blog/${baseName}-${timestamp}-${randomString}.${extension}`
+
+      // Import and use client upload
+      const { upload } = await import('@vercel/blob/client')
+
+      const blob = await upload(pathname, file, {
+        access: 'public',
+        handleUploadUrl: '/api/upload/client-token',
       })
-
-      // Try to parse response as JSON
-      let data
-      const contentType = response.headers.get('content-type')
-      if (contentType && contentType.includes('application/json')) {
-        data = await response.json()
-      } else {
-        // Non-JSON response - get text for debugging
-        const text = await response.text()
-        console.error('Non-JSON response:', text)
-        throw new Error('Server returned an invalid response. Please try again.')
-      }
-
-      if (!response.ok) {
-        throw new Error(data.error || `Upload failed with status ${response.status}`)
-      }
-
-      if (!data.success || !data.url) {
-        throw new Error(data.error || 'Upload failed - no URL returned')
-      }
 
       setFormData(prev => prev ? {
         ...prev,
-        [field]: data.url,
+        [field]: blob.url,
       } : null)
 
       showToast('Image uploaded successfully!', 'success')
