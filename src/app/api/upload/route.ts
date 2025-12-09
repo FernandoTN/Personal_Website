@@ -2,12 +2,19 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { put } from '@vercel/blob'
+import { writeFile, mkdir } from 'fs/promises'
+import path from 'path'
 
 // ------------------------------------------------------------------
 // Configuration
 // ------------------------------------------------------------------
-const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
+// Vercel Functions have a 4.5MB limit for server uploads
+const MAX_FILE_SIZE = 4.5 * 1024 * 1024 // 4.5MB for Vercel Blob
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml']
+
+// Check if we're in development or if Blob token is available
+const BLOB_TOKEN = process.env.BLOB_READ_WRITE_TOKEN
+const IS_PRODUCTION = process.env.NODE_ENV === 'production' || process.env.VERCEL === '1'
 
 // ------------------------------------------------------------------
 // Helper Functions
@@ -68,8 +75,31 @@ function validateFile(file: File): { valid: boolean; error?: string } {
 // ------------------------------------------------------------------
 
 /**
+ * Upload to local filesystem (development fallback)
+ */
+async function uploadToLocal(file: File, pathname: string): Promise<string> {
+  // pathname is like "blog/filename-123-abc.jpg"
+  const publicDir = path.join(process.cwd(), 'public', 'images')
+  const fullPath = path.join(publicDir, pathname)
+  const dir = path.dirname(fullPath)
+
+  // Ensure directory exists
+  await mkdir(dir, { recursive: true })
+
+  // Convert File to Buffer and write
+  const bytes = await file.arrayBuffer()
+  const buffer = Buffer.from(bytes)
+  await writeFile(fullPath, buffer)
+
+  // Return public URL
+  return `/images/${pathname}`
+}
+
+/**
  * POST /api/upload
- * Handles image file uploads to Vercel Blob storage
+ * Handles image file uploads
+ * - Uses Vercel Blob in production (when BLOB_READ_WRITE_TOKEN is set)
+ * - Falls back to local filesystem in development
  * Requires authentication
  * Optional folder parameter to organize uploads (defaults to 'blog')
  * Returns the URL of the uploaded file
@@ -113,17 +143,49 @@ export async function POST(request: NextRequest) {
     // Generate unique filename with folder path
     const pathname = generateUniqueFilename(file.name, sanitizedFolder)
 
-    // Upload to Vercel Blob
-    const blob = await put(pathname, file, {
-      access: 'public',
-      addRandomSuffix: false, // We already add our own unique suffix
-    })
+    let url: string
+
+    // Check if Blob token is available for production uploads
+    if (BLOB_TOKEN) {
+      try {
+        // Upload to Vercel Blob
+        const blob = await put(pathname, file, {
+          access: 'public',
+          addRandomSuffix: false, // We already add our own unique suffix
+          token: BLOB_TOKEN, // Explicitly pass the token
+        })
+        url = blob.url
+      } catch (blobError) {
+        console.error('Vercel Blob upload error:', blobError)
+
+        // If blob fails in development, fall back to local
+        if (!IS_PRODUCTION) {
+          console.log('Falling back to local storage...')
+          url = await uploadToLocal(file, pathname)
+        } else {
+          throw blobError
+        }
+      }
+    } else if (!IS_PRODUCTION) {
+      // Development: use local filesystem
+      console.log('No BLOB_READ_WRITE_TOKEN found, using local storage')
+      url = await uploadToLocal(file, pathname)
+    } else {
+      // Production without token - error
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Image storage is not configured. Please set up Vercel Blob storage.',
+        },
+        { status: 500 }
+      )
+    }
 
     // Return success response
     return NextResponse.json(
       {
         success: true,
-        url: blob.url,
+        url,
         filename: pathname.split('/').pop(),
         size: file.size,
         type: file.type,
@@ -133,15 +195,37 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Upload error:', error)
 
-    // Check for specific Vercel Blob errors
+    // Provide more specific error messages
     if (error instanceof Error) {
-      if (error.message.includes('BLOB_READ_WRITE_TOKEN')) {
+      const errorMessage = error.message.toLowerCase()
+
+      if (errorMessage.includes('blob_read_write_token') || errorMessage.includes('token')) {
         return NextResponse.json(
           {
             success: false,
-            error: 'Blob storage is not configured. Please set BLOB_READ_WRITE_TOKEN environment variable.',
+            error: 'Blob storage token is invalid or missing. Please check your BLOB_READ_WRITE_TOKEN configuration.',
           },
           { status: 500 }
+        )
+      }
+
+      if (errorMessage.includes('payload too large') || errorMessage.includes('413')) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: 'File is too large. Maximum size is 4.5MB for server uploads.',
+          },
+          { status: 413 }
+        )
+      }
+
+      if (errorMessage.includes('pattern') || errorMessage.includes('syntax')) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: 'Invalid file name or storage configuration. Please try with a different file.',
+          },
+          { status: 400 }
         )
       }
     }
